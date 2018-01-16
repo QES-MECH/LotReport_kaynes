@@ -26,11 +26,6 @@
                         </WrapPanel>
                     </DataTemplate>
                 </TreeView.Resources>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="true"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
             </TreeView>
         </GroupBox>
     </Grid>
