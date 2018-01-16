@@ -8,7 +8,8 @@
         xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}"
-        Title="Settings" Height="300" Width="500">
+        Title="Settings" Height="300" Width="500"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <TabControl>
             <TabItem Header="General">
