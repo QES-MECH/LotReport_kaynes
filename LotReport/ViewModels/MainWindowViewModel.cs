@@ -83,6 +83,15 @@ namespace LotReport.ViewModels
                         {
                             Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
                         }
+
+                        try
+                        {
+                            DirectoryItems = DirectoryProvider.GetItems(Settings.DatabaseDirectory);
+                        }
+                        catch (Exception ex)
+                        {
+                            Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                        }
                     });
                 });
 
