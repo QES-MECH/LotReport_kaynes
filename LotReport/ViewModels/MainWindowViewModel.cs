@@ -18,6 +18,7 @@ namespace LotReport.ViewModels
 
         public MainWindowViewModel()
         {
+            LeadFrameMap = LeadFrameTable.LoadTemplate(25, 5);
             WireCommands();
         }
 
