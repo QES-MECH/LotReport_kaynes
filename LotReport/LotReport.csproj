@@ -67,6 +67,9 @@
     <Compile Include="Views\MainWindowControls\LotListControl.xaml.cs">
       <DependentUpon>LotListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReusableControls\LabelTextBox.xaml.cs">
+      <DependentUpon>LabelTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReusableControls\LeadFrameMapControl.xaml.cs">
       <DependentUpon>LeadFrameMapControl.xaml</DependentUpon>
     </Compile>
@@ -98,6 +101,10 @@
     <Page Include="Views\MainWindowControls\LotListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReusableControls\LabelTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReusableControls\LeadFrameMapControl.xaml">
       <Generator>MSBuild:Compile</Generator>
