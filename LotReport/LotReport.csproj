@@ -58,8 +58,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Die.cs" />
+    <Compile Include="Models\DieRow.cs" />
+    <Compile Include="Models\LeadFrameTable.cs" />
+    <Compile Include="Models\RejectCode.cs" />
+    <Compile Include="Models\RejectCodeRepository.cs" />
     <Compile Include="Views\MainWindowControls\LotListControl.xaml.cs">
       <DependentUpon>LotListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReusableControls\LeadFrameMapControl.xaml.cs">
+      <DependentUpon>LeadFrameMapControl.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +97,10 @@
     <Page Include="Views\MainWindowControls\LotListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReusableControls\LeadFrameMapControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

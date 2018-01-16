@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LotReport.Views"
         xmlns:y="clr-namespace:LotReport.Views.MainWindowControls"
+        xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
         mc:Ignorable="d"
         Title="Lot Report" Height="720" Width="1280">
     <Grid>
@@ -25,8 +26,16 @@
                 <ColumnDefinition Width="0.2*"/>
                 <ColumnDefinition Width="0.8*"/>
             </Grid.ColumnDefinitions>
-
+            
             <y:LotListControl Grid.Column="0"/>
+            
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <r:LeadFrameMapControl/>
+            </Grid>
         </Grid>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
