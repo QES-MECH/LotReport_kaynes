@@ -44,11 +44,13 @@ namespace LotReport.Models
             using (XmlWriter writer = XmlWriter.Create(SettingsDirectory, xmlSettings))
             {
                 writer.WriteStartDocument();
-                writer.WriteStartElement("General");
+                writer.WriteStartElement("Settings");
 
+                writer.WriteStartElement("General");
                 writer.WriteStartElement("Directories");
                 writer.WriteElementString("Database", DatabaseDirectory);
                 writer.WriteElementString("RejectCodes", RejectCodesDirectory);
+                writer.WriteEndElement();
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();
