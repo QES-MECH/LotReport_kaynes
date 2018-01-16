@@ -82,7 +82,7 @@ namespace LotReport.ViewModels
                     OpenFileDialog fileDialog = new OpenFileDialog();
                     fileDialog.Title = "Open RejectCodes";
                     fileDialog.DefaultExt = ".xml";
-                    fileDialog.Filter = "(*.XML)|*.xml";
+                    fileDialog.Filter = "XML(*.xml)|*.xml";
                     bool? result = fileDialog.ShowDialog();
 
                     if (result == true)
