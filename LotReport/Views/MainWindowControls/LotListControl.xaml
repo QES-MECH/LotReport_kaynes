@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LotReport.Views.MainWindowControls"
              xmlns:directory="clr-namespace:LotReport.Models.DirectoryItems"
+             xmlns:viewModels="clr-namespace:LotReport.ViewModels"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <GroupBox Grid.Column="0" Header="Lots" Margin="5">
