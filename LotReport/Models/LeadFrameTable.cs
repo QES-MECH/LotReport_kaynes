@@ -94,7 +94,7 @@ namespace LotReport.Models
                     Die die = new Die()
                     {
                         Coordinate = new Point(x, y),
-                        Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF37474F"))
+                        Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"))
                     };
 
                     dies.Add(die);
