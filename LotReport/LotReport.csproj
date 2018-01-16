@@ -63,7 +63,9 @@
     <Compile Include="Models\LeadFrameTable.cs" />
     <Compile Include="Models\RejectCode.cs" />
     <Compile Include="Models\RejectCodeRepository.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\MainWindowControls\LotListControl.xaml.cs">
       <DependentUpon>LotListControl.xaml</DependentUpon>
     </Compile>
@@ -72,6 +74,9 @@
     </Compile>
     <Compile Include="Views\ReusableControls\LeadFrameMapControl.xaml.cs">
       <DependentUpon>LeadFrameMapControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +114,10 @@
     <Page Include="Views\ReusableControls\LeadFrameMapControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
