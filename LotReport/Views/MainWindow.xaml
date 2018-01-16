@@ -22,6 +22,7 @@
 
         <Menu Grid.Row="0">
             <MenuItem Header="_Tools">
+                <MenuItem Header="_Refresh Lot(s)" Command="{Binding RefreshLotsCommand}"/>
                 <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
             </MenuItem>
         </Menu>
@@ -53,7 +54,7 @@
                     </Grid.ColumnDefinitions>
                     <r:LeadFrameMapControl
                         Grid.Row="1" Grid.Column="1"
-                        DoubleClickCell="{Binding EditDieCommand}"
+                        DoubleClickCell="{Binding DieCommand}"
                         LeadFrameTable="{Binding LeadFrameMap}"
                         GridMaxWidth="{Binding ElementName=leadFrameTableGrid, Path=ActualWidth}"
                         GridMaxHeight="{Binding ElementName=leadFrameTableGrid, Path=ActualHeight}"

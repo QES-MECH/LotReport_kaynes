@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="LotReport.Views.ReusableControls.ImageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:y="clr-namespace:LotReport.Views.ReusableControls"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance y:ImageControl, IsDesignTimeCreatable=True}">
+    <Grid Name="control">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer
+            Grid.Row="0"
+            Name="scrollViewer"
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Hidden"
+            MouseMove="ScrollViewer_MouseMove"
+            PreviewMouseLeftButtonDown="ScrollViewer_PreviewMouseLeftButtonDown"
+            PreviewMouseLeftButtonUp="ScrollViewer_MouseLeftButtonUp"
+            MouseLeftButtonUp="ScrollViewer_MouseLeftButtonUp"
+            PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+            ScrollChanged="ScrollViewer_ScrollChanged"
+            PreviewMouseDoubleClick="ScrollViewer_PreviewMouseDoubleClick">
+            <Grid Name="imageView" VerticalAlignment="Center" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <Grid.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform
+                            ScaleX="{Binding ScaleY, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            ScaleY="{Binding ScaleY, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                    </TransformGroup>
+                </Grid.LayoutTransform>
+                <Image Source="{Binding Image, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Grid>
+        </ScrollViewer>
+
+        <Grid VerticalAlignment="Bottom">
+            <ToggleButton Name="zoomButton" HorizontalAlignment="Left">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Background="#48000000" Width="50" Height="50">
+                            <TextBlock Text="&#x2795;" FontSize="30" Foreground="#CCFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+            <Popup IsOpen="{Binding ElementName=zoomButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=zoomButton}" Placement="Right" StaysOpen="False">
+                <Grid Background="#424242">
+                    <Slider x:Name="zoomSlider" ValueChanged="ZoomSlider_ValueChanged" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" Minimum="1" Maximum="3" TickFrequency="0.1" Width="300" Margin="16" IsMoveToPointEnabled="True"/>
+                </Grid>
+            </Popup>
+        </Grid>
+    </Grid>
+</UserControl>

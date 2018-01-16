@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
 using LotReport.Views;
@@ -64,11 +65,17 @@ namespace LotReport.ViewModels
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
 
+        public WindowService DieWindow { get; private set; } = new WindowService();
+
         public AsyncCommand<object> LoadedCommand { get; private set; }
+
+        public RelayCommand RefreshLotsCommand { get; private set; }
 
         public RelayCommand SettingsCommand { get; private set; }
 
         public RelayCommand GenerateMapCommand { get; private set; }
+
+        public RelayCommand DieCommand { get; private set; }
 
         private void WireCommands()
         {
@@ -92,9 +99,25 @@ namespace LotReport.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                            Status = string.Format("Failed to load Lots. Error: {0}", ex.Message);
                         }
                     });
+                });
+
+            RefreshLotsCommand = new RelayCommand(
+                param =>
+                {
+                    try
+                    {
+                        using (WaitCursor waitCursor = new WaitCursor())
+                        {
+                            DirectoryItems = DirectoryProvider.GetItems(Settings.DatabaseDirectory);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                    }
                 });
 
             SettingsCommand = new RelayCommand(
@@ -118,6 +141,39 @@ namespace LotReport.ViewModels
                         Status = string.Format("Failed to load Lead Frame Map. Error: {0}", ex.Message);
                     }
                 });
+
+            DieCommand = new RelayCommand(
+                param =>
+                {
+                    Die selectedDie = param as Die;
+
+                    if (selectedDie == null)
+                    {
+                        return;
+                    }
+
+                    DieViewModel vm = new DieViewModel();
+                    vm.Die = selectedDie;
+
+                    this.DieWindow.ShowDialog<DieView>(vm);
+                });
+        }
+
+        private class WaitCursor : IDisposable
+        {
+            private Cursor _defaultCursor;
+
+            public WaitCursor()
+            {
+                _defaultCursor = Mouse.OverrideCursor;
+
+                Mouse.OverrideCursor = Cursors.Wait;
+            }
+
+            public void Dispose()
+            {
+                Mouse.OverrideCursor = _defaultCursor;
+            }
         }
     }
 }
