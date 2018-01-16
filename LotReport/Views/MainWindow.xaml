@@ -43,6 +43,7 @@
         </Grid>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
+            <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>
         </StatusBar>
     </Grid>
 </Window>
