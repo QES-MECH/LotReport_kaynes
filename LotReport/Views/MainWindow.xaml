@@ -31,21 +31,41 @@
                 <ColumnDefinition Width="0.2*"/>
                 <ColumnDefinition Width="0.8*"/>
             </Grid.ColumnDefinitions>
-            
+
             <y:LotListControl Grid.Column="0"/>
-            
+
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <r:LeadFrameMapControl
-                    LeadFrameTable="{Binding LeadFrameMap}"/>
+                
+                <Grid x:Name="leadFrameTableGrid" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <r:LeadFrameMapControl
+                        Grid.Row="1" Grid.Column="1"
+                        DoubleClickCell="{Binding EditDieCommand}"
+                        LeadFrameTable="{Binding LeadFrameMap}"
+                        GridMaxWidth="{Binding ElementName=leadFrameTableGrid, Path=ActualWidth}"
+                        GridMaxHeight="{Binding ElementName=leadFrameTableGrid, Path=ActualHeight}"
+                        LotId="{Binding LeadFrameMap.LotId}"
+                        MagazineId="{Binding LeadFrameMap.MagazineId}"
+                        LeadFrameId="{Binding LeadFrameMap.LeadFrameId}"/>
+                </Grid>
             </Grid>
         </Grid>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
-            <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>
-        </StatusBar>
-    </Grid>
+                <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>
+            </StatusBar>
+        </Grid>
 </Window>

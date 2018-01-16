@@ -21,7 +21,7 @@ namespace LotReport.Models
         {
             this.RejectCodes.Clear();
 
-            XDocument document = XDocument.Load("Placeholder");
+            XDocument document = XDocument.Load(Settings.RejectCodesDirectory);
 
             foreach (XElement rejectCode in document.Root.Elements())
             {
@@ -48,7 +48,7 @@ namespace LotReport.Models
 
         public void SaveToFile()
         {
-            FileInfo file = new FileInfo("Placeholder");
+            FileInfo file = new FileInfo(Settings.RejectCodesDirectory);
             file.Directory.Create();
 
             List<RejectCode> orderedRejectCodes = this.RejectCodes.OrderBy(r => r.Id).ToList();
