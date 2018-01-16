@@ -41,7 +41,7 @@ namespace LotReport.Models
             xmlSettings.Indent = true;
             xmlSettings.IndentChars = "  ";
 
-            using (XmlWriter writer = XmlWriter.Create(SettingsDirectory))
+            using (XmlWriter writer = XmlWriter.Create(SettingsDirectory, xmlSettings))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("General");
