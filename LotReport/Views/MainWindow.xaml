@@ -9,6 +9,7 @@
         xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         mc:Ignorable="d"
         Title="Lot Report" Height="720" Width="1280"
+        WindowState="Maximized"
         Loaded="Window_Loaded">
     <Window.DataContext>
         <viewModels:MainWindowViewModel/>
@@ -40,7 +41,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <Grid x:Name="leadFrameTableGrid" Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -66,7 +67,7 @@
         </Grid>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
-                <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>
-            </StatusBar>
-        </Grid>
+            <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>
+        </StatusBar>
+    </Grid>
 </Window>
