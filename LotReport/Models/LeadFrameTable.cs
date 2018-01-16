@@ -39,6 +39,17 @@ namespace LotReport.Models
             return table;
         }
 
+        public static LeadFrameTable LoadTemplate(int x, int y)
+        {
+            LeadFrameTable table = new LeadFrameTable();
+            table.SumOfXDies = x;
+            table.SumOfYDies = y;
+
+            table.GenerateRows(table.SumOfXDies, table.SumOfYDies);
+
+            return table;
+        }
+
         public bool SetDieRejectCode(Die die, RejectCode rejectCode)
         {
             XDocument doc = XDocument.Load(this.XmlPath);
