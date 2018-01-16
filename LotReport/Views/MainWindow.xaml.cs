@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LotReport.ViewModels;
 
 namespace LotReport.Views
 {
@@ -23,6 +24,17 @@ namespace LotReport.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainWindowViewModel vm = DataContext as MainWindowViewModel;
+            if (vm == null)
+            {
+                return;
+            }
+
+            await vm.LoadedCommand.ExecuteAsync(null);
         }
     }
 }

@@ -8,7 +8,8 @@
         xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
         xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         mc:Ignorable="d"
-        Title="Lot Report" Height="720" Width="1280">
+        Title="Lot Report" Height="720" Width="1280"
+        Loaded="Window_Loaded">
     <Window.DataContext>
         <viewModels:MainWindowViewModel/>
     </Window.DataContext>
