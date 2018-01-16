@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
+using LotReport.Views;
 
 namespace LotReport.ViewModels
 {
@@ -61,10 +62,32 @@ namespace LotReport.ViewModels
             }
         }
 
+        public WindowService SettingsWindow { get; private set; } = new WindowService();
+
         public AsyncCommand<object> LoadedCommand { get; private set; }
+
+        public RelayCommand SettingsCommand { get; private set; }
 
         private void WireCommands()
         {
+            LoadedCommand = AsyncCommand.Create(
+                (token, param) =>
+                {
+                    return Task.Run(() =>
+                    {
+                        try
+                        {
+                            Settings.LoadFromFile();
+                        }
+                        catch (Exception ex)
+                        {
+                            Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                        }
+                    });
+                });
+
+            SettingsCommand = new RelayCommand(
+                param => SettingsWindow.ShowDialog<SettingsView>(new SettingsViewModel()));
         }
     }
 }
