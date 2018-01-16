@@ -63,6 +63,7 @@
     <Compile Include="Models\LeadFrameTable.cs" />
     <Compile Include="Models\RejectCode.cs" />
     <Compile Include="Models\RejectCodeRepository.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindowControls\LotListControl.xaml.cs">
       <DependentUpon>LotListControl.xaml</DependentUpon>
     </Compile>
@@ -133,9 +134,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
