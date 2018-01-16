@@ -11,7 +11,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <GroupBox Grid.Column="0" Header="Lots" Margin="5">
-            <TreeView ItemsSource="{Binding DirectoryItems}" Margin="5">
+            <TreeView ItemsSource="{Binding DirectoryItems}" MouseDoubleClick="TreeView_MouseDoubleClick" Margin="5">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type directory:FolderItem}" ItemsSource="{Binding Items}">
                         <WrapPanel>

@@ -17,7 +17,7 @@ namespace LotReport.ViewModels
 
         public MainWindowViewModel()
         {
-            this.WireCommands();
+            WireCommands();
         }
 
         public string Status
@@ -68,6 +68,8 @@ namespace LotReport.ViewModels
 
         public RelayCommand SettingsCommand { get; private set; }
 
+        public RelayCommand GenerateMapCommand { get; private set; }
+
         private void WireCommands()
         {
             LoadedCommand = AsyncCommand.Create(
@@ -97,6 +99,25 @@ namespace LotReport.ViewModels
 
             SettingsCommand = new RelayCommand(
                 param => SettingsWindow.ShowDialog<SettingsView>(new SettingsViewModel()));
+
+            GenerateMapCommand = new RelayCommand(
+                param =>
+                {
+                    FileItem file = param as FileItem;
+                    if (file == null)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        LeadFrameMap = LeadFrameTable.Load(file.Path);
+                    }
+                    catch (Exception ex)
+                    {
+                        Status = string.Format("Failed to load Lead Frame Map. Error: {0}", ex.Message);
+                    }
+                });
         }
     }
 }

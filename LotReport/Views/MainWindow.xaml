@@ -39,7 +39,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <r:LeadFrameMapControl/>
+                <r:LeadFrameMapControl
+                    LeadFrameTable="{Binding LeadFrameMap}"/>
             </Grid>
         </Grid>
 
