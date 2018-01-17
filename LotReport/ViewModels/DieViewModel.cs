@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using LotReport.Models;
 
@@ -96,7 +97,7 @@ namespace LotReport.ViewModels
                             image.EndInit();
                             image.Freeze();
 
-                            Image = image;
+                            Application.Current.Dispatcher.Invoke(() => Image = image);
                         }
                         catch (Exception ex)
                         {
