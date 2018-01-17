@@ -81,7 +81,7 @@
 
                     <GroupBox Header="Lot Info" Margin="5">
                         <StackPanel Grid.Column="0" Margin="3">
-                            <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData}" ReadOnly="True" Margin="3"/>
+                            <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
                             <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
                             <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
                             <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>

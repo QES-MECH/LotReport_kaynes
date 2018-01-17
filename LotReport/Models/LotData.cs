@@ -11,6 +11,8 @@ namespace LotReport.Models
 {
     public class LotData
     {
+        public string MachineId { get; set; }
+
         public string LotId { get; set; }
 
         public string OperatorId { get; set; }
@@ -31,6 +33,7 @@ namespace LotReport.Models
         {
             XDocument doc = XDocument.Load(path);
 
+            this.MachineId = doc.Root.Element("Info").Element("MachineId").Value;
             this.LotId = doc.Root.Element("Info").Element("LotId").Value;
             this.OperatorId = doc.Root.Element("Info").Element("OperatorId").Value;
             this.ProductCode = doc.Root.Element("Info").Element("ProductCode").Value;
@@ -65,6 +68,7 @@ namespace LotReport.Models
 
                 writer.WriteStartElement("Info");
 
+                writer.WriteElementString("MachineId", this.MachineId);
                 writer.WriteElementString("LotId", this.LotId);
                 writer.WriteElementString("OperatorId", this.OperatorId);
                 writer.WriteElementString("ProductCode", this.ProductCode);
