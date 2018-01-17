@@ -25,22 +25,5 @@ namespace LotReport.Views.MainWindowControls
         {
             InitializeComponent();
         }
-
-        private void TreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            MainWindowViewModel vm = this.DataContext as MainWindowViewModel;
-            if (vm == null)
-            {
-                return;
-            }
-
-            TreeView treeView = sender as TreeView;
-            if (treeView == null)
-            {
-                return;
-            }
-
-            vm.GenerateMapCommand.Execute(treeView.SelectedItem);
-        }
     }
 }

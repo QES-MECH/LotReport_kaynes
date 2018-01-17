@@ -39,5 +39,24 @@ namespace LotReport.Models.DirectoryItems
 
             return items;
         }
+
+        public static List<FolderItem> GetFolderItems(string path)
+        {
+            List<FolderItem> folderItems = new List<FolderItem>();
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+
+            foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
+            {
+                FolderItem item = new FolderItem()
+                {
+                    Name = directory.Name,
+                    Path = directory.FullName
+                };
+
+                folderItems.Add(item);
+            }
+
+            return folderItems;
+        }
     }
 }

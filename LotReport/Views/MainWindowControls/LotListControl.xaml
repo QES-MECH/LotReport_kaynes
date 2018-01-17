@@ -10,23 +10,19 @@
              d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <GroupBox Grid.Column="0" Header="Lots" Margin="5">
-            <TreeView ItemsSource="{Binding DirectoryItems}" MouseDoubleClick="TreeView_MouseDoubleClick" Margin="5">
-                <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type directory:FolderItem}" ItemsSource="{Binding Items}">
-                        <WrapPanel>
-                            <Image Source="/LotReport;component/res/folder.png" Width="16" Height="16" Margin="5,0"/>
-                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}"/>
-                        </WrapPanel>
-                    </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type directory:FileItem}">
-                        <WrapPanel>
-                            <Image Source="/LotReport;component/res/file.png" Width="15" Height="15" Margin="5,0"/>
-                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}"/>
-                        </WrapPanel>
-                    </DataTemplate>
-                </TreeView.Resources>
-            </TreeView>
-        </GroupBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Lots" FontWeight="Medium" Margin="3"/>
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Lots}" SelectedItem="{Binding SelectedLot}" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path=Path}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

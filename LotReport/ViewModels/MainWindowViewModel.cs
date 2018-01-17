@@ -15,7 +15,10 @@ namespace LotReport.ViewModels
     {
         private string _status;
         private LeadFrameTable _leadFrameMap;
+        private List<FolderItem> _lots;
+        private FolderItem _selectedLot;
         private List<Item> _directoryItems;
+        private LotData _lotData;
 
         public MainWindowViewModel()
         {
@@ -51,6 +54,35 @@ namespace LotReport.ViewModels
             }
         }
 
+        public List<FolderItem> Lots
+        {
+            get
+            {
+                return _lots;
+            }
+
+            set
+            {
+                _lots = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public FolderItem SelectedLot
+        {
+            get
+            {
+                return _selectedLot;
+            }
+
+            set
+            {
+                _selectedLot = value;
+                OnPropertyChanged();
+                UpdateSelectedLot(value);
+            }
+        }
+
         public List<Item> DirectoryItems
         {
             get
@@ -61,6 +93,20 @@ namespace LotReport.ViewModels
             set
             {
                 _directoryItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public LotData LotData
+        {
+            get
+            {
+                return _lotData;
+            }
+
+            set
+            {
+                _lotData = value;
                 OnPropertyChanged();
             }
         }
@@ -106,12 +152,12 @@ namespace LotReport.ViewModels
                     {
                         using (WaitCursor waitCursor = new WaitCursor())
                         {
-                            DirectoryItems = DirectoryProvider.GetItems(Settings.DatabaseDirectory);
+                            Lots = DirectoryProvider.GetFolderItems(Settings.DatabaseDirectory);
                         }
                     }
                     catch (Exception ex)
                     {
-                        Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                        Status = string.Format("Failed to load Lots. Error: {0}", ex.Message);
                     }
                 });
 
@@ -152,6 +198,26 @@ namespace LotReport.ViewModels
 
                     this.DieWindow.ShowDialog<DieView>(vm);
                 });
+        }
+
+        private void UpdateSelectedLot(FolderItem lot)
+        {
+            try
+            {
+                DirectoryItems = DirectoryProvider.GetItems(lot.Path);
+
+                string lotDataFile = lot.Name + ".xml";
+                Item lotFile = DirectoryItems.FirstOrDefault(item => item.Name == lotDataFile);
+
+                LotData currentLotData = new LotData();
+                currentLotData.LoadFromFile(lotFile.Path);
+
+                LotData = currentLotData;
+            }
+            catch (Exception ex)
+            {
+                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.Name, ex.Message);
+            }
         }
 
         private class WaitCursor : IDisposable

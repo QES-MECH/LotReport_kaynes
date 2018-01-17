@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="LotReport.Views.MainWindowControls.LotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LotReport.Views.MainWindowControls"
+             xmlns:directory="clr-namespace:LotReport.Models.DirectoryItems"
+             xmlns:viewModels="clr-namespace:LotReport.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <GroupBox Grid.Column="0" Header="{Binding SelectedLot.Name}" HeaderStringFormat="Lot ID: {0}" Margin="5">
+            <TreeView ItemsSource="{Binding DirectoryItems}" MouseDoubleClick="TreeView_MouseDoubleClick" Margin="5">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type directory:FolderItem}" ItemsSource="{Binding Items}">
+                        <WrapPanel>
+                            <Image Source="/LotReport;component/res/folder.png" Width="16" Height="16" Margin="5,0"/>
+                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}"/>
+                        </WrapPanel>
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type directory:FileItem}">
+                        <WrapPanel>
+                            <Image Source="/LotReport;component/res/file.png" Width="15" Height="15" Margin="5,0"/>
+                            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}"/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </GroupBox>
+    </Grid>
+</UserControl>
