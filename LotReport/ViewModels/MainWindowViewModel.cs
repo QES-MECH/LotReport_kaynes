@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
@@ -94,14 +95,7 @@ namespace LotReport.ViewModels
                             Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
                         }
 
-                        try
-                        {
-                            DirectoryItems = DirectoryProvider.GetItems(Settings.DatabaseDirectory);
-                        }
-                        catch (Exception ex)
-                        {
-                            Status = string.Format("Failed to load Lots. Error: {0}", ex.Message);
-                        }
+                        Application.Current.Dispatcher.Invoke(() => RefreshLotsCommand.Execute(null));
                     });
                 });
 
