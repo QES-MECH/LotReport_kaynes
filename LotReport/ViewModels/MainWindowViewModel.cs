@@ -18,7 +18,7 @@ namespace LotReport.ViewModels
         private LeadFrameMap _leadFrameMapMachine;
         private List<FolderItem> _lots;
         private FolderItem _selectedLot;
-        private List<Item> _directoryItems;
+        private List<Item> _selectedLotDirectory;
         private LotData _lotData;
 
         public MainWindowViewModel()
@@ -62,10 +62,10 @@ namespace LotReport.ViewModels
             }
         }
 
-        public List<Item> DirectoryItems
+        public List<Item> SelectedLotDirectory
         {
-            get => _directoryItems;
-            set => SetProperty(ref _directoryItems, value);
+            get => _selectedLotDirectory;
+            set => SetProperty(ref _selectedLotDirectory, value);
         }
 
         public LotData LotData
@@ -168,15 +168,18 @@ namespace LotReport.ViewModels
         {
             try
             {
-                DirectoryItems = DirectoryProvider.GetItems(lot.Path);
+                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.Path);
 
                 string lotDataFile = lot.Name + ".xml";
-                Item lotFile = DirectoryItems.FirstOrDefault(item => item.Name == lotDataFile);
+                Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name == lotDataFile);
 
                 LotData currentLotData = new LotData();
                 currentLotData.LoadFromFile(lotFile.Path);
 
                 LotData = currentLotData;
+
+                selectedLotDirectory.Remove(lotFile);
+                SelectedLotDirectory = selectedLotDirectory;
             }
             catch (Exception ex)
             {
