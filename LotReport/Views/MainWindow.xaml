@@ -44,46 +44,92 @@
                 <y:LotControl Grid.Row="1"/>
             </Grid>
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <TabControl Grid.Column="1">
+                <TabItem Header="Operator" Width="100">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <Grid x:Name="leadFrameTableGrid" Grid.Row="0" Background="#263238">
-                    <r:LeadFrameMapControl
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        DoubleClickCell="{Binding DieCommand}"
-                        LeadFrameTable="{Binding LeadFrameMap}"
-                        GridMaxWidth="{Binding ElementName=leadFrameTableGrid, Path=ActualWidth}"
-                        GridMaxHeight="{Binding ElementName=leadFrameTableGrid, Path=ActualHeight}"
-                        LotId="{Binding LeadFrameMap.LotId}"
-                        MagazineId="{Binding LeadFrameMap.MagazineId}"
-                        LeadFrameId="{Binding LeadFrameMap.LeadFrameId}"/>
-                </Grid>
+                        <Grid x:Name="leadFrameMapOperatorGrid" Grid.Row="0" Background="#263238">
+                            <r:LeadFrameMapControl
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                DoubleClickCell="{Binding DieCommand}"
+                                LeadFrameTable="{Binding LeadFrameMapOperator}"
+                                GridMaxWidth="{Binding ElementName=leadFrameMapOperatorGrid, Path=ActualWidth}"
+                                GridMaxHeight="{Binding ElementName=leadFrameMapOperatorGrid, Path=ActualHeight}"
+                                LotId="{Binding LeadFrameMapOperator.LotId}"
+                                MagazineId="{Binding LeadFrameMapOperator.MagazineId}"
+                                LeadFrameId="{Binding LeadFrameMapOperator.LeadFrameId}"/>
+                        </Grid>
 
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <GroupBox Header="Lot Info" Margin="5">
-                        <StackPanel Grid.Column="0" Margin="3">
-                            <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
-                            <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
-                        </StackPanel>
-                    </GroupBox>
-                </Grid>
-            </Grid>
+                            <GroupBox Header="Lot Info" Margin="5">
+                                <StackPanel Grid.Column="0" Margin="3">
+                                    <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Machine" Width="100">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid x:Name="leadFrameMapMachineGrid" Grid.Row="0" Background="#263238">
+                            <r:LeadFrameMapControl
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                DoubleClickCell="{Binding DieCommand}"
+                                LeadFrameTable="{Binding LeadFrameMapMachine}"
+                                GridMaxWidth="{Binding ElementName=leadFrameMapMachineGrid, Path=ActualWidth}"
+                                GridMaxHeight="{Binding ElementName=leadFrameMapMachineGrid, Path=ActualHeight}"
+                                LotId="{Binding LeadFrameMapMachine.LotId}"
+                                MagazineId="{Binding LeadFrameMapMachine.MagazineId}"
+                                LeadFrameId="{Binding LeadFrameMapMachine.LeadFrameId}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <GroupBox Header="Lot Info" Margin="5">
+                                <StackPanel Grid.Column="0" Margin="3">
+                                    <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </Grid>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
