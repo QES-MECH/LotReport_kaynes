@@ -11,7 +11,6 @@ namespace LotReport.Models
     {
         private LeadFrameTable()
         {
-            this.Rows = new List<DieRow>();
         }
 
         public enum Type
@@ -32,12 +31,14 @@ namespace LotReport.Models
 
         public int SumOfYDies { get; private set; }
 
-        public List<DieRow> Rows { get; private set; }
+        public List<DieRow> Rows { get; } = new List<DieRow>();
 
         public static LeadFrameTable Load(string xmlPath, Type type)
         {
-            LeadFrameTable table = new LeadFrameTable();
-            table.XmlPath = xmlPath;
+            LeadFrameTable table = new LeadFrameTable
+            {
+                XmlPath = xmlPath
+            };
 
             table.LoadFromFile(table.XmlPath, type);
             table.GetInfo(table.XmlPath);
@@ -47,9 +48,11 @@ namespace LotReport.Models
 
         public static LeadFrameTable LoadTemplate(int x, int y)
         {
-            LeadFrameTable table = new LeadFrameTable();
-            table.SumOfXDies = x;
-            table.SumOfYDies = y;
+            LeadFrameTable table = new LeadFrameTable
+            {
+                SumOfXDies = x,
+                SumOfYDies = y
+            };
 
             table.GenerateRows(table.SumOfXDies, table.SumOfYDies);
 
@@ -58,7 +61,7 @@ namespace LotReport.Models
 
         public bool SetDieRejectCode(Die die, RejectCode rejectCode)
         {
-            XDocument doc = XDocument.Load(this.XmlPath);
+            XDocument doc = XDocument.Load(XmlPath);
 
             var dieElement = doc
                 .Element("DieData")
@@ -73,7 +76,7 @@ namespace LotReport.Models
 
             dieElement.Element("RejectCode").Element("Modified").Value = rejectCode.Id.ToString();
 
-            doc.Save(this.XmlPath);
+            doc.Save(XmlPath);
 
             die.RejectCode = rejectCode;
 
@@ -106,7 +109,7 @@ namespace LotReport.Models
                     dies.Add(die);
                 }
 
-                this.Rows.Add(new DieRow(dies));
+                Rows.Add(new DieRow(dies));
             }
         }
 
@@ -119,17 +122,14 @@ namespace LotReport.Models
             string elementX = doc.Root.Attribute("X").Value;
             string elementY = doc.Root.Attribute("Y").Value;
 
-            int sumOfXDies = 0;
-            int sumOfYDies = 0;
-
-            if (int.TryParse(elementX, out sumOfXDies))
+            if (int.TryParse(elementX, out int sumOfXDies))
             {
-                this.SumOfXDies = sumOfXDies;
+                SumOfXDies = sumOfXDies;
             }
 
-            if (int.TryParse(elementY, out sumOfYDies))
+            if (int.TryParse(elementY, out int sumOfYDies))
             {
-                this.SumOfYDies = sumOfYDies;
+                SumOfYDies = sumOfYDies;
             }
 
             for (int y = 1; y <= sumOfYDies; y++)
@@ -138,8 +138,10 @@ namespace LotReport.Models
 
                 for (int x = 1; x <= sumOfXDies; x++)
                 {
-                    Die die = new Die();
-                    die.Coordinate = new Point(x, y);
+                    Die die = new Die
+                    {
+                        Coordinate = new Point(x, y)
+                    };
 
                     var dieElement = doc
                         .Element("DieData")
@@ -151,8 +153,7 @@ namespace LotReport.Models
 
                     if (type == Type.Machine)
                     {
-                        int visionRejectCodeId;
-                        if (int.TryParse(visionRejectCode.Value, out visionRejectCodeId))
+                        if (int.TryParse(visionRejectCode.Value, out int visionRejectCodeId))
                         {
                             die.RejectCode.Id = visionRejectCodeId;
                         }
@@ -177,8 +178,7 @@ namespace LotReport.Models
 
                         if (modifiedRejectCode.IsEmpty)
                         {
-                            int visionRejectCodeId;
-                            if (int.TryParse(visionRejectCode.Value, out visionRejectCodeId))
+                            if (int.TryParse(visionRejectCode.Value, out int visionRejectCodeId))
                             {
                                 die.RejectCode.Id = visionRejectCodeId;
                             }
@@ -198,8 +198,7 @@ namespace LotReport.Models
                         }
                         else
                         {
-                            int modifiedRejectCodeId;
-                            if (int.TryParse(modifiedRejectCode.Value, out modifiedRejectCodeId))
+                            if (int.TryParse(modifiedRejectCode.Value, out int modifiedRejectCodeId))
                             {
                                 die.RejectCode.Id = modifiedRejectCodeId;
                             }
@@ -221,12 +220,12 @@ namespace LotReport.Models
 
                     die.ImagePath = dieElement.Element("ImagePath").Value;
 
-                    this.TryGetRejectCodeInfo(repo.RejectCodes, die);
+                    TryGetRejectCodeInfo(repo.RejectCodes, die);
 
                     dies.Add(die);
                 }
 
-                this.Rows.Add(new DieRow(dies));
+                Rows.Add(new DieRow(dies));
             }
         }
 
@@ -244,13 +243,13 @@ namespace LotReport.Models
 
         private void GetInfo(string xmlPath)
         {
-            this.LeadFrameId = Path.GetFileNameWithoutExtension(xmlPath);
+            LeadFrameId = Path.GetFileNameWithoutExtension(xmlPath);
 
             string magazinePath = Path.GetDirectoryName(xmlPath);
-            this.MagazineId = Path.GetFileName(magazinePath);
+            MagazineId = Path.GetFileName(magazinePath);
 
             string lotPath = Path.GetDirectoryName(magazinePath);
-            this.LotId = Path.GetFileName(lotPath);
+            LotId = Path.GetFileName(lotPath);
         }
     }
 }
