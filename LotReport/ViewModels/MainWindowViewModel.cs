@@ -130,7 +130,7 @@ namespace LotReport.ViewModels
 
                     try
                     {
-                        LeadFrameMap = LeadFrameTable.Load(file.Path);
+                        LeadFrameMap = LeadFrameTable.Load(file.Path, LeadFrameTable.Type.Operator);
                     }
                     catch (Exception ex)
                     {

@@ -14,6 +14,12 @@ namespace LotReport.Models
             this.Rows = new List<DieRow>();
         }
 
+        public enum Type
+        {
+            Machine,
+            Operator
+        }
+
         public string XmlPath { get; private set; }
 
         public string LotId { get; private set; }
@@ -28,12 +34,12 @@ namespace LotReport.Models
 
         public List<DieRow> Rows { get; private set; }
 
-        public static LeadFrameTable Load(string xmlPath)
+        public static LeadFrameTable Load(string xmlPath, Type type)
         {
             LeadFrameTable table = new LeadFrameTable();
             table.XmlPath = xmlPath;
 
-            table.LoadFromFile(table.XmlPath);
+            table.LoadFromFile(table.XmlPath, type);
             table.GetInfo(table.XmlPath);
 
             return table;
@@ -104,7 +110,7 @@ namespace LotReport.Models
             }
         }
 
-        private void LoadFromFile(string xmlPath)
+        private void LoadFromFile(string xmlPath, Type type)
         {
             RejectCodeRepository repo = new RejectCodeRepository();
             repo.LoadFromFile();
@@ -143,28 +149,7 @@ namespace LotReport.Models
 
                     string modifiedRejectCode = dieElement.Element("RejectCode").Element("Modified").Value;
 
-                    if (!string.IsNullOrEmpty(modifiedRejectCode))
-                    {
-                        int rejectCodeId;
-                        if (int.TryParse(modifiedRejectCode, out rejectCodeId))
-                        {
-                            die.RejectCode.Id = rejectCodeId;
-                        }
-                        else
-                        {
-                            die.RejectCode.Id = 999;
-                        }
-
-                        if (die.RejectCode.Id == 0)
-                        {
-                            die.Color = Brushes.Yellow;
-                        }
-                        else
-                        {
-                            die.Color = Brushes.Red;
-                        }
-                    }
-                    else
+                    if (type == Type.Machine)
                     {
                         string visionRejectCode = dieElement.Element("RejectCode").Element("Vision").Value;
 
@@ -185,6 +170,54 @@ namespace LotReport.Models
                         else
                         {
                             die.Color = Brushes.Red;
+                        }
+                    }
+
+                    if (type == Type.Operator)
+                    {
+                        if (!string.IsNullOrEmpty(modifiedRejectCode))
+                        {
+                            int rejectCodeId;
+                            if (int.TryParse(modifiedRejectCode, out rejectCodeId))
+                            {
+                                die.RejectCode.Id = rejectCodeId;
+                            }
+                            else
+                            {
+                                die.RejectCode.Id = 999;
+                            }
+
+                            if (die.RejectCode.Id == 0)
+                            {
+                                die.Color = Brushes.Yellow;
+                            }
+                            else
+                            {
+                                die.Color = Brushes.Red;
+                            }
+                        }
+                        else
+                        {
+                            string visionRejectCode = dieElement.Element("RejectCode").Element("Vision").Value;
+
+                            int rejectCodeId;
+                            if (int.TryParse(visionRejectCode, out rejectCodeId))
+                            {
+                                die.RejectCode.Id = rejectCodeId;
+                            }
+                            else
+                            {
+                                die.RejectCode.Id = 999;
+                            }
+
+                            if (die.RejectCode.Id == 0)
+                            {
+                                die.Color = Brushes.Green;
+                            }
+                            else
+                            {
+                                die.Color = Brushes.Red;
+                            }
                         }
                     }
 
