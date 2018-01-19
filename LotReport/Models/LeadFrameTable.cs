@@ -147,16 +147,14 @@ namespace LotReport.Models
                         .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
                         .FirstOrDefault();
 
-                    string modifiedRejectCode = dieElement.Element("RejectCode").Element("Modified").Value;
+                    XElement visionRejectCode = dieElement.Element("RejectCode").Element("Vision");
 
                     if (type == Type.Machine)
                     {
-                        string visionRejectCode = dieElement.Element("RejectCode").Element("Vision").Value;
-
-                        int rejectCodeId;
-                        if (int.TryParse(visionRejectCode, out rejectCodeId))
+                        int visionRejectCodeId;
+                        if (int.TryParse(visionRejectCode.Value, out visionRejectCodeId))
                         {
-                            die.RejectCode.Id = rejectCodeId;
+                            die.RejectCode.Id = visionRejectCodeId;
                         }
                         else
                         {
@@ -175,35 +173,14 @@ namespace LotReport.Models
 
                     if (type == Type.Operator)
                     {
-                        if (!string.IsNullOrEmpty(modifiedRejectCode))
-                        {
-                            int rejectCodeId;
-                            if (int.TryParse(modifiedRejectCode, out rejectCodeId))
-                            {
-                                die.RejectCode.Id = rejectCodeId;
-                            }
-                            else
-                            {
-                                die.RejectCode.Id = 999;
-                            }
+                        XElement modifiedRejectCode = dieElement.Element("RejectCode").Element("Modified");
 
-                            if (die.RejectCode.Id == 0)
-                            {
-                                die.Color = Brushes.Yellow;
-                            }
-                            else
-                            {
-                                die.Color = Brushes.Red;
-                            }
-                        }
-                        else
+                        if (modifiedRejectCode.IsEmpty)
                         {
-                            string visionRejectCode = dieElement.Element("RejectCode").Element("Vision").Value;
-
-                            int rejectCodeId;
-                            if (int.TryParse(visionRejectCode, out rejectCodeId))
+                            int visionRejectCodeId;
+                            if (int.TryParse(visionRejectCode.Value, out visionRejectCodeId))
                             {
-                                die.RejectCode.Id = rejectCodeId;
+                                die.RejectCode.Id = visionRejectCodeId;
                             }
                             else
                             {
@@ -213,6 +190,27 @@ namespace LotReport.Models
                             if (die.RejectCode.Id == 0)
                             {
                                 die.Color = Brushes.Green;
+                            }
+                            else
+                            {
+                                die.Color = Brushes.Red;
+                            }
+                        }
+                        else
+                        {
+                            int modifiedRejectCodeId;
+                            if (int.TryParse(modifiedRejectCode.Value, out modifiedRejectCodeId))
+                            {
+                                die.RejectCode.Id = modifiedRejectCodeId;
+                            }
+                            else
+                            {
+                                die.RejectCode.Id = 999;
+                            }
+
+                            if (die.RejectCode.Id == 0)
+                            {
+                                die.Color = Brushes.Yellow;
                             }
                             else
                             {
