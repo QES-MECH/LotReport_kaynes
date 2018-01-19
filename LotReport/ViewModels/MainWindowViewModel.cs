@@ -47,7 +47,11 @@ namespace LotReport.ViewModels
         public FolderItem SelectedLot
         {
             get => _selectedLot;
-            set => SetProperty(ref _selectedLot, value);
+            set
+            {
+                SetProperty(ref _selectedLot, value);
+                UpdateSelectedLot(value);
+            }
         }
 
         public List<Item> DirectoryItems
