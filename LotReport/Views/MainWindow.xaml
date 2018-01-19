@@ -51,18 +51,9 @@
                 </Grid.RowDefinitions>
 
                 <Grid x:Name="leadFrameTableGrid" Grid.Row="0" Background="#263238">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
                     <r:LeadFrameMapControl
-                        Grid.Row="1" Grid.Column="1"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
                         DoubleClickCell="{Binding DieCommand}"
                         LeadFrameTable="{Binding LeadFrameMap}"
                         GridMaxWidth="{Binding ElementName=leadFrameTableGrid, Path=ActualWidth}"
