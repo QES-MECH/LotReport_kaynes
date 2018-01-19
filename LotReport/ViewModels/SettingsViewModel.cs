@@ -22,30 +22,14 @@ namespace LotReport.ViewModels
 
         public string DatabaseDirectory
         {
-            get
-            {
-                return _databaseDirectory;
-            }
-
-            set
-            {
-                _databaseDirectory = value;
-                OnPropertyChanged();
-            }
+            get => _databaseDirectory;
+            set => SetProperty(ref _databaseDirectory, value);
         }
 
         public string RejectCodesDirectory
         {
-            get
-            {
-                return _rejectCodesDirectory;
-            }
-
-            set
-            {
-                _rejectCodesDirectory = value;
-                OnPropertyChanged();
-            }
+            get => _rejectCodesDirectory;
+            set => SetProperty(ref _rejectCodesDirectory, value);
         }
 
         public RelayCommand<bool> OkCommand { get; private set; }

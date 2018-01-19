@@ -23,58 +23,26 @@ namespace LotReport.ViewModels
 
         public string Status
         {
-            get
-            {
-                return _status;
-            }
-
-            set
-            {
-                _status = value;
-                OnPropertyChanged();
-            }
+            get => _status;
+            set => SetProperty(ref _status, value);
         }
 
         public Die Die
         {
-            get
-            {
-                return _die;
-            }
-
-            set
-            {
-                _die = value;
-                OnPropertyChanged();
-            }
+            get => _die;
+            set => SetProperty(ref _die, value);
         }
 
         public BitmapImage Image
         {
-            get
-            {
-                return _image;
-            }
-
-            set
-            {
-                _image = value;
-                OnPropertyChanged();
-            }
+            get => _image;
+            set => SetProperty(ref _image, value);
         }
 
         public RejectCode CurrentRejectCode
         {
-            get
-            {
-                return _currentRejectCode;
-            }
-
-            set
-            {
-                _currentRejectCode = value;
-                OnPropertyChanged();
-            }
+            get => _currentRejectCode;
+            set => SetProperty(ref _currentRejectCode, value);
         }
 
         public AsyncCommand<object> LoadedCommand { get; private set; }

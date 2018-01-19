@@ -28,87 +28,38 @@ namespace LotReport.ViewModels
 
         public string Status
         {
-            get
-            {
-                return _status;
-            }
-
-            set
-            {
-                _status = value;
-                OnPropertyChanged();
-            }
+            get => _status;
+            set => SetProperty(ref _status, value);
         }
 
         public LeadFrameTable LeadFrameMap
         {
-            get
-            {
-                return _leadFrameMap;
-            }
-
-            set
-            {
-                _leadFrameMap = value;
-                OnPropertyChanged();
-            }
+            get => _leadFrameMap;
+            set => SetProperty(ref _leadFrameMap, value);
         }
 
         public List<FolderItem> Lots
         {
-            get
-            {
-                return _lots;
-            }
-
-            set
-            {
-                _lots = value;
-                OnPropertyChanged();
-            }
+            get => _lots;
+            set => SetProperty(ref _lots, value);
         }
 
         public FolderItem SelectedLot
         {
-            get
-            {
-                return _selectedLot;
-            }
-
-            set
-            {
-                _selectedLot = value;
-                OnPropertyChanged();
-                UpdateSelectedLot(value);
-            }
+            get => _selectedLot;
+            set => SetProperty(ref _selectedLot, value);
         }
 
         public List<Item> DirectoryItems
         {
-            get
-            {
-                return _directoryItems;
-            }
-
-            set
-            {
-                _directoryItems = value;
-                OnPropertyChanged();
-            }
+            get => _directoryItems;
+            set => SetProperty(ref _directoryItems, value);
         }
 
         public LotData LotData
         {
-            get
-            {
-                return _lotData;
-            }
-
-            set
-            {
-                _lotData = value;
-                OnPropertyChanged();
-            }
+            get => _lotData;
+            set => SetProperty(ref _lotData, value);
         }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
