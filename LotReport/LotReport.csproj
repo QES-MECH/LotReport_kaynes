@@ -60,7 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Die.cs" />
     <Compile Include="Models\DieRow.cs" />
-    <Compile Include="Models\LeadFrameTable.cs" />
+    <Compile Include="Models\LeadFrameMap.cs" />
     <Compile Include="Models\LotData.cs" />
     <Compile Include="Models\RejectCode.cs" />
     <Compile Include="Models\RejectCodeRepository.cs" />

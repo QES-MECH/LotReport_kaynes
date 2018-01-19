@@ -7,9 +7,9 @@ using System.Xml.Linq;
 
 namespace LotReport.Models
 {
-    public class LeadFrameTable
+    public class LeadFrameMap
     {
-        private LeadFrameTable()
+        private LeadFrameMap()
         {
         }
 
@@ -33,9 +33,9 @@ namespace LotReport.Models
 
         public List<DieRow> Rows { get; } = new List<DieRow>();
 
-        public static LeadFrameTable Load(string xmlPath, Type type)
+        public static LeadFrameMap Load(string xmlPath, Type type)
         {
-            LeadFrameTable table = new LeadFrameTable
+            LeadFrameMap table = new LeadFrameMap
             {
                 XmlPath = xmlPath
             };
@@ -46,9 +46,9 @@ namespace LotReport.Models
             return table;
         }
 
-        public static LeadFrameTable LoadTemplate(int x, int y)
+        public static LeadFrameMap LoadTemplate(int x, int y)
         {
-            LeadFrameTable table = new LeadFrameTable
+            LeadFrameMap table = new LeadFrameMap
             {
                 SumOfXDies = x,
                 SumOfYDies = y

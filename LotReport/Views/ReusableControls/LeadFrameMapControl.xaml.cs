@@ -28,9 +28,9 @@ namespace LotReport.Views.ReusableControls
         public static readonly DependencyProperty LeadFrameTableProperty =
             DependencyProperty.Register(
             "LeadFrameTable",
-            typeof(LeadFrameTable),
+            typeof(LeadFrameMap),
             typeof(LeadFrameMapControl),
-            new PropertyMetadata(default(LeadFrameTable), RefreshTableCallback));
+            new PropertyMetadata(default(LeadFrameMap), RefreshTableCallback));
 
         // Using a DependencyProperty as the backing store for SelectedDie.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedDieProperty =
@@ -69,11 +69,11 @@ namespace LotReport.Views.ReusableControls
             this.InitializeComponent();
         }
 
-        public LeadFrameTable LeadFrameTable
+        public LeadFrameMap LeadFrameTable
         {
             get
             {
-                return (LeadFrameTable)GetValue(LeadFrameTableProperty);
+                return (LeadFrameMap)GetValue(LeadFrameTableProperty);
             }
 
             set

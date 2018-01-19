@@ -14,7 +14,7 @@ namespace LotReport.ViewModels
     public class MainWindowViewModel : PropertyChangedBase
     {
         private string _status;
-        private LeadFrameTable _leadFrameMap;
+        private LeadFrameMap _leadFrameMap;
         private List<FolderItem> _lots;
         private FolderItem _selectedLot;
         private List<Item> _directoryItems;
@@ -22,7 +22,7 @@ namespace LotReport.ViewModels
 
         public MainWindowViewModel()
         {
-            LeadFrameMap = LeadFrameTable.LoadTemplate(25, 5);
+            LeadFrameMap = LeadFrameMap.LoadTemplate(25, 5);
             WireCommands();
         }
 
@@ -32,7 +32,7 @@ namespace LotReport.ViewModels
             set => SetProperty(ref _status, value);
         }
 
-        public LeadFrameTable LeadFrameMap
+        public LeadFrameMap LeadFrameMap
         {
             get => _leadFrameMap;
             set => SetProperty(ref _leadFrameMap, value);
@@ -130,7 +130,7 @@ namespace LotReport.ViewModels
 
                     try
                     {
-                        LeadFrameMap = LeadFrameTable.Load(file.Path, LeadFrameTable.Type.Operator);
+                        LeadFrameMap = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Operator);
                     }
                     catch (Exception ex)
                     {
