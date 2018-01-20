@@ -5,10 +5,10 @@ namespace LotReport.Models
 {
     public class Die : PropertyChangedBase
     {
-        private RejectCode rejectCode;
-        private string imagePath;
-        private Brush color;
-        private Point coordinate;
+        private RejectCode _rejectCode;
+        private string _imagePath;
+        private Brush _color;
+        private Point _coordinate;
 
         public Die()
         {
@@ -17,58 +17,26 @@ namespace LotReport.Models
 
         public RejectCode RejectCode
         {
-            get
-            {
-                return this.rejectCode;
-            }
-
-            set
-            {
-                this.rejectCode = value;
-                this.OnPropertyChanged();
-            }
+            get => this._rejectCode;
+            set => SetProperty(ref _rejectCode, value);
         }
 
         public string ImagePath
         {
-            get
-            {
-                return this.imagePath;
-            }
-
-            set
-            {
-                this.imagePath = value;
-                this.OnPropertyChanged();
-            }
+            get => this._imagePath;
+            set => SetProperty(ref _imagePath, value);
         }
 
         public Brush Color
         {
-            get
-            {
-                return this.color;
-            }
-
-            set
-            {
-                this.color = value;
-                this.OnPropertyChanged();
-            }
+            get => this._color;
+            set => SetProperty(ref _color, value);
         }
 
         public Point Coordinate
         {
-            get
-            {
-                return this.coordinate;
-            }
-
-            set
-            {
-                this.coordinate = value;
-                this.OnPropertyChanged();
-            }
+            get => this._coordinate;
+            set => SetProperty(ref _coordinate, value);
         }
     }
 }
