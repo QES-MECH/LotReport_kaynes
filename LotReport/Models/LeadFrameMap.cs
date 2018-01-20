@@ -9,6 +9,10 @@ namespace LotReport.Models
 {
     public class LeadFrameMap
     {
+        private static Brush _red = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3333"));
+        private static Brush _green = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33FF33"));
+        private static Brush _yellow = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEA00"));
+
         private LeadFrameMap()
         {
         }
@@ -164,7 +168,7 @@ namespace LotReport.Models
 
                         if (die.RejectCode.Id == 0)
                         {
-                            die.Color = Brushes.Green;
+                            die.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00E676"));
                         }
                         else
                         {
@@ -189,11 +193,11 @@ namespace LotReport.Models
 
                             if (die.RejectCode.Id == 0)
                             {
-                                die.Color = Brushes.Green;
+                                die.Color = _green;
                             }
                             else
                             {
-                                die.Color = Brushes.Red;
+                                die.Color = _red;
                             }
                         }
                         else
@@ -209,11 +213,11 @@ namespace LotReport.Models
 
                             if (die.RejectCode.Id == 0)
                             {
-                                die.Color = Brushes.Yellow;
+                                die.Color = _yellow;
                             }
                             else
                             {
-                                die.Color = Brushes.Red;
+                                die.Color = _red;
                             }
                         }
                     }
