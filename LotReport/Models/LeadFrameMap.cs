@@ -86,11 +86,11 @@ namespace LotReport.Models
 
             if (die.RejectCode.Id == 0)
             {
-                die.Color = Brushes.Yellow;
+                die.Color = _yellow;
             }
             else
             {
-                die.Color = Brushes.Red;
+                die.Color = _red;
             }
 
             return true;
@@ -168,11 +168,11 @@ namespace LotReport.Models
 
                         if (die.RejectCode.Id == 0)
                         {
-                            die.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00E676"));
+                            die.Color = _green;
                         }
                         else
                         {
-                            die.Color = Brushes.Red;
+                            die.Color = _red;
                         }
                     }
 
