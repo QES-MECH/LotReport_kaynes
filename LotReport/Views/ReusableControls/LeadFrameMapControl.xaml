@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <DataGrid
-            x:Name="dataGridMap"
+            x:Name="_dataGridMap"
             Grid.Row="0"
             ItemsSource="{Binding LeadFrameTable, RelativeSource={RelativeSource AncestorType=UserControl}}"
             TextElement.FontFamily="consolas"
@@ -27,7 +27,16 @@
             MouseLeftButtonUp="DataGridMap_MouseLeftButtonUp"
             MouseDoubleClick="DataGridMap_MouseDoubleClick"
             LoadingRow="DataGridMap_LoadingRow">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
         </DataGrid>
+
+        <Grid>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        </Grid>
 
         <StatusBar Grid.Row="1" Background="#2962FF">
             <StatusBarItem HorizontalAlignment="Right">

@@ -66,7 +66,7 @@ namespace LotReport.Views.ReusableControls
 
         public LeadFrameMapControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public LeadFrameMap LeadFrameTable
@@ -78,62 +78,62 @@ namespace LotReport.Views.ReusableControls
 
             set
             {
-                this.SetValue(LeadFrameTableProperty, value);
+                SetValue(LeadFrameTableProperty, value);
             }
         }
 
         public Die SelectedDie
         {
             get { return (Die)GetValue(SelectedDieProperty); }
-            set { this.SetValue(SelectedDieProperty, value); }
+            set { SetValue(SelectedDieProperty, value); }
         }
 
         public ICommand DoubleClickCell
         {
             get { return (ICommand)GetValue(DoubleClickCellProperty); }
-            set { this.SetValue(DoubleClickCellProperty, value); }
+            set { SetValue(DoubleClickCellProperty, value); }
         }
 
         public double GridMaxWidth
         {
             get { return (double)GetValue(GridMaxWidthProperty); }
-            set { this.SetValue(GridMaxWidthProperty, value); }
+            set { SetValue(GridMaxWidthProperty, value); }
         }
 
         public double GridMaxHeight
         {
             get { return (double)GetValue(GridMaxHeightProperty); }
-            set { this.SetValue(GridMaxHeightProperty, value); }
+            set { SetValue(GridMaxHeightProperty, value); }
         }
 
         public string LotId
         {
             get { return (string)GetValue(LotIdProperty); }
-            set { this.SetValue(LotIdProperty, value); }
+            set { SetValue(LotIdProperty, value); }
         }
 
         public string MagazineId
         {
             get { return (string)GetValue(MagazineIdProperty); }
-            set { this.SetValue(MagazineIdProperty, value); }
+            set { SetValue(MagazineIdProperty, value); }
         }
 
         public string LeadFrameId
         {
             get { return (string)GetValue(LeadFrameIdProperty); }
-            set { this.SetValue(LeadFrameIdProperty, value); }
+            set { SetValue(LeadFrameIdProperty, value); }
         }
 
         public void RefreshTable()
         {
-            if (this.LeadFrameTable == null)
+            if (LeadFrameTable == null)
             {
                 return;
             }
 
-            this.dataGridMap.Columns.Clear();
+            _dataGridMap.Columns.Clear();
 
-            for (int x = 1; x <= this.LeadFrameTable.SumOfXDies; x++)
+            for (int x = 1; x <= LeadFrameTable.SumOfXDies; x++)
             {
                 DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
                 templateColumn.Header = x.ToString("D2");
@@ -142,8 +142,13 @@ namespace LotReport.Views.ReusableControls
 
                 var xamlString =
                     "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
-                        "<Grid>" +
-                            "<TextBlock Text=\"{Binding Dies[" + dieIndex + "].RejectCode.Id}\" Foreground=\"#212121\" Background=\"{Binding Dies[" + dieIndex + "].Color}\"/>" +
+                        "<Grid Background=\"{Binding Dies[" + dieIndex + "].Color}\">" +
+                            "<TextBlock" +
+                            " Text=\"{Binding Dies[" + dieIndex + "].RejectCode.Value}\"" +
+                            " Foreground=\"#212121\"" +
+                            " HorizontalAlignment=\"Center\"" +
+                            " VerticalAlignment=\"Center\"" +
+                            "/>" +
                         "</Grid>" +
                     "</DataTemplate>";
 
@@ -152,10 +157,10 @@ namespace LotReport.Views.ReusableControls
                 DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(xr);
                 templateColumn.CellTemplate = dataTemplate;
 
-                this.dataGridMap.Columns.Add(templateColumn);
+                _dataGridMap.Columns.Add(templateColumn);
             }
 
-            this.dataGridMap.ItemsSource = this.LeadFrameTable.Rows;
+            _dataGridMap.ItemsSource = LeadFrameTable.Rows;
         }
 
         private static void RefreshTableCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -171,53 +176,66 @@ namespace LotReport.Views.ReusableControls
 
         private void DataGridMap_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if (this.dataGridMap.CurrentCell.Column == null)
+            Die dieData = GetSelectedDie();
+
+            if (dieData == null)
             {
                 return;
             }
 
-            Die dieData = this.GetSelectedDie();
-            this.status.Text = dieData.Coordinate.ToString();
-            this.SelectedDie = dieData;
+            status.Text = dieData.Coordinate.ToString();
+            SelectedDie = dieData;
         }
 
         private void DataGridMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (this.dataGridMap.CurrentCell.Column == null)
+            Die dieData = GetSelectedDie();
+
+            if (dieData == null)
             {
                 return;
             }
 
-            Die dieData = this.GetSelectedDie();
-            this.status.Text = dieData.Coordinate.ToString();
-            this.SelectedDie = dieData;
+            status.Text = dieData.Coordinate.ToString();
+            SelectedDie = dieData;
         }
 
         private void DataGridMap_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (this.dataGridMap.CurrentCell.Column == null)
+            Die dieData = GetSelectedDie();
+
+            if (dieData == null)
             {
                 return;
             }
 
-            Die dieData = this.GetSelectedDie();
-            this.status.Text = dieData.Coordinate.ToString();
-            this.SelectedDie = dieData;
+            status.Text = dieData.Coordinate.ToString();
+            SelectedDie = dieData;
 
-            if (this.DoubleClickCell != null)
+            if (DoubleClickCell != null)
             {
-                if (this.DoubleClickCell.CanExecute(null))
+                if (DoubleClickCell.CanExecute(null))
                 {
-                    this.DoubleClickCell.Execute(dieData);
+                    DoubleClickCell.Execute(dieData);
                 }
             }
         }
 
         private Die GetSelectedDie()
         {
-            int columnIndex = this.dataGridMap.CurrentCell.Column.DisplayIndex;
+            if (_dataGridMap.CurrentCell.Column == null)
+            {
+                return null;
+            }
 
-            DieRow dieRowData = this.dataGridMap.SelectedItem as DieRow;
+            int columnIndex = _dataGridMap.CurrentCell.Column.DisplayIndex;
+
+            DieRow dieRowData = _dataGridMap.SelectedItem as DieRow;
+
+            if (dieRowData == null)
+            {
+                return null;
+            }
 
             Die selectedDieData = dieRowData.Dies[columnIndex];
 
