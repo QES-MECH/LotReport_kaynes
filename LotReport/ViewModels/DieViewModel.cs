@@ -61,7 +61,7 @@ namespace LotReport.ViewModels
                         try
                         {
                             image.BeginInit();
-                            image.UriSource = new Uri(Die.ImagePath);
+                            image.UriSource = new Uri(Die.DiePath);
                             image.EndInit();
                             image.Freeze();
 

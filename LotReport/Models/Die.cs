@@ -6,7 +6,8 @@ namespace LotReport.Models
     public class Die : PropertyChangedBase
     {
         private RejectCode _rejectCode;
-        private string _imagePath;
+        private string _diePath;
+        private string _markPath;
         private Brush _color;
         private Point _coordinate;
 
@@ -21,10 +22,16 @@ namespace LotReport.Models
             set => SetProperty(ref _rejectCode, value);
         }
 
-        public string ImagePath
+        public string DiePath
         {
-            get => this._imagePath;
-            set => SetProperty(ref _imagePath, value);
+            get => this._diePath;
+            set => SetProperty(ref _diePath, value);
+        }
+
+        public string MarkPath
+        {
+            get => _markPath;
+            set => SetProperty(ref _markPath, value);
         }
 
         public Brush Color

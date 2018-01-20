@@ -222,7 +222,8 @@ namespace LotReport.Models
                         }
                     }
 
-                    die.ImagePath = dieElement.Element("ImagePath").Element("DiePath").Value;
+                    die.DiePath = dieElement.Element("ImagePath").Element("DiePath").Value;
+                    die.MarkPath = dieElement.Element("ImagePath").Element("MarkPath").Value;
 
                     TryGetRejectCodeInfo(repo.RejectCodes, die);
 
