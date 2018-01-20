@@ -18,7 +18,7 @@
             Grid.Row="0"
             ItemsSource="{Binding LeadFrameTable, RelativeSource={RelativeSource AncestorType=UserControl}}"
             TextElement.FontFamily="consolas"
-            TextElement.FontSize="20"
+            TextElement.FontSize="12"
             TextBlock.TextAlignment="Center"
             CanUserReorderColumns="False"
             AutoGenerateColumns="False"

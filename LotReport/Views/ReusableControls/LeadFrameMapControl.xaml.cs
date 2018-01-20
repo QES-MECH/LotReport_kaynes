@@ -145,9 +145,11 @@ namespace LotReport.Views.ReusableControls
                         "<Grid Background=\"{Binding Dies[" + dieIndex + "].Color}\">" +
                             "<TextBlock" +
                             " Text=\"{Binding Dies[" + dieIndex + "].RejectCode.Value}\"" +
+                            " FontWeight=\"Bold\"" +
                             " Foreground=\"#212121\"" +
                             " HorizontalAlignment=\"Center\"" +
                             " VerticalAlignment=\"Center\"" +
+                            " Margin=\"3\"" +
                             "/>" +
                         "</Grid>" +
                     "</DataTemplate>";
