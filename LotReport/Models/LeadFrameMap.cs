@@ -37,6 +37,8 @@ namespace LotReport.Models
 
         public List<DieRow> Rows { get; } = new List<DieRow>();
 
+        public List<Die> Dies { get; private set; } = new List<Die>();
+
         public static LeadFrameMap Load(string xmlPath, Type type)
         {
             LeadFrameMap table = new LeadFrameMap
@@ -228,6 +230,7 @@ namespace LotReport.Models
                     TryGetRejectCodeInfo(repo.RejectCodes, die);
 
                     dies.Add(die);
+                    Dies.Add(die);
                 }
 
                 Rows.Add(new DieRow(dies));
