@@ -11,6 +11,8 @@ namespace LotReport.Models
 {
     public class LotData
     {
+        public FileInfo LotFile { get; private set; }
+
         public string MachineId { get; set; }
 
         public string LotId { get; set; }
@@ -29,8 +31,40 @@ namespace LotReport.Models
 
         public DateTime EndTime { get; set; }
 
+        public double UPH { get; set; }
+
+        public double ProcessUPH { get; set; }
+
+        public int LeadFrames { get; set; }
+
+        public int LeadFramesInspected { get; set; }
+
+        public int UnitsPassed { get; set; }
+
+        public int UnitsRejected { get; set; }
+
+        public int UnitsOverRejected { get; set; }
+
+        public double UnitsYieldPercentage { get; set; }
+
+        public double OverRejectPercentage { get; set; }
+
+        public int MarkedUnits { get; set; }
+
+        public int UnmarkedUnits { get; set; }
+
+        public int MarkedUnitsPassed { get; set; }
+
+        public int MarkedUnitsRejected { get; set; }
+
+        public double MarkedUnitsYieldPercentage { get; set; }
+
+        public Dictionary<string, int> DefectCount { get; set; } = new Dictionary<string, int>();
+
         public void LoadFromFile(string path)
         {
+            LotFile = new FileInfo(path);
+
             XDocument doc = XDocument.Load(path);
 
             this.MachineId = doc.Root.Element("Info").Element("MachineId").Value;
@@ -82,6 +116,50 @@ namespace LotReport.Models
 
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
+            }
+        }
+
+        public void GenerateSummary()
+        {
+            string[] leadFramePaths = Directory.GetFiles(LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+
+            List<Die> visionDies = new List<Die>();
+            List<Die> modifiedDies = new List<Die>();
+
+            foreach (string lfPath in leadFramePaths)
+            {
+                LeadFrameMap visionLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Machine);
+                visionDies.AddRange(visionLFMap.Dies);
+
+                LeadFrameMap modifiedLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Operator);
+                modifiedDies.AddRange(modifiedLFMap.Dies);
+            }
+
+            LeadFramesInspected = leadFramePaths.Length;
+            UnitsPassed = modifiedDies.Count(die => die.RejectCode.Id == 0);
+            UnitsRejected = modifiedDies.Count - UnitsPassed;
+            UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.RejectCode.Id == 0);
+            UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count;
+            OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count;
+
+            MarkedUnits = modifiedDies.Count(die => die.MarkStatus != Die.Mark.NA);
+            UnmarkedUnits = UnitsRejected - MarkedUnits;
+            MarkedUnitsPassed = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Pass);
+            MarkedUnitsRejected = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Fail);
+            MarkedUnitsYieldPercentage = (double)MarkedUnitsPassed / MarkedUnits;
+            TimeSpan duration = EndTime.Subtract(StartTime);
+            UPH = modifiedDies.Count / duration.TotalHours;
+
+            foreach (Die modifiedDie in modifiedDies)
+            {
+                if (DefectCount.ContainsKey(modifiedDie.RejectCode.Value))
+                {
+                    DefectCount[modifiedDie.RejectCode.Value]++;
+                }
+                else
+                {
+                    DefectCount.Add(modifiedDie.RejectCode.Value, 1);
+                }
             }
         }
     }

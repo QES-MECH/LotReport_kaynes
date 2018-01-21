@@ -139,6 +139,8 @@ namespace LotReport.ViewModels
                     try
                     {
                         LeadFrameMapOperator = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Operator);
+                        var die = LeadFrameMapOperator.Dies.FirstOrDefault(d => d.Coordinate == new Point(1, 1));
+                        LeadFrameMapOperator.SetDieMarkStatus(die, Die.Mark.Pass);
                         LeadFrameMapMachine = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Machine);
                     }
                     catch (Exception ex)
@@ -170,13 +172,13 @@ namespace LotReport.ViewModels
             {
                 List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.Path);
 
-                string lotDataFile = lot.Name + ".xml";
-                Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name == lotDataFile);
+                Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
 
                 LotData currentLotData = new LotData();
                 currentLotData.LoadFromFile(lotFile.Path);
 
                 LotData = currentLotData;
+                LotData.GenerateSummary();
 
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
