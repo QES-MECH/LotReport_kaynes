@@ -70,7 +70,7 @@ namespace LotReport.Models
             XDocument doc = XDocument.Load(XmlPath);
 
             var dieElement = doc
-                .Element("DieData")
+                .Root
                 .Elements("Die")
                 .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
                 .FirstOrDefault();
@@ -80,7 +80,9 @@ namespace LotReport.Models
                 return false;
             }
 
-            dieElement.Element("RejectCode").Element("Modified").Value = rejectCode.Id.ToString();
+            XElement modifiedElement = new XElement("Modified", rejectCode.Id.ToString());
+
+            dieElement.Element("RejectCode").Add(modifiedElement);
 
             doc.Save(XmlPath);
 
@@ -94,6 +96,30 @@ namespace LotReport.Models
             {
                 die.Color = _red;
             }
+
+            return true;
+        }
+
+        public bool SetDieMarkStatus(Die die, Die.Mark markStatus)
+        {
+            XDocument doc = XDocument.Load(XmlPath);
+
+            var dieElement = doc
+                .Root
+                .Elements("Die")
+                .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
+                .FirstOrDefault();
+
+            if (dieElement == null)
+            {
+                return false;
+            }
+
+            XElement markElement = new XElement("Mark", markStatus);
+
+            doc.Save(XmlPath);
+
+            die.MarkStatus = markStatus;
 
             return true;
         }
@@ -150,7 +176,7 @@ namespace LotReport.Models
                     };
 
                     var dieElement = doc
-                        .Element("DieData")
+                        .Root
                         .Elements("Die")
                         .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
                         .FirstOrDefault();
@@ -182,7 +208,7 @@ namespace LotReport.Models
                     {
                         XElement modifiedRejectCode = dieElement.Element("RejectCode").Element("Modified");
 
-                        if (modifiedRejectCode.IsEmpty)
+                        if (modifiedRejectCode == null)
                         {
                             if (int.TryParse(visionRejectCode.Value, out int visionRejectCodeId))
                             {
@@ -224,8 +250,8 @@ namespace LotReport.Models
                         }
                     }
 
-                    die.DiePath = dieElement.Element("ImagePath").Element("DiePath").Value;
-                    die.MarkPath = dieElement.Element("ImagePath").Element("MarkPath").Value;
+                    die.DiePath = dieElement.Element("DiePath")?.Value;
+                    die.MarkPath = dieElement.Element("MarkPath")?.Value;
 
                     TryGetRejectCodeInfo(repo.RejectCodes, die);
 

@@ -6,6 +6,7 @@ namespace LotReport.Models
     public class Die : PropertyChangedBase
     {
         private RejectCode _rejectCode;
+        private Mark _markStatus;
         private string _diePath;
         private string _markPath;
         private Brush _color;
@@ -16,10 +17,23 @@ namespace LotReport.Models
             RejectCode = new RejectCode();
         }
 
+        public enum Mark
+        {
+            NA,
+            Pass,
+            Fail
+        }
+
         public RejectCode RejectCode
         {
             get => this._rejectCode;
             set => SetProperty(ref _rejectCode, value);
+        }
+
+        public Mark MarkStatus
+        {
+            get => _markStatus;
+            set => SetProperty(ref _markStatus, value);
         }
 
         public string DiePath
