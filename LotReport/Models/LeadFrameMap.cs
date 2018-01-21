@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -251,6 +252,12 @@ namespace LotReport.Models
                     }
 
                     die.DiePath = dieElement.Element("DiePath")?.Value;
+
+                    if (Enum.TryParse(dieElement.Element("Mark")?.Value, out Die.Mark markStatus))
+                    {
+                        die.MarkStatus = markStatus;
+                    }
+
                     die.MarkPath = dieElement.Element("MarkPath")?.Value;
 
                     TryGetRejectCodeInfo(repo.RejectCodes, die);
