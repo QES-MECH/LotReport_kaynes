@@ -21,15 +21,11 @@ namespace LotReport.ViewModels
         private string _status;
         private LeadFrameMap _leadFrameMapOperator;
         private LeadFrameMap _leadFrameMapMachine;
-        private List<FolderItem> _lots;
-        private FolderItem _selectedLot;
+        private LotData _selectedLot;
         private List<Item> _selectedLotDirectory;
-        private LotData _lotData;
 
         public MainWindowViewModel()
         {
-            LeadFrameMapOperator = LeadFrameMap.LoadTemplate(25, 5);
-            LeadFrameMapMachine = LeadFrameMap.LoadTemplate(25, 5);
             LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
             WireCommands();
         }
@@ -54,13 +50,7 @@ namespace LotReport.ViewModels
             set => SetProperty(ref _leadFrameMapMachine, value);
         }
 
-        public List<FolderItem> Lots
-        {
-            get => _lots;
-            set => SetProperty(ref _lots, value);
-        }
-
-        public FolderItem SelectedLot
+        public LotData SelectedLot
         {
             get => _selectedLot;
             set
@@ -74,12 +64,6 @@ namespace LotReport.ViewModels
         {
             get => _selectedLotDirectory;
             set => SetProperty(ref _selectedLotDirectory, value);
-        }
-
-        public LotData LotData
-        {
-            get => _lotData;
-            set => SetProperty(ref _lotData, value);
         }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
@@ -123,16 +107,16 @@ namespace LotReport.ViewModels
                     {
                         using (WaitCursor waitCursor = new WaitCursor())
                         {
-                            Lots = DirectoryProvider.GetFolderItems(Settings.DatabaseDirectory);
+                            _lotDataSource.Clear();
 
                             string[] lotFiles = Directory.GetFiles(Settings.DatabaseDirectory, "*.lot", SearchOption.AllDirectories);
 
                             foreach (string lotFile in lotFiles)
                             {
-                                LotData lot = new LotData();
-                                lot.LoadFromFile(lotFile);
-                                lot.GenerateSummary();
-                                _lotDataSource.Add(lot);
+                                LotData lotData = new LotData();
+                                lotData.LoadFromFile(lotFile);
+                                lotData.GenerateSummary();
+                                _lotDataSource.Add(lotData);
                                 LotDataView.Refresh();
                             }
                         }
@@ -185,26 +169,18 @@ namespace LotReport.ViewModels
                 });
         }
 
-        private void UpdateSelectedLot(FolderItem lot)
+        private void UpdateSelectedLot(LotData lot)
         {
             try
             {
-                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.Path);
-
+                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.LotFile.Directory.FullName);
                 Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
-
-                LotData currentLotData = new LotData();
-                currentLotData.LoadFromFile(lotFile.Path);
-
-                LotData = currentLotData;
-                LotData.GenerateSummary();
-
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
             }
             catch (Exception ex)
             {
-                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.Name, ex.Message);
+                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.LotFile.Directory.FullName, ex.Message);
             }
         }
 

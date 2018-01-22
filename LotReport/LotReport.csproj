@@ -74,9 +74,6 @@
     <Compile Include="Views\MainWindowControls\LotControl.xaml.cs">
       <DependentUpon>LotControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindowControls\LotListControl.xaml.cs">
-      <DependentUpon>LotListControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ReusableControls\ImageControl.xaml.cs">
       <DependentUpon>ImageControl.xaml</DependentUpon>
     </Compile>
@@ -119,10 +116,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MainWindowControls\LotControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindowControls\LotListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

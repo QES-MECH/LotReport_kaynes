@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <GroupBox Grid.Column="0" Header="{Binding SelectedLot.Name}" HeaderStringFormat="Lot ID: {0}" Margin="5">
+        <GroupBox Grid.Column="0" Header="{Binding SelectedLot.LotFile.Directory.Name}" HeaderStringFormat="Lot ID: {0}" Margin="5">
             <TreeView ItemsSource="{Binding SelectedLotDirectory}" MouseDoubleClick="TreeView_MouseDoubleClick" Margin="5">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type directory:FolderItem}" ItemsSource="{Binding Items}">
