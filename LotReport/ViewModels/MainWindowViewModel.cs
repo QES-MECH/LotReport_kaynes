@@ -177,6 +177,9 @@ namespace LotReport.ViewModels
                 Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
+
+                LeadFrameMapOperator = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
+                LeadFrameMapMachine = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
             }
             catch (Exception ex)
             {

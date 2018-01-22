@@ -39,6 +39,9 @@
                             <DataGridTextColumn Header="Product Code" Binding="{Binding ProductCode}"/>
                             <DataGridTextColumn Header="Bonding Diagram" Binding="{Binding BondingDiagram}"/>
                             <DataGridTextColumn Header="Recipe" Binding="{Binding RecipeName}"/>
+                            <DataGridTextColumn Header="LF Unit(s)" Binding="{Binding LeadFrameUnits}"/>
+                            <DataGridTextColumn Header="LF X Unit(s)" Binding="{Binding LeadFrameXUnits}"/>
+                            <DataGridTextColumn Header="LF Y Unit(s)" Binding="{Binding LeadFrameYUnits}"/>
                             <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}"/>
                             <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}"/>
                             <DataGridTextColumn Header="UPH" Binding="{Binding UPH}"/>

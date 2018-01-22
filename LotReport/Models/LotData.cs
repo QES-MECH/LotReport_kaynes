@@ -27,6 +27,12 @@ namespace LotReport.Models
 
         public string RecipePath { get; set; }
 
+        public int LeadFrameUnits { get; set; }
+
+        public int LeadFrameXUnits { get; set; }
+
+        public int LeadFrameYUnits { get; set; }
+
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
@@ -35,7 +41,7 @@ namespace LotReport.Models
 
         public double ProcessUPH { get; set; }
 
-        public int LeadFrames { get; set; }
+        public double LeadFrames { get; set; }
 
         public int LeadFramesInspected { get; set; }
 
@@ -66,21 +72,37 @@ namespace LotReport.Models
             LotFile = new FileInfo(path);
 
             XDocument doc = XDocument.Load(path);
+            XElement infoElement = doc.Root.Element("Info");
 
-            this.MachineId = doc.Root.Element("Info").Element("MachineId").Value;
-            this.LotId = doc.Root.Element("Info").Element("LotId").Value;
-            this.OperatorId = doc.Root.Element("Info").Element("OperatorId").Value;
-            this.ProductCode = doc.Root.Element("Info").Element("ProductCode").Value;
-            this.BondingDiagram = doc.Root.Element("Info").Element("BondingDiagram").Value;
-            this.RecipeName = doc.Root.Element("Info").Element("Recipe").Value;
-            this.RecipePath = doc.Root.Element("Info").Element("RecipePath").Value;
+            this.MachineId = infoElement.Element("MachineId").Value;
+            this.LotId = infoElement.Element("LotId").Value;
+            this.OperatorId = infoElement.Element("OperatorId").Value;
+            this.ProductCode = infoElement.Element("ProductCode").Value;
+            this.BondingDiagram = infoElement.Element("BondingDiagram").Value;
+            this.RecipeName = infoElement.Element("Recipe").Value;
+            this.RecipePath = infoElement.Element("RecipePath").Value;
 
-            if (DateTime.TryParse(doc.Root.Element("Info").Element("StartTime").Value, out DateTime startTime))
+            if (int.TryParse(infoElement.Element("LeadFrameUnits")?.Value, out int leadFrameUnits))
+            {
+                this.LeadFrameUnits = leadFrameUnits;
+            }
+
+            if (int.TryParse(infoElement.Element("LeadFrameXUnits")?.Value, out int leadFrameXUnits))
+            {
+                this.LeadFrameXUnits = leadFrameXUnits;
+            }
+
+            if (int.TryParse(infoElement.Element("LeadFrameYUnits")?.Value, out int leadFrameYUnits))
+            {
+                this.LeadFrameYUnits = leadFrameYUnits;
+            }
+
+            if (DateTime.TryParse(infoElement.Element("StartTime").Value, out DateTime startTime))
             {
                 this.StartTime = startTime;
             }
 
-            if (DateTime.TryParse(doc.Root.Element("Info").Element("EndTime").Value, out DateTime endTime))
+            if (DateTime.TryParse(infoElement.Element("EndTime").Value, out DateTime endTime))
             {
                 this.EndTime = endTime;
             }
@@ -109,6 +131,9 @@ namespace LotReport.Models
                 writer.WriteElementString("BondingDiagram", this.BondingDiagram);
                 writer.WriteElementString("Recipe", this.RecipeName);
                 writer.WriteElementString("RecipePath", this.RecipePath);
+                writer.WriteElementString("LeadFrameUnits", this.LeadFrameUnits.ToString());
+                writer.WriteElementString("LeadFrameXUnits", this.LeadFrameXUnits.ToString());
+                writer.WriteElementString("LeadFrameYUnits", this.LeadFrameYUnits.ToString());
                 writer.WriteElementString("StartTime", this.StartTime.ToString());
                 writer.WriteElementString("EndTime", this.EndTime.ToString());
 
