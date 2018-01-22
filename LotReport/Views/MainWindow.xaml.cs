@@ -36,5 +36,19 @@ namespace LotReport.Views
 
             await vm.LoadedCommand.ExecuteAsync(null);
         }
+
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid dataGrid = sender as DataGrid;
+
+            if (DataContext is MainWindowViewModel vm)
+            {
+                if (dataGrid.SelectedItem != null)
+                {
+                    vm.SelectedTabIndex = (int)MainWindowViewModel.TabIndex.Map;
+                    e.Handled = true;
+                }
+            }
+        }
     }
 }

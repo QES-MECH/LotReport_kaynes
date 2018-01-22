@@ -23,11 +23,18 @@ namespace LotReport.ViewModels
         private LeadFrameMap _leadFrameMapMachine;
         private LotData _selectedLot;
         private List<Item> _selectedLotDirectory;
+        private int _selectedTabIndex;
 
         public MainWindowViewModel()
         {
             LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
             WireCommands();
+        }
+
+        public enum TabIndex
+        {
+            Lot,
+            Map
         }
 
         public ICollectionView LotDataView { get; private set; }
@@ -64,6 +71,12 @@ namespace LotReport.ViewModels
         {
             get => _selectedLotDirectory;
             set => SetProperty(ref _selectedLotDirectory, value);
+        }
+
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set => SetProperty(ref _selectedTabIndex, value);
         }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();

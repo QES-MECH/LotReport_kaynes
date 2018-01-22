@@ -28,10 +28,10 @@
             </MenuItem>
         </Menu>
 
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="Lot" Width="100">
                 <Grid>
-                    <DataGrid ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" MouseDoubleClick="DataGrid_MouseDoubleClick" IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Lot ID" Binding="{Binding LotId}"/>
                             <DataGridTextColumn Header="Machine ID" Binding="{Binding MachineId}"/>
