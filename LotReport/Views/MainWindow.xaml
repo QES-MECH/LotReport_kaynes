@@ -28,32 +28,62 @@
             </MenuItem>
         </Menu>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*"/>
-                <ColumnDefinition Width="0.8*"/>
-            </Grid.ColumnDefinitions>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Lot" Width="100">
+                <Grid>
+                    <DataGrid ItemsSource="{Binding LotDataView}" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Lot ID" Binding="{Binding LotId}"/>
+                            <DataGridTextColumn Header="Machine ID" Binding="{Binding MachineId}"/>
+                            <DataGridTextColumn Header="Operator ID" Binding="{Binding OperatorId}"/>
+                            <DataGridTextColumn Header="Product Code" Binding="{Binding ProductCode}"/>
+                            <DataGridTextColumn Header="Bonding Diagram" Binding="{Binding BondingDiagram}"/>
+                            <DataGridTextColumn Header="Recipe" Binding="{Binding RecipeName}"/>
+                            <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}"/>
+                            <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}"/>
+                            <DataGridTextColumn Header="UPH" Binding="{Binding UPH}"/>
+                            <DataGridTextColumn Header="LeadFrames Inspected" Binding="{Binding LeadFramesInspected}"/>
+                            <DataGridTextColumn Header="Units Passed" Binding="{Binding UnitsPassed}"/>
+                            <DataGridTextColumn Header="Units Rejected" Binding="{Binding UnitsRejected}"/>
+                            <DataGridTextColumn Header="Units Over-Rejected" Binding="{Binding UnitsOverRejected}"/>
+                            <DataGridTextColumn Header="Units Yield(%)" Binding="{Binding UnitsYieldPercentage, StringFormat=N3}"/>
+                            <DataGridTextColumn Header="Over-Reject(%)" Binding="{Binding OverRejectPercentage, StringFormat=N3}"/>
+                            <DataGridTextColumn Header="Marked Units" Binding="{Binding MarkedUnits}"/>
+                            <DataGridTextColumn Header="Un-marked Units" Binding="{Binding UnmarkedUnits}"/>
+                            <DataGridTextColumn Header="Marked Units Passed" Binding="{Binding MarkedUnitsPassed}"/>
+                            <DataGridTextColumn Header="Marked Units Rejected" Binding="{Binding MarkedUnitsRejected}"/>
+                            <DataGridTextColumn Header="Marked Units Yield(%)" Binding="{Binding MarkedUnitsYieldPercentage, StringFormat=N3}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Map" Width="100">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"/>
+                        <ColumnDefinition Width="0.8*"/>
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1.5*"/>
-                </Grid.RowDefinitions>
-
-                <y:LotListControl Grid.Row="0"/>
-                <y:LotControl Grid.Row="1"/>
-            </Grid>
-
-            <TabControl Grid.Column="1">
-                <TabItem Header="Operator" Width="100">
-                    <Grid>
+                    <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1.5*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid x:Name="leadFrameMapOperatorGrid" Grid.Row="0" Background="#263238">
-                            <r:LeadFrameMapControl
+                        <y:LotListControl Grid.Row="0"/>
+                        <y:LotControl Grid.Row="1"/>
+                    </Grid>
+
+                    <TabControl Grid.Column="1">
+                        <TabItem Header="Operator" Width="100">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid x:Name="leadFrameMapOperatorGrid" Grid.Row="0" Background="#263238">
+                                    <r:LeadFrameMapControl
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 DoubleClickCell="{Binding DieCommand}"
@@ -63,39 +93,39 @@
                                 LotId="{Binding LeadFrameMapOperator.LotId}"
                                 MagazineId="{Binding LeadFrameMapOperator.MagazineId}"
                                 LeadFrameId="{Binding LeadFrameMapOperator.LeadFrameId}"/>
-                        </Grid>
+                                </Grid>
 
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <GroupBox Header="Lot Info" Margin="5">
-                                <StackPanel Grid.Column="0" Margin="3">
-                                    <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
-                                </StackPanel>
-                            </GroupBox>
-                        </Grid>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="Machine" Width="100">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                                    <GroupBox Header="Lot Info" Margin="5">
+                                        <StackPanel Grid.Column="0" Margin="3">
+                                            <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
+                                        </StackPanel>
+                                    </GroupBox>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Machine" Width="100">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                        <Grid x:Name="leadFrameMapMachineGrid" Grid.Row="0" Background="#263238">
-                            <r:LeadFrameMapControl
+                                <Grid x:Name="leadFrameMapMachineGrid" Grid.Row="0" Background="#263238">
+                                    <r:LeadFrameMapControl
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 DoubleClickCell="{Binding DieCommand}"
@@ -105,32 +135,34 @@
                                 LotId="{Binding LeadFrameMapMachine.LotId}"
                                 MagazineId="{Binding LeadFrameMapMachine.MagazineId}"
                                 LeadFrameId="{Binding LeadFrameMapMachine.LeadFrameId}"/>
-                        </Grid>
+                                </Grid>
 
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <GroupBox Header="Lot Info" Margin="5">
-                                <StackPanel Grid.Column="0" Margin="3">
-                                    <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
-                                </StackPanel>
-                            </GroupBox>
-                        </Grid>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-        </Grid>
+                                    <GroupBox Header="Lot Info" Margin="5">
+                                        <StackPanel Grid.Column="0" Margin="3">
+                                            <r:LabelTextBox Label="Machine ID:" Value="{Binding LotData.MachineId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Lot ID:" Value="{Binding LotData.LotId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Operator ID:" Value="{Binding LotData.OperatorId}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Product Code:" Value="{Binding LotData.ProductCode}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Bonding Diagram:" Value="{Binding LotData.BondingDiagram}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Recipe:" Value="{Binding LotData.RecipeName}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="Start DateTime:" Value="{Binding LotData.StartTime}" ReadOnly="True" Margin="3"/>
+                                            <r:LabelTextBox Label="End DateTime:" Value="{Binding LotData.EndTime}" ReadOnly="True" Margin="3"/>
+                                        </StackPanel>
+                                    </GroupBox>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
         <StatusBar Grid.Row="2" Background="#2962FF" Height="20">
             <StatusBarItem Content="{Binding Status}" TextBlock.Foreground="White"/>

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
@@ -13,6 +16,8 @@ namespace LotReport.ViewModels
 {
     public class MainWindowViewModel : PropertyChangedBase
     {
+        private List<LotData> _lotDataSource = new List<LotData>();
+
         private string _status;
         private LeadFrameMap _leadFrameMapOperator;
         private LeadFrameMap _leadFrameMapMachine;
@@ -25,8 +30,11 @@ namespace LotReport.ViewModels
         {
             LeadFrameMapOperator = LeadFrameMap.LoadTemplate(25, 5);
             LeadFrameMapMachine = LeadFrameMap.LoadTemplate(25, 5);
+            LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
             WireCommands();
         }
+
+        public ICollectionView LotDataView { get; private set; }
 
         public string Status
         {
@@ -116,6 +124,17 @@ namespace LotReport.ViewModels
                         using (WaitCursor waitCursor = new WaitCursor())
                         {
                             Lots = DirectoryProvider.GetFolderItems(Settings.DatabaseDirectory);
+
+                            string[] lotFiles = Directory.GetFiles(Settings.DatabaseDirectory, "*.lot", SearchOption.AllDirectories);
+
+                            foreach (string lotFile in lotFiles)
+                            {
+                                LotData lot = new LotData();
+                                lot.LoadFromFile(lotFile);
+                                lot.GenerateSummary();
+                                _lotDataSource.Add(lot);
+                                LotDataView.Refresh();
+                            }
                         }
                     }
                     catch (Exception ex)
