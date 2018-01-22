@@ -40,13 +40,11 @@
 
         <StatusBar Grid.Row="1" Background="#2962FF">
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding LotId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White" FontWeight="Bold"/>
+                <TextBlock Text="{Binding LotId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White"/>
             </StatusBarItem>
-            <Separator Background="#80FFFFFF"/>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding MagazineId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White" FontWeight="Bold"/>
+                <TextBlock Text="{Binding MagazineId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White"/>
             </StatusBarItem>
-            <Separator Background="#80FFFFFF"/>
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock Text="{Binding LeadFrameId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White" FontWeight="Bold"/>
             </StatusBarItem>
