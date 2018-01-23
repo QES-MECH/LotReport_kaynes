@@ -65,7 +65,7 @@ namespace LotReport.Models
 
         public double MarkedUnitsYieldPercentage { get; set; }
 
-        public Dictionary<string, int> DefectCount { get; set; } = new Dictionary<string, int>();
+        public Dictionary<int, int> DefectCount { get; set; } = new Dictionary<int, int>();
 
         public void LoadFromFile(string path)
         {
@@ -269,13 +269,13 @@ namespace LotReport.Models
 
             foreach (Die modifiedDie in modifiedDies)
             {
-                if (DefectCount.ContainsKey(modifiedDie.RejectCode.Value))
+                if (DefectCount.ContainsKey(modifiedDie.RejectCode.Id))
                 {
-                    DefectCount[modifiedDie.RejectCode.Value]++;
+                    DefectCount[modifiedDie.RejectCode.Id]++;
                 }
                 else
                 {
-                    DefectCount.Add(modifiedDie.RejectCode.Value, 1);
+                    DefectCount.Add(modifiedDie.RejectCode.Id, 1);
                 }
             }
         }
