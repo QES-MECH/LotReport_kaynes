@@ -288,6 +288,8 @@ namespace LotReport.Models
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
+            RejectCount.Clear();
+
             foreach (Die modifiedDie in modifiedDies)
             {
                 if (RejectCount.ContainsKey(modifiedDie.RejectCode.Id))
