@@ -24,6 +24,7 @@ namespace LotReport.ViewModels
         private LotData _selectedLot;
         private List<Item> _selectedLotDirectory;
         private int _selectedTabIndex;
+        private Dictionary<RejectCode, int> _rejectCount;
 
         public MainWindowViewModel()
         {
@@ -58,6 +59,8 @@ namespace LotReport.ViewModels
         public List<Item> SelectedLotDirectory { get => _selectedLotDirectory; set => SetProperty(ref _selectedLotDirectory, value); }
 
         public int SelectedTabIndex { get => _selectedTabIndex; set => SetProperty(ref _selectedTabIndex, value); }
+
+        public Dictionary<RejectCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
 
@@ -170,6 +173,21 @@ namespace LotReport.ViewModels
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
 
+                Dictionary<RejectCode, int> rejectCount = new Dictionary<RejectCode, int>();
+                RejectCodeRepository repository = new RejectCodeRepository();
+                repository.LoadFromFile();
+
+                foreach (var reject in lot.RejectCount)
+                {
+                    RejectCode rejectCode = repository.RejectCodes.FirstOrDefault(rc => rc.Id == reject.Key);
+
+                    if (rejectCode?.Id != 0)
+                    {
+                        rejectCount.Add(rejectCode, reject.Value);
+                    }
+                }
+
+                RejectCount = rejectCount;
                 LeadFrameMapOperator = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
                 LeadFrameMapMachine = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
             }
