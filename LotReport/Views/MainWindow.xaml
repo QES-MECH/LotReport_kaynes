@@ -69,54 +69,61 @@
 
                     <Grid Grid.Column="0">
                         <GroupBox Header="Lot Summary" Margin="3">
-                            <StackPanel>
-                                <r:LabelTextBox Label="Machine ID" Value="{Binding SelectedLot.MachineId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Product Code" Value="{Binding SelectedLot.ProductCode}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Bonding Diagram" Value="{Binding SelectedLot.BondingDiagram}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="LF X Unit(s)" Value="{Binding SelectedLot.LeadFrameXUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="LF Y Units(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="LeadFrames" Value="{Binding SelectedLot.LeadFrames}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="LeadFrames Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Units Over-Rejected" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Units Yield (%)" Value="{Binding SelectedLot.UnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Over-Rejected (%)" Value="{Binding SelectedLot.OverRejectPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Marked Units" Value="{Binding SelectedLot.MarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Unmarked Units" Value="{Binding SelectedLot.UnmarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Marked Units Passed" Value="{Binding SelectedLot.MarkedUnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Marked Units Rejected" Value="{Binding SelectedLot.MarkedUnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                <r:LabelTextBox Label="Marked Units Yield (%)" Value="{Binding SelectedLot.MarkedUnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                            </StackPanel>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <r:LabelTextBox Label="Machine ID" Value="{Binding SelectedLot.MachineId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Product Code" Value="{Binding SelectedLot.ProductCode}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Bonding Diagram" Value="{Binding SelectedLot.BondingDiagram}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="LF X Unit(s)" Value="{Binding SelectedLot.LeadFrameXUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="LF Y Units(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="LeadFrames" Value="{Binding SelectedLot.LeadFrames}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="LeadFrames Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Over-Rejected" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Yield (%)" Value="{Binding SelectedLot.UnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Over-Rejected (%)" Value="{Binding SelectedLot.OverRejectPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units" Value="{Binding SelectedLot.MarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Unmarked Units" Value="{Binding SelectedLot.UnmarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Passed" Value="{Binding SelectedLot.MarkedUnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Rejected" Value="{Binding SelectedLot.MarkedUnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Yield (%)" Value="{Binding SelectedLot.MarkedUnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                </StackPanel>
+                            </ScrollViewer>
                         </GroupBox>
                     </Grid>
 
-                    <Grid Grid.Column="1" Background="#263238">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0.7*"/>
+                            <RowDefinition Height="0.3*"/>
                         </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Background="#263238">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="OPERATOR" FontSize="20" Foreground="White" VerticalAlignment="Center">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"/>
-                                    </TextBlock.LayoutTransform>
-                                </TextBlock>
-                                <Grid x:Name="leadFrameMapOperatorGrid" Grid.Column="1">
-                                    <r:LeadFrameMapControl
+                            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="OPERATOR" FontSize="20" Foreground="White" VerticalAlignment="Center">
+                                        <TextBlock.LayoutTransform>
+                                            <RotateTransform Angle="-90"/>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>
+                                    <Grid x:Name="leadFrameMapOperatorGrid" Grid.Column="1">
+                                        <r:LeadFrameMapControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         DoubleClickCell="{Binding DieCommand}"
@@ -126,23 +133,23 @@
                                         LotId="{Binding LeadFrameMapOperator.LotId}"
                                         MagazineId="{Binding LeadFrameMapOperator.MagazineId}"
                                         LeadFrameId="{Binding LeadFrameMapOperator.LeadFrameId}"/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Border>
+                            </Border>
 
-                        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="MACHINE" FontSize="20" Foreground="White" VerticalAlignment="Center">
-                                    <TextBlock.LayoutTransform>
-                                        <RotateTransform Angle="-90"/>
-                                    </TextBlock.LayoutTransform>
-                                </TextBlock>
-                                <Grid x:Name="leadFrameMapMachineGrid" Grid.Column="1">
-                                    <r:LeadFrameMapControl
+                            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="MACHINE" FontSize="20" Foreground="White" VerticalAlignment="Center">
+                                        <TextBlock.LayoutTransform>
+                                            <RotateTransform Angle="-90"/>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>
+                                    <Grid x:Name="leadFrameMapMachineGrid" Grid.Column="1">
+                                        <r:LeadFrameMapControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         DoubleClickCell="{Binding DieCommand}"
@@ -152,9 +159,16 @@
                                         LotId="{Binding LeadFrameMapMachine.LotId}"
                                         MagazineId="{Binding LeadFrameMapMachine.MagazineId}"
                                         LeadFrameId="{Binding LeadFrameMapMachine.LeadFrameId}"/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </Border>
+                            </Border>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
                     </Grid>
                 </Grid>
             </TabItem>
