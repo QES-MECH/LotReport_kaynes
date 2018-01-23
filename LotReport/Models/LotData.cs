@@ -65,7 +65,7 @@ namespace LotReport.Models
 
         public double MarkedUnitsYieldPercentage { get; set; }
 
-        public Dictionary<int, int> DefectCount { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, int> RejectCount { get; set; } = new Dictionary<int, int>();
 
         public void LoadFromFile(string path)
         {
@@ -177,6 +177,16 @@ namespace LotReport.Models
             {
                 MarkedUnitsYieldPercentage = markedUnitsYieldPercentage;
             }
+
+            XElement rejectsElement = summaryElement.Element("Rejects");
+
+            foreach (XElement reject in rejectsElement.Elements())
+            {
+                int.TryParse(reject.Attribute("Id").Value, out int id);
+                int.TryParse(reject.Attribute("Count").Value, out int count);
+
+                RejectCount.Add(id, count);
+            }
         }
 
         public void SaveToFile(string path)
@@ -228,6 +238,17 @@ namespace LotReport.Models
                 writer.WriteElementString("MarkedUnitsPassed", MarkedUnitsPassed.ToString());
                 writer.WriteElementString("MarkedUnitsRejected", MarkedUnitsRejected.ToString());
                 writer.WriteElementString("MarkedUnitsYieldPercentage", MarkedUnitsYieldPercentage.ToString());
+                writer.WriteStartElement("Rejects");
+
+                foreach (KeyValuePair<int, int> reject in RejectCount)
+                {
+                    writer.WriteStartElement("Reject");
+                    writer.WriteAttributeString("Id", reject.Key.ToString());
+                    writer.WriteAttributeString("Count", reject.Value.ToString());
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
 
                 writer.WriteEndElement();
 
@@ -269,13 +290,13 @@ namespace LotReport.Models
 
             foreach (Die modifiedDie in modifiedDies)
             {
-                if (DefectCount.ContainsKey(modifiedDie.RejectCode.Id))
+                if (RejectCount.ContainsKey(modifiedDie.RejectCode.Id))
                 {
-                    DefectCount[modifiedDie.RejectCode.Id]++;
+                    RejectCount[modifiedDie.RejectCode.Id]++;
                 }
                 else
                 {
-                    DefectCount.Add(modifiedDie.RejectCode.Id, 1);
+                    RejectCount.Add(modifiedDie.RejectCode.Id, 1);
                 }
             }
         }
