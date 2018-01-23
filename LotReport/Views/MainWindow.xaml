@@ -45,7 +45,7 @@
                             <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}"/>
                             <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}"/>
                             <DataGridTextColumn Header="UPH" Binding="{Binding UPH}"/>
-                            <DataGridTextColumn Header="LeadFrames Inspected" Binding="{Binding LeadFramesInspected}"/>
+                            <DataGridTextColumn Header="LFs Inspected" Binding="{Binding LeadFramesInspected}"/>
                             <DataGridTextColumn Header="Units Passed" Binding="{Binding UnitsPassed}"/>
                             <DataGridTextColumn Header="Units Rejected" Binding="{Binding UnitsRejected}"/>
                             <DataGridTextColumn Header="Units Over-Rejected" Binding="{Binding UnitsOverRejected}"/>
@@ -83,8 +83,7 @@
                                     <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="LeadFrames" Value="{Binding SelectedLot.LeadFrames}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="LeadFrames Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LFs Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Over-Rejected" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
