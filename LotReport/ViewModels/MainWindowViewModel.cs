@@ -76,6 +76,10 @@ namespace LotReport.ViewModels
 
         public RelayCommand DieCommand { get; private set; }
 
+        public RelayCommand PreviousLFCommand { get; private set; }
+
+        public RelayCommand NextLFCommand { get; private set; }
+
         private void WireCommands()
         {
             LoadedCommand = AsyncCommand.Create(
@@ -161,6 +165,58 @@ namespace LotReport.ViewModels
                     vm.Die = selectedDie;
 
                     this.DieWindow.ShowDialog<DieView>(vm);
+                });
+
+            PreviousLFCommand = new RelayCommand(
+                param =>
+                {
+                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+
+                    int currentIndex = Array.IndexOf(leadFramePaths, LeadFrameMapMachine.XmlPath);
+
+                    if (currentIndex != -1)
+                    {
+                        currentIndex--;
+
+                        if (currentIndex < 0)
+                        {
+                            MessageBox.Show("First Lead Frame Reached.", "Previous", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return;
+                        }
+
+                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Operator);
+                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Machine);
+                    }
+                },
+                param =>
+                {
+                    return SelectedLot != null && LeadFrameMapMachine?.XmlPath != null;
+                });
+
+            NextLFCommand = new RelayCommand(
+                param =>
+                {
+                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+
+                    int currentIndex = Array.IndexOf(leadFramePaths, LeadFrameMapMachine.XmlPath);
+
+                    if (currentIndex != -1)
+                    {
+                        currentIndex++;
+
+                        if (currentIndex >= leadFramePaths.Length)
+                        {
+                            MessageBox.Show("Last Lead Frame Reached.", "Previous", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return;
+                        }
+
+                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Operator);
+                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Machine);
+                    }
+                },
+                param =>
+                {
+                    return SelectedLot != null && LeadFrameMapMachine?.XmlPath != null;
                 });
         }
 
