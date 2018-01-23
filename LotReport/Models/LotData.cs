@@ -113,9 +113,11 @@ namespace LotReport.Models
             FileInfo file = new FileInfo(path);
             file.Directory.Create();
 
-            XmlWriterSettings xmlSettings = new XmlWriterSettings();
-            xmlSettings.Indent = true;
-            xmlSettings.IndentChars = "  ";
+            XmlWriterSettings xmlSettings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = "  "
+            };
 
             using (XmlWriter writer = XmlWriter.Create(path, xmlSettings))
             {
