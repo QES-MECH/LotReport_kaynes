@@ -71,30 +71,30 @@
                         <GroupBox Header="Lot Summary" Margin="3">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                 <StackPanel>
-                                    <r:LabelTextBox Label="Machine ID" Value="{Binding SelectedLot.MachineId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Product Code" Value="{Binding SelectedLot.ProductCode}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Bonding Diagram" Value="{Binding SelectedLot.BondingDiagram}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="LF X Unit(s)" Value="{Binding SelectedLot.LeadFrameXUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="LF Y Units(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="LeadFrames" Value="{Binding SelectedLot.LeadFrames}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="LeadFrames Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Units Over-Rejected" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Units Yield (%)" Value="{Binding SelectedLot.UnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Over-Rejected (%)" Value="{Binding SelectedLot.OverRejectPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Marked Units" Value="{Binding SelectedLot.MarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Unmarked Units" Value="{Binding SelectedLot.UnmarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Marked Units Passed" Value="{Binding SelectedLot.MarkedUnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Marked Units Rejected" Value="{Binding SelectedLot.MarkedUnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
-                                    <r:LabelTextBox Label="Marked Units Yield (%)" Value="{Binding SelectedLot.MarkedUnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" Margin="3"/>
+                                    <r:LabelTextBox Label="Machine ID" Value="{Binding SelectedLot.MachineId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Product Code" Value="{Binding SelectedLot.ProductCode}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Bonding Diagram" Value="{Binding SelectedLot.BondingDiagram}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LF X Unit(s)" Value="{Binding SelectedLot.LeadFrameXUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LF Y Units(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LeadFrames" Value="{Binding SelectedLot.LeadFrames}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LeadFrames Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Over-Rejected" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Yield (%)" Value="{Binding SelectedLot.UnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Over-Rejected (%)" Value="{Binding SelectedLot.OverRejectPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units" Value="{Binding SelectedLot.MarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Unmarked Units" Value="{Binding SelectedLot.UnmarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Passed" Value="{Binding SelectedLot.MarkedUnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Rejected" Value="{Binding SelectedLot.MarkedUnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Marked Units Yield (%)" Value="{Binding SelectedLot.MarkedUnitsYieldPercentage}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </GroupBox>
