@@ -108,7 +108,6 @@ namespace LotReport.ViewModels
                             {
                                 LotData lotData = new LotData();
                                 lotData.LoadFromFile(lotFile);
-                                lotData.GenerateSummary();
                                 _lotDataSource.Add(lotData);
                                 LotDataView.Refresh();
                             }

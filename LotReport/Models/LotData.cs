@@ -73,6 +73,7 @@ namespace LotReport.Models
 
             XDocument doc = XDocument.Load(path);
             XElement infoElement = doc.Root.Element("Info");
+            XElement summaryElement = doc.Root.Element("Summary");
 
             MachineId = infoElement.Element("MachineId").Value;
             LotId = infoElement.Element("LotId").Value;
@@ -106,6 +107,76 @@ namespace LotReport.Models
             {
                 EndTime = endTime;
             }
+
+            if (double.TryParse(summaryElement.Element("UPH").Value, out double uph))
+            {
+                UPH = uph;
+            }
+
+            if (double.TryParse(summaryElement.Element("ProcessUPH").Value, out double processUPH))
+            {
+                ProcessUPH = processUPH;
+            }
+
+            if (int.TryParse(summaryElement.Element("LeadFrames").Value, out int leadFrames))
+            {
+                LeadFrames = leadFrames;
+            }
+
+            if (int.TryParse(summaryElement.Element("LeadFramesInspected").Value, out int leadFramesInspected))
+            {
+                LeadFramesInspected = leadFramesInspected;
+            }
+
+            if (int.TryParse(summaryElement.Element("UnitsPassed").Value, out int unitsPassed))
+            {
+                UnitsPassed = unitsPassed;
+            }
+
+            if (int.TryParse(summaryElement.Element("UnitsRejected").Value, out int unitsRejected))
+            {
+                UnitsRejected = unitsRejected;
+            }
+
+            if (int.TryParse(summaryElement.Element("UnitsOverRejected").Value, out int unitsOverRejected))
+            {
+                UnitsOverRejected = unitsOverRejected;
+            }
+
+            if (double.TryParse(summaryElement.Element("UnitsYieldPercentage").Value, out double unitsYieldPercentage))
+            {
+                UnitsYieldPercentage = unitsYieldPercentage;
+            }
+
+            if (double.TryParse(summaryElement.Element("OverRejectPercentage").Value, out double overRejectPercentage))
+            {
+                OverRejectPercentage = overRejectPercentage;
+            }
+
+            if (int.TryParse(summaryElement.Element("MarkedUnits").Value, out int markedUnits))
+            {
+                MarkedUnits = markedUnits;
+            }
+
+            if (int.TryParse(summaryElement.Element("UnmarkedUnits").Value, out int unmarkedUnits))
+            {
+                UnmarkedUnits = unmarkedUnits;
+            }
+
+            if (int.TryParse(summaryElement.Element("MarkedUnitsPassed").Value, out int markedUnitsPassed))
+            {
+                MarkedUnitsPassed = markedUnitsPassed;
+            }
+
+            if (int.TryParse(summaryElement.Element("MarkedUnitsRejected").Value, out int markedUnitsRejected))
+            {
+                MarkedUnitsRejected = markedUnitsRejected;
+            }
+
+            if (double.TryParse(summaryElement.Element("MarkedUnitsYieldPercentage").Value, out double markedUnitsYieldPercentage))
+            {
+                MarkedUnitsYieldPercentage = markedUnitsYieldPercentage;
+            }
         }
 
         public void SaveToFile(string path)
@@ -138,6 +209,25 @@ namespace LotReport.Models
                 writer.WriteElementString("LeadFrameYUnits", LeadFrameYUnits.ToString());
                 writer.WriteElementString("StartTime", StartTime.ToString());
                 writer.WriteElementString("EndTime", EndTime.ToString());
+
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("Summary");
+
+                writer.WriteElementString("UPH", UPH.ToString());
+                writer.WriteElementString("ProcessUPH", ProcessUPH.ToString());
+                writer.WriteElementString("LeadFrames", LeadFrames.ToString());
+                writer.WriteElementString("LeadFramesInspected", LeadFramesInspected.ToString());
+                writer.WriteElementString("UnitsPassed", UnitsPassed.ToString());
+                writer.WriteElementString("UnitsRejected", UnitsRejected.ToString());
+                writer.WriteElementString("UnitsOverRejected", UnitsOverRejected.ToString());
+                writer.WriteElementString("UnitsYieldPercentage", UnitsYieldPercentage.ToString());
+                writer.WriteElementString("OverRejectPercentage", OverRejectPercentage.ToString());
+                writer.WriteElementString("MarkedUnits", MarkedUnits.ToString());
+                writer.WriteElementString("UnmarkedUnits", UnmarkedUnits.ToString());
+                writer.WriteElementString("MarkedUnitsPassed", MarkedUnitsPassed.ToString());
+                writer.WriteElementString("MarkedUnitsRejected", MarkedUnitsRejected.ToString());
+                writer.WriteElementString("MarkedUnitsYieldPercentage", MarkedUnitsYieldPercentage.ToString());
 
                 writer.WriteEndElement();
 
