@@ -83,6 +83,9 @@
     <Compile Include="Views\ReusableControls\LeadFrameMapControl.xaml.cs">
       <DependentUpon>LeadFrameMapControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReusableControls\UnitTextBox.xaml.cs">
+      <DependentUpon>UnitTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReusableControls\LeadFrameMapControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ReusableControls\UnitTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
