@@ -74,37 +74,37 @@ namespace LotReport.Models
             XDocument doc = XDocument.Load(path);
             XElement infoElement = doc.Root.Element("Info");
 
-            this.MachineId = infoElement.Element("MachineId").Value;
-            this.LotId = infoElement.Element("LotId").Value;
-            this.OperatorId = infoElement.Element("OperatorId").Value;
-            this.ProductCode = infoElement.Element("ProductCode").Value;
-            this.BondingDiagram = infoElement.Element("BondingDiagram").Value;
-            this.RecipeName = infoElement.Element("Recipe").Value;
-            this.RecipePath = infoElement.Element("RecipePath").Value;
+            MachineId = infoElement.Element("MachineId").Value;
+            LotId = infoElement.Element("LotId").Value;
+            OperatorId = infoElement.Element("OperatorId").Value;
+            ProductCode = infoElement.Element("ProductCode").Value;
+            BondingDiagram = infoElement.Element("BondingDiagram").Value;
+            RecipeName = infoElement.Element("Recipe").Value;
+            RecipePath = infoElement.Element("RecipePath").Value;
 
             if (int.TryParse(infoElement.Element("LeadFrameUnits")?.Value, out int leadFrameUnits))
             {
-                this.LeadFrameUnits = leadFrameUnits;
+                LeadFrameUnits = leadFrameUnits;
             }
 
             if (int.TryParse(infoElement.Element("LeadFrameXUnits")?.Value, out int leadFrameXUnits))
             {
-                this.LeadFrameXUnits = leadFrameXUnits;
+                LeadFrameXUnits = leadFrameXUnits;
             }
 
             if (int.TryParse(infoElement.Element("LeadFrameYUnits")?.Value, out int leadFrameYUnits))
             {
-                this.LeadFrameYUnits = leadFrameYUnits;
+                LeadFrameYUnits = leadFrameYUnits;
             }
 
             if (DateTime.TryParse(infoElement.Element("StartTime").Value, out DateTime startTime))
             {
-                this.StartTime = startTime;
+                StartTime = startTime;
             }
 
             if (DateTime.TryParse(infoElement.Element("EndTime").Value, out DateTime endTime))
             {
-                this.EndTime = endTime;
+                EndTime = endTime;
             }
         }
 
@@ -126,18 +126,18 @@ namespace LotReport.Models
 
                 writer.WriteStartElement("Info");
 
-                writer.WriteElementString("MachineId", this.MachineId);
-                writer.WriteElementString("LotId", this.LotId);
-                writer.WriteElementString("OperatorId", this.OperatorId);
-                writer.WriteElementString("ProductCode", this.ProductCode);
-                writer.WriteElementString("BondingDiagram", this.BondingDiagram);
-                writer.WriteElementString("Recipe", this.RecipeName);
-                writer.WriteElementString("RecipePath", this.RecipePath);
-                writer.WriteElementString("LeadFrameUnits", this.LeadFrameUnits.ToString());
-                writer.WriteElementString("LeadFrameXUnits", this.LeadFrameXUnits.ToString());
-                writer.WriteElementString("LeadFrameYUnits", this.LeadFrameYUnits.ToString());
-                writer.WriteElementString("StartTime", this.StartTime.ToString());
-                writer.WriteElementString("EndTime", this.EndTime.ToString());
+                writer.WriteElementString("MachineId", MachineId);
+                writer.WriteElementString("LotId", LotId);
+                writer.WriteElementString("OperatorId", OperatorId);
+                writer.WriteElementString("ProductCode", ProductCode);
+                writer.WriteElementString("BondingDiagram", BondingDiagram);
+                writer.WriteElementString("Recipe", RecipeName);
+                writer.WriteElementString("RecipePath", RecipePath);
+                writer.WriteElementString("LeadFrameUnits", LeadFrameUnits.ToString());
+                writer.WriteElementString("LeadFrameXUnits", LeadFrameXUnits.ToString());
+                writer.WriteElementString("LeadFrameYUnits", LeadFrameYUnits.ToString());
+                writer.WriteElementString("StartTime", StartTime.ToString());
+                writer.WriteElementString("EndTime", EndTime.ToString());
 
                 writer.WriteEndElement();
 
