@@ -21,29 +21,13 @@ namespace LotReport.ViewModels
             WireCommands();
         }
 
-        public string Status
-        {
-            get => _status;
-            set => SetProperty(ref _status, value);
-        }
+        public string Status { get => _status; set => SetProperty(ref _status, value); }
 
-        public Die Die
-        {
-            get => _die;
-            set => SetProperty(ref _die, value);
-        }
+        public Die Die { get => _die; set => SetProperty(ref _die, value); }
 
-        public BitmapImage Image
-        {
-            get => _image;
-            set => SetProperty(ref _image, value);
-        }
+        public BitmapImage Image { get => _image; set => SetProperty(ref _image, value); }
 
-        public RejectCode CurrentRejectCode
-        {
-            get => _currentRejectCode;
-            set => SetProperty(ref _currentRejectCode, value);
-        }
+        public RejectCode CurrentRejectCode { get => _currentRejectCode; set => SetProperty(ref _currentRejectCode, value); }
 
         public AsyncCommand<object> LoadedCommand { get; private set; }
 

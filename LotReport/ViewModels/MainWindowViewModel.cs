@@ -39,23 +39,11 @@ namespace LotReport.ViewModels
 
         public ICollectionView LotDataView { get; private set; }
 
-        public string Status
-        {
-            get => _status;
-            set => SetProperty(ref _status, value);
-        }
+        public string Status { get => _status; set => SetProperty(ref _status, value); }
 
-        public LeadFrameMap LeadFrameMapOperator
-        {
-            get => _leadFrameMapOperator;
-            set => SetProperty(ref _leadFrameMapOperator, value);
-        }
+        public LeadFrameMap LeadFrameMapOperator { get => _leadFrameMapOperator; set => SetProperty(ref _leadFrameMapOperator, value); }
 
-        public LeadFrameMap LeadFrameMapMachine
-        {
-            get => _leadFrameMapMachine;
-            set => SetProperty(ref _leadFrameMapMachine, value);
-        }
+        public LeadFrameMap LeadFrameMapMachine { get => _leadFrameMapMachine; set => SetProperty(ref _leadFrameMapMachine, value); }
 
         public LotData SelectedLot
         {
@@ -67,17 +55,9 @@ namespace LotReport.ViewModels
             }
         }
 
-        public List<Item> SelectedLotDirectory
-        {
-            get => _selectedLotDirectory;
-            set => SetProperty(ref _selectedLotDirectory, value);
-        }
+        public List<Item> SelectedLotDirectory { get => _selectedLotDirectory; set => SetProperty(ref _selectedLotDirectory, value); }
 
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set => SetProperty(ref _selectedTabIndex, value);
-        }
+        public int SelectedTabIndex { get => _selectedTabIndex; set => SetProperty(ref _selectedTabIndex, value); }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
 

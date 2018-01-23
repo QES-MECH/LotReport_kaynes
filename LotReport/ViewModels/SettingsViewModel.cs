@@ -20,17 +20,9 @@ namespace LotReport.ViewModels
             this.WireCommands();
         }
 
-        public string DatabaseDirectory
-        {
-            get => _databaseDirectory;
-            set => SetProperty(ref _databaseDirectory, value);
-        }
+        public string DatabaseDirectory { get => _databaseDirectory; set => SetProperty(ref _databaseDirectory, value); }
 
-        public string RejectCodesDirectory
-        {
-            get => _rejectCodesDirectory;
-            set => SetProperty(ref _rejectCodesDirectory, value);
-        }
+        public string RejectCodesDirectory { get => _rejectCodesDirectory; set => SetProperty(ref _rejectCodesDirectory, value); }
 
         public RelayCommand<bool> OkCommand { get; private set; }
 
