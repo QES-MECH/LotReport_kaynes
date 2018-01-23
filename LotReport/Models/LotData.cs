@@ -164,14 +164,14 @@ namespace LotReport.Models
             UnitsPassed = modifiedDies.Count(die => die.RejectCode.Id == 0);
             UnitsRejected = modifiedDies.Count - UnitsPassed;
             UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.RejectCode.Id == 0);
-            UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count;
-            OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count;
+            UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count * 100;
+            OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count * 100;
 
             MarkedUnits = modifiedDies.Count(die => die.MarkStatus != Die.Mark.NA);
             UnmarkedUnits = UnitsRejected - MarkedUnits;
             MarkedUnitsPassed = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Pass);
             MarkedUnitsRejected = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Fail);
-            MarkedUnitsYieldPercentage = (double)MarkedUnitsPassed / MarkedUnits;
+            MarkedUnitsYieldPercentage = (double)MarkedUnitsPassed / MarkedUnits * 100;
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
