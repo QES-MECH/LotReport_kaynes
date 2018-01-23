@@ -260,7 +260,7 @@ namespace LotReport.Models
             OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count * 100;
 
             MarkedUnits = modifiedDies.Count(die => die.MarkStatus != Die.Mark.NA);
-            UnmarkedUnits = UnitsRejected - MarkedUnits;
+            UnmarkedUnits = modifiedDies.Count - MarkedUnits;
             MarkedUnitsPassed = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Pass);
             MarkedUnitsRejected = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Fail);
             MarkedUnitsYieldPercentage = (double)MarkedUnitsPassed / MarkedUnits * 100;
