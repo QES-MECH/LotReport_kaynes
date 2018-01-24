@@ -206,7 +206,7 @@ namespace LotReport.ViewModels
 
                         if (currentIndex >= leadFramePaths.Length)
                         {
-                            MessageBox.Show("Last Lead Frame Reached.", "Previous", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Last Lead Frame Reached.", "Next", MessageBoxButton.OK, MessageBoxImage.Information);
                             return;
                         }
 
