@@ -11,7 +11,7 @@ namespace LotReport.Models
 {
     public class LotData
     {
-        public FileInfo LotFile { get; private set; }
+        public FileInfo FileInfo { get; private set; }
 
         public string MachineId { get; set; }
 
@@ -69,7 +69,7 @@ namespace LotReport.Models
 
         public void LoadFromFile(string path)
         {
-            LotFile = new FileInfo(path);
+            FileInfo = new FileInfo(path);
 
             XDocument doc = XDocument.Load(path);
             XElement infoElement = doc.Root.Element("Info");
@@ -259,7 +259,7 @@ namespace LotReport.Models
 
         public void GenerateSummary()
         {
-            string[] leadFramePaths = Directory.GetFiles(LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+            string[] leadFramePaths = Directory.GetFiles(FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
 
             List<Die> visionDies = new List<Die>();
             List<Die> modifiedDies = new List<Die>();

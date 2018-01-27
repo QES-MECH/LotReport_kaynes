@@ -170,7 +170,7 @@ namespace LotReport.ViewModels
             PreviousLFCommand = new RelayCommand(
                 param =>
                 {
-                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
 
                     int currentIndex = Array.IndexOf(leadFramePaths, LeadFrameMapMachine.XmlPath);
 
@@ -196,7 +196,7 @@ namespace LotReport.ViewModels
             NextLFCommand = new RelayCommand(
                 param =>
                 {
-                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.LotFile.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+                    string[] leadFramePaths = Directory.GetFiles(SelectedLot.FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
 
                     int currentIndex = Array.IndexOf(leadFramePaths, LeadFrameMapMachine.XmlPath);
 
@@ -224,7 +224,7 @@ namespace LotReport.ViewModels
         {
             try
             {
-                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.LotFile.Directory.FullName);
+                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.FileInfo.Directory.FullName);
                 Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
@@ -249,7 +249,7 @@ namespace LotReport.ViewModels
             }
             catch (Exception ex)
             {
-                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.LotFile.Directory.FullName, ex.Message);
+                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.FileInfo.Directory.FullName, ex.Message);
             }
         }
 
