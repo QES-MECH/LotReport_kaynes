@@ -1,20 +1,29 @@
 ﻿using System.Windows;
 
-public class WindowService : IWindowService
+namespace Framework.MVVM
 {
-    public void Show<T>(object dataContext)
-        where T : Window, new()
+    public class WindowService : IWindowService
     {
-        T window = new T();
-        window.DataContext = dataContext;
-        window.Show();
-    }
+        public void Show<T>(object dataContext)
+            where T : Window, new()
+        {
+            T window = new T
+            {
+                DataContext = dataContext
+            };
 
-    public bool? ShowDialog<T>(object dataContext)
-        where T : Window, new()
-    {
-        T window = new T();
-        window.DataContext = dataContext;
-        return window.ShowDialog();
+            window.Show();
+        }
+
+        public bool? ShowDialog<T>(object dataContext)
+            where T : Window, new()
+        {
+            T window = new T
+            {
+                DataContext = dataContext
+            };
+
+            return window.ShowDialog();
+        }
     }
 }

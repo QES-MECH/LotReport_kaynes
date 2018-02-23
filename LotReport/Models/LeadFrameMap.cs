@@ -20,8 +20,8 @@ namespace LotReport.Models
 
         public enum Type
         {
-            Machine,
-            Operator
+            Vision,
+            Modified
         }
 
         public string XmlPath { get; private set; }
@@ -66,7 +66,71 @@ namespace LotReport.Models
             return table;
         }
 
-        public bool SetDieRejectCode(Die die, RejectCode rejectCode)
+        public static bool SetMarkStatus(string xmlPath, Point coordinate, Die.Mark markStatus)
+        {
+            XDocument document = XDocument.Load(xmlPath);
+
+            var dieElement = document
+                .Root
+                .Elements("Die")
+                .Where(e => e.Attribute("Coordinate").Value == coordinate.ToString())
+                .FirstOrDefault();
+
+            if (dieElement == null)
+            {
+                return false;
+            }
+
+            var markElement = dieElement.Elements().SingleOrDefault(e => e.Name == "Mark");
+
+            if (markElement == null)
+            {
+                markElement = new XElement("Mark", markStatus);
+                dieElement.Add(markElement);
+            }
+            else
+            {
+                markElement.Value = markStatus.ToString();
+            }
+
+            document.Save(xmlPath);
+
+            return true;
+        }
+
+        public static bool SetMarkPath(string xmlPath, Point coordinate, string markPath)
+        {
+            XDocument document = XDocument.Load(xmlPath);
+
+            var dieElement = document
+                .Root
+                .Elements("Die")
+                .Where(e => e.Attribute("Coordinate").Value == coordinate.ToString())
+                .FirstOrDefault();
+
+            if (dieElement == null)
+            {
+                return false;
+            }
+
+            var markPathElement = dieElement.Elements().SingleOrDefault(e => e.Name == "MarkPath");
+
+            if (markPathElement == null)
+            {
+                markPathElement = new XElement("MarkPath", markPath);
+                dieElement.Add(markPathElement);
+            }
+            else
+            {
+                markPathElement.Value = markPath;
+            }
+
+            document.Save(xmlPath);
+
+            return true;
+        }
+
+        public bool SetDieBinCode(Die die, BinCode binCode)
         {
             XDocument doc = XDocument.Load(XmlPath);
 
@@ -81,15 +145,23 @@ namespace LotReport.Models
                 return false;
             }
 
-            XElement modifiedElement = new XElement("Modified", rejectCode.Id.ToString());
+            var modifiedElement = dieElement.Element("BinCode").Elements().SingleOrDefault(e => e.Name == "Modified");
 
-            dieElement.Element("RejectCode").Add(modifiedElement);
+            if (modifiedElement == null)
+            {
+                modifiedElement = new XElement("Modified", binCode.Id.ToString());
+                dieElement.Element("BinCode").Add(modifiedElement);
+            }
+            else
+            {
+                modifiedElement.Value = binCode.Id.ToString();
+            }
 
             doc.Save(XmlPath);
 
-            die.RejectCode = rejectCode;
+            die.BinCode = binCode;
 
-            if (die.RejectCode.Id == 0)
+            if (die.BinCode.Id == 0)
             {
                 die.Color = _yellow;
             }
@@ -97,30 +169,6 @@ namespace LotReport.Models
             {
                 die.Color = _red;
             }
-
-            return true;
-        }
-
-        public bool SetDieMarkStatus(Die die, Die.Mark markStatus)
-        {
-            XDocument doc = XDocument.Load(XmlPath);
-
-            var dieElement = doc
-                .Root
-                .Elements("Die")
-                .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
-                .FirstOrDefault();
-
-            if (dieElement == null)
-            {
-                return false;
-            }
-
-            XElement markElement = new XElement("Mark", markStatus);
-
-            doc.Save(XmlPath);
-
-            die.MarkStatus = markStatus;
 
             return true;
         }
@@ -148,7 +196,7 @@ namespace LotReport.Models
 
         private void LoadFromFile(string xmlPath, Type type)
         {
-            RejectCodeRepository repo = new RejectCodeRepository();
+            BinCodeRepository repo = new BinCodeRepository();
             repo.LoadFromFile();
 
             XDocument doc = XDocument.Load(xmlPath);
@@ -182,20 +230,20 @@ namespace LotReport.Models
                         .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
                         .FirstOrDefault();
 
-                    XElement visionRejectCode = dieElement.Element("RejectCode").Element("Vision");
+                    XElement visionBinCode = dieElement.Element("BinCode").Element("Vision");
 
-                    if (type == Type.Machine)
+                    if (type == Type.Vision)
                     {
-                        if (int.TryParse(visionRejectCode.Value, out int visionRejectCodeId))
+                        if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
                         {
-                            die.RejectCode.Id = visionRejectCodeId;
+                            die.BinCode.Id = visionBinCodeId;
                         }
                         else
                         {
-                            die.RejectCode.Id = 999;
+                            die.BinCode.Id = 999;
                         }
 
-                        if (die.RejectCode.Id == 0)
+                        if (die.BinCode.Id == 0)
                         {
                             die.Color = _green;
                         }
@@ -205,22 +253,22 @@ namespace LotReport.Models
                         }
                     }
 
-                    if (type == Type.Operator)
+                    if (type == Type.Modified)
                     {
-                        XElement modifiedRejectCode = dieElement.Element("RejectCode").Element("Modified");
+                        XElement modifiedBinCode = dieElement.Element("BinCode").Element("Modified");
 
-                        if (modifiedRejectCode == null)
+                        if (modifiedBinCode == null)
                         {
-                            if (int.TryParse(visionRejectCode.Value, out int visionRejectCodeId))
+                            if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
                             {
-                                die.RejectCode.Id = visionRejectCodeId;
+                                die.BinCode.Id = visionBinCodeId;
                             }
                             else
                             {
-                                die.RejectCode.Id = 999;
+                                die.BinCode.Id = 999;
                             }
 
-                            if (die.RejectCode.Id == 0)
+                            if (die.BinCode.Id == 0)
                             {
                                 die.Color = _green;
                             }
@@ -231,16 +279,16 @@ namespace LotReport.Models
                         }
                         else
                         {
-                            if (int.TryParse(modifiedRejectCode.Value, out int modifiedRejectCodeId))
+                            if (int.TryParse(modifiedBinCode.Value, out int modifiedBinCodeId))
                             {
-                                die.RejectCode.Id = modifiedRejectCodeId;
+                                die.BinCode.Id = modifiedBinCodeId;
                             }
                             else
                             {
-                                die.RejectCode.Id = 999;
+                                die.BinCode.Id = 999;
                             }
 
-                            if (die.RejectCode.Id == 0)
+                            if (die.BinCode.Id == 0)
                             {
                                 die.Color = _yellow;
                             }
@@ -260,7 +308,7 @@ namespace LotReport.Models
 
                     die.MarkPath = dieElement.Element("MarkPath")?.Value;
 
-                    TryGetRejectCodeInfo(repo.RejectCodes, die);
+                    TryGetBinCodeInfo(repo.BinCodes, die);
 
                     dies.Add(die);
                     Dies.Add(die);
@@ -270,15 +318,15 @@ namespace LotReport.Models
             }
         }
 
-        private void TryGetRejectCodeInfo(List<RejectCode> rejectCodes, Die die)
+        private void TryGetBinCodeInfo(List<BinCode> binCodes, Die die)
         {
-            RejectCode sourceRejectCode = rejectCodes.FirstOrDefault(rc => rc.Id == die.RejectCode.Id);
+            BinCode sourceBinCode = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode.Id);
 
-            if (sourceRejectCode != null)
+            if (sourceBinCode != null)
             {
-                die.RejectCode.Value = sourceRejectCode.Value;
-                die.RejectCode.Description = sourceRejectCode.Description;
-                die.RejectCode.Mark = sourceRejectCode.Mark;
+                die.BinCode.Value = sourceBinCode.Value;
+                die.BinCode.Description = sourceBinCode.Description;
+                die.BinCode.Mark = sourceBinCode.Mark;
             }
         }
 

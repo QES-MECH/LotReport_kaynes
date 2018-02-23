@@ -65,7 +65,7 @@ namespace LotReport.Models
 
         public double MarkedUnitsYieldPercentage { get; set; }
 
-        public Dictionary<int, int> RejectCount { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, int> BinCount { get; set; } = new Dictionary<int, int>();
 
         public void LoadFromFile(string path)
         {
@@ -185,7 +185,7 @@ namespace LotReport.Models
                 int.TryParse(reject.Attribute("Id").Value, out int id);
                 int.TryParse(reject.Attribute("Count").Value, out int count);
 
-                RejectCount.Add(id, count);
+                BinCount.Add(id, count);
             }
         }
 
@@ -240,7 +240,7 @@ namespace LotReport.Models
                 writer.WriteElementString("MarkedUnitsYieldPercentage", MarkedUnitsYieldPercentage.ToString());
                 writer.WriteStartElement("Rejects");
 
-                foreach (KeyValuePair<int, int> reject in RejectCount)
+                foreach (KeyValuePair<int, int> reject in BinCount)
                 {
                     writer.WriteStartElement("Reject");
                     writer.WriteAttributeString("Id", reject.Key.ToString());
@@ -266,17 +266,17 @@ namespace LotReport.Models
 
             foreach (string lfPath in leadFramePaths)
             {
-                LeadFrameMap visionLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Machine);
+                LeadFrameMap visionLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Vision);
                 visionDies.AddRange(visionLFMap.Dies);
 
-                LeadFrameMap modifiedLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Operator);
+                LeadFrameMap modifiedLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Modified);
                 modifiedDies.AddRange(modifiedLFMap.Dies);
             }
 
             LeadFramesInspected = leadFramePaths.Length;
-            UnitsPassed = modifiedDies.Count(die => die.RejectCode.Id == 0);
+            UnitsPassed = modifiedDies.Count(die => die.BinCode.Id == 0);
             UnitsRejected = modifiedDies.Count - UnitsPassed;
-            UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.RejectCode.Id == 0);
+            UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.BinCode.Id == 0);
             UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count * 100;
             OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count * 100;
 
@@ -288,17 +288,17 @@ namespace LotReport.Models
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
-            RejectCount.Clear();
+            BinCount.Clear();
 
             foreach (Die modifiedDie in modifiedDies)
             {
-                if (RejectCount.ContainsKey(modifiedDie.RejectCode.Id))
+                if (BinCount.ContainsKey(modifiedDie.BinCode.Id))
                 {
-                    RejectCount[modifiedDie.RejectCode.Id]++;
+                    BinCount[modifiedDie.BinCode.Id]++;
                 }
                 else
                 {
-                    RejectCount.Add(modifiedDie.RejectCode.Id, 1);
+                    BinCount.Add(modifiedDie.BinCode.Id, 1);
                 }
             }
         }

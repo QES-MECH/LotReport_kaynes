@@ -71,15 +71,8 @@ namespace LotReport.Views.ReusableControls
 
         public LeadFrameMap LeadFrameTable
         {
-            get
-            {
-                return (LeadFrameMap)GetValue(LeadFrameTableProperty);
-            }
-
-            set
-            {
-                SetValue(LeadFrameTableProperty, value);
-            }
+            get { return (LeadFrameMap)GetValue(LeadFrameTableProperty); }
+            set { SetValue(LeadFrameTableProperty, value); }
         }
 
         public Die SelectedDie
@@ -144,7 +137,7 @@ namespace LotReport.Views.ReusableControls
                     "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
                         "<Grid Background=\"{Binding Dies[" + dieIndex + "].Color}\">" +
                             "<TextBlock" +
-                            " Text=\"{Binding Dies[" + dieIndex + "].RejectCode.Value}\"" +
+                            " Text=\"{Binding Dies[" + dieIndex + "].BinCode.Value}\"" +
                             " FontWeight=\"Bold\"" +
                             " Foreground=\"#212121\"" +
                             " HorizontalAlignment=\"Center\"" +

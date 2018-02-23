@@ -34,8 +34,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <r:LabelTextBox Grid.Column="0" Label="RejectCodes" Value="{Binding RejectCodesDirectory}" ReadOnly="True" Height="20"/>
-                                <Button Grid.Column="1" Content="..." Command="{Binding RejectCodesFileCommand}" HorizontalAlignment="Left"  Margin="3" Width="20" Height="20"/>
+                                <r:LabelTextBox Grid.Column="0" Label="BinCode" Value="{Binding BinCodeDirectory}" ReadOnly="True" Height="20"/>
+                                <Button Grid.Column="1" Content="..." Command="{Binding BinCodeFileCommand}" HorizontalAlignment="Left"  Margin="3" Width="20" Height="20"/>
                             </Grid>
                         </StackPanel>
                     </GroupBox>

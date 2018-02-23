@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Framework.MVVM;
 using LotReport.Models;
 
 namespace LotReport.ViewModels
@@ -14,7 +15,7 @@ namespace LotReport.ViewModels
         private string _status;
         private Die _die;
         private BitmapImage _image;
-        private RejectCode _currentRejectCode;
+        private BinCode _currentRejectCode;
 
         public DieViewModel()
         {
@@ -27,7 +28,7 @@ namespace LotReport.ViewModels
 
         public BitmapImage Image { get => _image; set => SetProperty(ref _image, value); }
 
-        public RejectCode CurrentRejectCode { get => _currentRejectCode; set => SetProperty(ref _currentRejectCode, value); }
+        public BinCode CurrentRejectCode { get => _currentRejectCode; set => SetProperty(ref _currentRejectCode, value); }
 
         public AsyncCommand<object> LoadedCommand { get; private set; }
 
@@ -38,7 +39,7 @@ namespace LotReport.ViewModels
                 {
                     return Task.Run(() =>
                     {
-                        CurrentRejectCode = Die.RejectCode;
+                        CurrentRejectCode = Die.BinCode;
 
                         BitmapImage image = new BitmapImage();
 

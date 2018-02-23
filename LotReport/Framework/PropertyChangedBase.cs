@@ -2,24 +2,27 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-public abstract class PropertyChangedBase : INotifyPropertyChanged
+namespace Framework.MVVM
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public abstract class PropertyChangedBase : INotifyPropertyChanged
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            return false;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 }

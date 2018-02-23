@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Framework.MVVM;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
 using LotReport.Views;
@@ -24,7 +25,7 @@ namespace LotReport.ViewModels
         private LotData _selectedLot;
         private List<Item> _selectedLotDirectory;
         private int _selectedTabIndex;
-        private Dictionary<RejectCode, int> _rejectCount;
+        private Dictionary<BinCode, int> _rejectCount;
 
         public MainWindowViewModel()
         {
@@ -60,7 +61,7 @@ namespace LotReport.ViewModels
 
         public int SelectedTabIndex { get => _selectedTabIndex; set => SetProperty(ref _selectedTabIndex, value); }
 
-        public Dictionary<RejectCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
+        public Dictionary<BinCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
 
         public WindowService SettingsWindow { get; private set; } = new WindowService();
 
@@ -140,10 +141,8 @@ namespace LotReport.ViewModels
 
                     try
                     {
-                        LeadFrameMapOperator = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Operator);
-                        var die = LeadFrameMapOperator.Dies.FirstOrDefault(d => d.Coordinate == new Point(1, 1));
-                        LeadFrameMapOperator.SetDieMarkStatus(die, Die.Mark.Pass);
-                        LeadFrameMapMachine = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Machine);
+                        LeadFrameMapOperator = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Modified);
+                        LeadFrameMapMachine = LeadFrameMap.Load(file.Path, LeadFrameMap.Type.Vision);
                     }
                     catch (Exception ex)
                     {
@@ -184,8 +183,8 @@ namespace LotReport.ViewModels
                             return;
                         }
 
-                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Operator);
-                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Machine);
+                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Modified);
+                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Vision);
                     }
                 },
                 param =>
@@ -210,8 +209,8 @@ namespace LotReport.ViewModels
                             return;
                         }
 
-                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Operator);
-                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Machine);
+                        LeadFrameMapOperator = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Modified);
+                        LeadFrameMapMachine = LeadFrameMap.Load(leadFramePaths[currentIndex], LeadFrameMap.Type.Vision);
                     }
                 },
                 param =>
@@ -229,13 +228,13 @@ namespace LotReport.ViewModels
                 selectedLotDirectory.Remove(lotFile);
                 SelectedLotDirectory = selectedLotDirectory;
 
-                Dictionary<RejectCode, int> rejectCount = new Dictionary<RejectCode, int>();
-                RejectCodeRepository repository = new RejectCodeRepository();
+                Dictionary<BinCode, int> rejectCount = new Dictionary<BinCode, int>();
+                BinCodeRepository repository = new BinCodeRepository();
                 repository.LoadFromFile();
 
-                foreach (var reject in lot.RejectCount)
+                foreach (var reject in lot.BinCount)
                 {
-                    RejectCode rejectCode = repository.RejectCodes.FirstOrDefault(rc => rc.Id == reject.Key);
+                    BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
 
                     if (rejectCode?.Id != 0)
                     {

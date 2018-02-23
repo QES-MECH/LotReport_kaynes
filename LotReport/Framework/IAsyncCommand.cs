@@ -1,7 +1,10 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-public interface IAsyncCommand : ICommand
+namespace Framework.MVVM
 {
-    Task ExecuteAsync(object parameter);
+    public interface IAsyncCommand : ICommand
+    {
+        Task ExecuteAsync(object parameter);
+    }
 }

@@ -5,119 +5,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-public class AsyncCommand<TResult> : IAsyncCommand, INotifyPropertyChanged, IDisposable
+namespace Framework.MVVM
 {
-    private readonly Func<CancellationToken, object, Task<TResult>> command;
-    private readonly CancelAsyncCommand cancelCommand;
-    private readonly Predicate<object> canExecute;
-    private NotifyTaskCompletion<TResult> execution;
-    private bool disposed;
-
-    public AsyncCommand(Func<CancellationToken, object, Task<TResult>> command, Predicate<object> canExecute = null)
+    public class AsyncCommand<TResult> : IAsyncCommand, INotifyPropertyChanged, IDisposable
     {
-        this.command = command;
-        this.cancelCommand = new CancelAsyncCommand();
-        this.canExecute = canExecute;
-    }
+        private readonly Func<CancellationToken, object, Task<TResult>> _command;
+        private readonly CancelAsyncCommand _cancelCommand;
+        private readonly Predicate<object> _canExecute;
+        private NotifyTaskCompletion<TResult> _execution;
+        private bool _disposed;
 
-    public event EventHandler CanExecuteChanged
-    {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    // Raises PropertyChanged
-    public NotifyTaskCompletion<TResult> Execution
-    {
-        get
+        public AsyncCommand(Func<CancellationToken, object, Task<TResult>> command, Predicate<object> canExecute = null)
         {
-            return this.execution;
+            _command = command;
+            _cancelCommand = new CancelAsyncCommand();
+            _canExecute = canExecute;
         }
-
-        private set
-        {
-            this.execution = value;
-            this.OnPropertyChanged();
-        }
-    }
-
-    public ICommand CancelCommand
-    {
-        get
-        {
-            return this.cancelCommand;
-        }
-    }
-
-    public bool CanExecute(object parameter)
-    {
-        if (this.canExecute == null || this.canExecute(parameter) == true)
-        {
-            return this.Execution == null || this.Execution.IsCompleted;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public async void Execute(object parameter)
-    {
-        await this.ExecuteAsync(parameter);
-    }
-
-    public async Task ExecuteAsync(object parameter)
-    {
-        this.cancelCommand.NotifyCommandStarting();
-        this.Execution = new NotifyTaskCompletion<TResult>(this.command(this.cancelCommand.Token, parameter));
-        this.RaiseCanExecuteChanged();
-        await this.Execution.TaskCompletion;
-        this.cancelCommand.NotifyCommandFinished();
-        this.RaiseCanExecuteChanged();
-    }
-
-    public void Dispose()
-    {
-        this.Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    private void RaiseCanExecuteChanged()
-    {
-        CommandManager.InvalidateRequerySuggested();
-    }
-
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChangedEventHandler handler = this.PropertyChanged;
-        if (handler != null)
-        {
-            handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    private void Dispose(bool disposing)
-    {
-        if (this.disposed)
-        {
-            return;
-        }
-
-        if (disposing)
-        {
-            this.cancelCommand.Dispose();
-        }
-
-        this.disposed = true;
-    }
-
-    private sealed class CancelAsyncCommand : ICommand, IDisposable
-    {
-        private CancellationTokenSource cts = new CancellationTokenSource();
-        private bool commandExecuting;
-        private bool disposed = false;
 
         public event EventHandler CanExecuteChanged
         {
@@ -125,47 +28,61 @@ public class AsyncCommand<TResult> : IAsyncCommand, INotifyPropertyChanged, IDis
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public CancellationToken Token
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Raises PropertyChanged
+        public NotifyTaskCompletion<TResult> Execution
         {
             get
             {
-                return this.cts.Token;
+                return _execution;
             }
-        }
 
-        bool ICommand.CanExecute(object parameter)
-        {
-            return this.commandExecuting && !this.cts.IsCancellationRequested;
-        }
-
-        void ICommand.Execute(object parameter)
-        {
-            this.cts.Cancel();
-            this.RaiseCanExecuteChanged();
-        }
-
-        public void NotifyCommandStarting()
-        {
-            this.commandExecuting = true;
-            if (!this.cts.IsCancellationRequested)
+            private set
             {
-                return;
+                _execution = value;
+                OnPropertyChanged();
             }
-
-            this.cts.Dispose();
-            this.cts = new CancellationTokenSource();
-            this.RaiseCanExecuteChanged();
         }
 
-        public void NotifyCommandFinished()
+        public ICommand CancelCommand
         {
-            this.commandExecuting = false;
-            this.RaiseCanExecuteChanged();
+            get
+            {
+                return _cancelCommand;
+            }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            if (_canExecute == null || _canExecute(parameter) == true)
+            {
+                return Execution == null || Execution.IsCompleted;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async void Execute(object parameter)
+        {
+            await ExecuteAsync(parameter);
+        }
+
+        public async Task ExecuteAsync(object parameter)
+        {
+            _cancelCommand.NotifyCommandStarting();
+            Execution = new NotifyTaskCompletion<TResult>(_command(_cancelCommand.Token, parameter));
+            RaiseCanExecuteChanged();
+            await Execution.TaskCompletion;
+            _cancelCommand.NotifyCommandFinished();
+            RaiseCanExecuteChanged();
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -174,19 +91,101 @@ public class AsyncCommand<TResult> : IAsyncCommand, INotifyPropertyChanged, IDis
             CommandManager.InvalidateRequerySuggested();
         }
 
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (_disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                this.cts.Dispose();
+                _cancelCommand.Dispose();
             }
 
-            this.disposed = true;
+            _disposed = true;
+        }
+
+        private sealed class CancelAsyncCommand : ICommand, IDisposable
+        {
+            private CancellationTokenSource _cts = new CancellationTokenSource();
+            private bool _commandExecuting;
+            private bool _disposed = false;
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+            public CancellationToken Token
+            {
+                get
+                {
+                    return _cts.Token;
+                }
+            }
+
+            bool ICommand.CanExecute(object parameter)
+            {
+                return _commandExecuting && !_cts.IsCancellationRequested;
+            }
+
+            void ICommand.Execute(object parameter)
+            {
+                _cts.Cancel();
+                RaiseCanExecuteChanged();
+            }
+
+            public void NotifyCommandStarting()
+            {
+                _commandExecuting = true;
+                if (!_cts.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                _cts.Dispose();
+                _cts = new CancellationTokenSource();
+                RaiseCanExecuteChanged();
+            }
+
+            public void NotifyCommandFinished()
+            {
+                _commandExecuting = false;
+                RaiseCanExecuteChanged();
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            private void RaiseCanExecuteChanged()
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
+
+            private void Dispose(bool disposing)
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+
+                if (disposing)
+                {
+                    _cts.Dispose();
+                }
+
+                _disposed = true;
+            }
         }
     }
 }

@@ -61,12 +61,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Framework\AsyncCommand.cs" />
+    <Compile Include="Framework\AsyncCommand{TResult}.cs" />
+    <Compile Include="Framework\IAsyncCommand.cs" />
+    <Compile Include="Framework\IMessageBoxService.cs" />
+    <Compile Include="Framework\IWindowService.cs" />
+    <Compile Include="Framework\MessageBoxService.cs" />
+    <Compile Include="Framework\NotifyTaskCompletion.cs" />
+    <Compile Include="Framework\PropertyChangedBase.cs" />
+    <Compile Include="Framework\RelayCommand.cs" />
+    <Compile Include="Framework\RelayCommand{TResult}.cs" />
+    <Compile Include="Framework\WindowService.cs" />
     <Compile Include="Models\Die.cs" />
     <Compile Include="Models\DieRow.cs" />
     <Compile Include="Models\LeadFrameMap.cs" />
     <Compile Include="Models\LotData.cs" />
-    <Compile Include="Models\RejectCode.cs" />
-    <Compile Include="Models\RejectCodeRepository.cs" />
+    <Compile Include="Models\BinCode.cs" />
+    <Compile Include="Models\BinCodeRepository.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -104,15 +115,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Framework\AsyncCommand.cs" />
-    <Compile Include="Framework\AsyncCommand{TResult}.cs" />
-    <Compile Include="Framework\IAsyncCommand.cs" />
-    <Compile Include="Framework\IWindowService.cs" />
-    <Compile Include="Framework\NotifyTaskCompletion.cs" />
-    <Compile Include="Framework\PropertyChangedBase.cs" />
-    <Compile Include="Framework\RelayCommand.cs" />
-    <Compile Include="Framework\RelayCommand{TResult}.cs" />
-    <Compile Include="Framework\WindowService.cs" />
     <Compile Include="Models\DirectoryItems\DirectoryProvider.cs" />
     <Compile Include="Models\DirectoryItems\FileItem.cs" />
     <Compile Include="Models\DirectoryItems\FolderItem.cs" />

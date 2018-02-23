@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Framework.MVVM;
 using LotReport.Models;
 using Microsoft.Win32;
 
@@ -12,7 +13,7 @@ namespace LotReport.ViewModels
     public class SettingsViewModel : PropertyChangedBase
     {
         private string _databaseDirectory;
-        private string _rejectCodesDirectory;
+        private string _binCodeDirectory;
 
         public SettingsViewModel()
         {
@@ -22,13 +23,13 @@ namespace LotReport.ViewModels
 
         public string DatabaseDirectory { get => _databaseDirectory; set => SetProperty(ref _databaseDirectory, value); }
 
-        public string RejectCodesDirectory { get => _rejectCodesDirectory; set => SetProperty(ref _rejectCodesDirectory, value); }
+        public string BinCodeDirectory { get => _binCodeDirectory; set => SetProperty(ref _binCodeDirectory, value); }
 
         public RelayCommand<bool> OkCommand { get; private set; }
 
         public RelayCommand DatabaseFolderCommand { get; private set; }
 
-        public RelayCommand RejectCodesFileCommand { get; private set; }
+        public RelayCommand BinCodeFileCommand { get; private set; }
 
         private void WireCommands()
         {
@@ -52,18 +53,16 @@ namespace LotReport.ViewModels
                     }
                 });
 
-            RejectCodesFileCommand = new RelayCommand(
+            BinCodeFileCommand = new RelayCommand(
                 param =>
                 {
                     OpenFileDialog fileDialog = new OpenFileDialog();
-                    fileDialog.Title = "Open RejectCodes";
-                    fileDialog.DefaultExt = ".xml";
-                    fileDialog.Filter = "XML(*.xml)|*.xml";
+                    fileDialog.Title = "Open BinCode File";
                     bool? result = fileDialog.ShowDialog();
 
                     if (result == true)
                     {
-                        RejectCodesDirectory = fileDialog.FileName;
+                        BinCodeDirectory = fileDialog.FileName;
                     }
                 });
         }
@@ -71,7 +70,7 @@ namespace LotReport.ViewModels
         private void LoadData()
         {
             DatabaseDirectory = Settings.DatabaseDirectory;
-            RejectCodesDirectory = Settings.RejectCodesDirectory;
+            BinCodeDirectory = Settings.BinCodeDirectory;
         }
 
         private bool SaveData()
@@ -87,7 +86,7 @@ namespace LotReport.ViewModels
             }
 
             Settings.DatabaseDirectory = DatabaseDirectory;
-            Settings.RejectCodesDirectory = RejectCodesDirectory;
+            Settings.BinCodeDirectory = BinCodeDirectory;
 
             try
             {

@@ -14,7 +14,7 @@ namespace LotReport.Models
 
         public static string DatabaseDirectory { get; set; }
 
-        public static string RejectCodesDirectory { get; set; }
+        public static string BinCodeDirectory { get; set; }
 
         public static void LoadFromFile()
         {
@@ -27,11 +27,11 @@ namespace LotReport.Models
                 .Element("Database")
                 .Value;
 
-            RejectCodesDirectory = document
+            BinCodeDirectory = document
                 .Root
                 .Element("General")
                 .Element("Directories")
-                .Element("RejectCodes")
+                .Element("BinCode")
                 .Value;
         }
 
@@ -49,7 +49,7 @@ namespace LotReport.Models
                 writer.WriteStartElement("General");
                 writer.WriteStartElement("Directories");
                 writer.WriteElementString("Database", DatabaseDirectory);
-                writer.WriteElementString("RejectCodes", RejectCodesDirectory);
+                writer.WriteElementString("BinCode", BinCodeDirectory);
                 writer.WriteEndElement();
                 writer.WriteEndElement();
 

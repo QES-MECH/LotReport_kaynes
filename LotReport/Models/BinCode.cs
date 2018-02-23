@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LotReport.Models
 {
-    public class RejectCode : PropertyChangedBase
+    public class BinCode
     {
         public int Id { get; set; }
 

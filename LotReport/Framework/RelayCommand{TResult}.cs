@@ -4,68 +4,57 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-public class RelayCommand<TResult> : INotifyPropertyChanged, ICommand
+namespace Framework.MVVM
 {
-    private readonly Func<object, TResult> execute;
-    private readonly Predicate<object> canExecute;
-    private TResult result;
-
-    public RelayCommand(Func<object, TResult> execute)
-        : this(execute, null)
+    public class RelayCommand<TResult> : INotifyPropertyChanged, ICommand
     {
-    }
+        private readonly Func<object, TResult> _execute;
+        private readonly Predicate<object> _canExecute;
+        private TResult _result;
 
-    public RelayCommand(Func<object, TResult> execute, Predicate<object> canExecute)
-    {
-        if (execute == null)
+        public RelayCommand(Func<object, TResult> execute)
+            : this(execute, null)
         {
-            throw new ArgumentException("execute");
         }
 
-        this.execute = execute;
-        this.canExecute = canExecute;
-    }
-
-    public event EventHandler CanExecuteChanged
-    {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public TResult Result
-    {
-        get
+        public RelayCommand(Func<object, TResult> execute, Predicate<object> canExecute)
         {
-            return this.result;
+            _execute = execute ?? throw new ArgumentException("execute");
+            _canExecute = canExecute;
         }
 
-        set
+        public event EventHandler CanExecuteChanged
         {
-            this.result = value;
-            this.OnPropertyChanged();
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
-    }
 
-    [DebuggerStepThrough]
-    public bool CanExecute(object parameter)
-    {
-        return this.canExecute == null ? true : this.canExecute(parameter);
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-    public void Execute(object parameter)
-    {
-        this.Result = this.execute(parameter);
-    }
-
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChangedEventHandler handler = this.PropertyChanged;
-
-        if (handler != null)
+        public TResult Result
         {
-            handler(this, new PropertyChangedEventArgs(propertyName));
+            get => _result;
+            set
+            {
+                _result = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null ? true : _canExecute(parameter);
+        }
+
+        public void Execute(object parameter)
+        {
+            Result = _execute(parameter);
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

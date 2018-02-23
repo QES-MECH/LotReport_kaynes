@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using Framework.MVVM;
 
 namespace LotReport.Models
 {
     public class Die : PropertyChangedBase
     {
-        private RejectCode _rejectCode;
+        private BinCode _binCode;
         private Mark _markStatus;
         private string _diePath;
         private string _markPath;
@@ -14,7 +15,7 @@ namespace LotReport.Models
 
         public Die()
         {
-            RejectCode = new RejectCode();
+            BinCode = new BinCode();
         }
 
         public enum Mark
@@ -24,10 +25,10 @@ namespace LotReport.Models
             Fail
         }
 
-        public RejectCode RejectCode
+        public BinCode BinCode
         {
-            get => this._rejectCode;
-            set => SetProperty(ref _rejectCode, value);
+            get => _binCode;
+            set => SetProperty(ref _binCode, value);
         }
 
         public Mark MarkStatus
@@ -38,7 +39,7 @@ namespace LotReport.Models
 
         public string DiePath
         {
-            get => this._diePath;
+            get => _diePath;
             set => SetProperty(ref _diePath, value);
         }
 
@@ -50,13 +51,13 @@ namespace LotReport.Models
 
         public Brush Color
         {
-            get => this._color;
+            get => _color;
             set => SetProperty(ref _color, value);
         }
 
         public Point Coordinate
         {
-            get => this._coordinate;
+            get => _coordinate;
             set => SetProperty(ref _coordinate, value);
         }
     }
