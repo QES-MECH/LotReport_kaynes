@@ -75,6 +75,9 @@
                                     <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Product Code" Value="{Binding SelectedLot.ProductCode}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Die Attach" Value="{Binding SelectedLot.DieAttach}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Wire Bond #1" Value="{Binding SelectedLot.WireBond0}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Wire Bond #2" Value="{Binding SelectedLot.WireBond1}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Bonding Diagram" Value="{Binding SelectedLot.BondingDiagram}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>

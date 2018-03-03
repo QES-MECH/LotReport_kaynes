@@ -21,6 +21,12 @@ namespace LotReport.Models
 
         public string ProductCode { get; set; }
 
+        public string DieAttach { get; set; }
+
+        public string WireBond0 { get; set; }
+
+        public string WireBond1 { get; set; }
+
         public string BondingDiagram { get; set; }
 
         public string RecipeName { get; set; }
@@ -75,13 +81,16 @@ namespace LotReport.Models
             XElement infoElement = doc.Root.Element("Info");
             XElement summaryElement = doc.Root.Element("Summary");
 
-            MachineId = infoElement.Element("MachineId").Value;
-            LotId = infoElement.Element("LotId").Value;
-            OperatorId = infoElement.Element("OperatorId").Value;
-            ProductCode = infoElement.Element("ProductCode").Value;
-            BondingDiagram = infoElement.Element("BondingDiagram").Value;
-            RecipeName = infoElement.Element("Recipe").Value;
-            RecipePath = infoElement.Element("RecipePath").Value;
+            MachineId = infoElement.Element("MachineId")?.Value;
+            LotId = infoElement.Element("LotId")?.Value;
+            OperatorId = infoElement.Element("OperatorId")?.Value;
+            ProductCode = infoElement.Element("ProductCode")?.Value;
+            DieAttach = infoElement.Element("DieAttach")?.Value;
+            WireBond0 = infoElement.Element("WireBond0")?.Value;
+            WireBond1 = infoElement.Element("WireBond1")?.Value;
+            BondingDiagram = infoElement.Element("BondingDiagram")?.Value;
+            RecipeName = infoElement.Element("Recipe")?.Value;
+            RecipePath = infoElement.Element("RecipePath")?.Value;
 
             if (int.TryParse(infoElement.Element("LeadFrameUnits")?.Value, out int leadFrameUnits))
             {
@@ -98,82 +107,82 @@ namespace LotReport.Models
                 LeadFrameYUnits = leadFrameYUnits;
             }
 
-            if (DateTime.TryParse(infoElement.Element("StartTime").Value, out DateTime startTime))
+            if (DateTime.TryParse(infoElement.Element("StartTime")?.Value, out DateTime startTime))
             {
                 StartTime = startTime;
             }
 
-            if (DateTime.TryParse(infoElement.Element("EndTime").Value, out DateTime endTime))
+            if (DateTime.TryParse(infoElement.Element("EndTime")?.Value, out DateTime endTime))
             {
                 EndTime = endTime;
             }
 
-            if (double.TryParse(summaryElement.Element("UPH").Value, out double uph))
+            if (double.TryParse(summaryElement.Element("UPH")?.Value, out double uph))
             {
                 UPH = uph;
             }
 
-            if (double.TryParse(summaryElement.Element("ProcessUPH").Value, out double processUPH))
+            if (double.TryParse(summaryElement.Element("ProcessUPH")?.Value, out double processUPH))
             {
                 ProcessUPH = processUPH;
             }
 
-            if (int.TryParse(summaryElement.Element("LeadFrames").Value, out int leadFrames))
+            if (int.TryParse(summaryElement.Element("LeadFrames")?.Value, out int leadFrames))
             {
                 LeadFrames = leadFrames;
             }
 
-            if (int.TryParse(summaryElement.Element("LeadFramesInspected").Value, out int leadFramesInspected))
+            if (int.TryParse(summaryElement.Element("LeadFramesInspected")?.Value, out int leadFramesInspected))
             {
                 LeadFramesInspected = leadFramesInspected;
             }
 
-            if (int.TryParse(summaryElement.Element("UnitsPassed").Value, out int unitsPassed))
+            if (int.TryParse(summaryElement.Element("UnitsPassed")?.Value, out int unitsPassed))
             {
                 UnitsPassed = unitsPassed;
             }
 
-            if (int.TryParse(summaryElement.Element("UnitsRejected").Value, out int unitsRejected))
+            if (int.TryParse(summaryElement.Element("UnitsRejected")?.Value, out int unitsRejected))
             {
                 UnitsRejected = unitsRejected;
             }
 
-            if (int.TryParse(summaryElement.Element("UnitsOverRejected").Value, out int unitsOverRejected))
+            if (int.TryParse(summaryElement.Element("UnitsOverRejected")?.Value, out int unitsOverRejected))
             {
                 UnitsOverRejected = unitsOverRejected;
             }
 
-            if (double.TryParse(summaryElement.Element("UnitsYieldPercentage").Value, out double unitsYieldPercentage))
+            if (double.TryParse(summaryElement.Element("UnitsYieldPercentage")?.Value, out double unitsYieldPercentage))
             {
                 UnitsYieldPercentage = unitsYieldPercentage;
             }
 
-            if (double.TryParse(summaryElement.Element("OverRejectPercentage").Value, out double overRejectPercentage))
+            if (double.TryParse(summaryElement.Element("OverRejectPercentage")?.Value, out double overRejectPercentage))
             {
                 OverRejectPercentage = overRejectPercentage;
             }
 
-            if (int.TryParse(summaryElement.Element("MarkedUnits").Value, out int markedUnits))
+            if (int.TryParse(summaryElement.Element("MarkedUnits")?.Value, out int markedUnits))
             {
                 MarkedUnits = markedUnits;
             }
 
-            if (int.TryParse(summaryElement.Element("UnmarkedUnits").Value, out int unmarkedUnits))
+            if (int.TryParse(summaryElement.Element("UnmarkedUnits")?.Value, out int unmarkedUnits))
             {
                 UnmarkedUnits = unmarkedUnits;
             }
 
-            if (int.TryParse(summaryElement.Element("MarkedUnitsPassed").Value, out int markedUnitsPassed))
+            if (int.TryParse(summaryElement.Element("MarkedUnitsPassed")?.Value, out int markedUnitsPassed))
             {
                 MarkedUnitsPassed = markedUnitsPassed;
             }
 
-            if (int.TryParse(summaryElement.Element("MarkedUnitsRejected").Value, out int markedUnitsRejected))
+            if (int.TryParse(summaryElement.Element("MarkedUnitsRejected")?.Value, out int markedUnitsRejected))
             {
                 MarkedUnitsRejected = markedUnitsRejected;
             }
 
-            if (double.TryParse(summaryElement.Element("MarkedUnitsYieldPercentage").Value, out double markedUnitsYieldPercentage))
+            if (double.TryParse(summaryElement.Element("MarkedUnitsYieldPercentage")?.Value, out double markedUnitsYieldPercentage))
             {
                 MarkedUnitsYieldPercentage = markedUnitsYieldPercentage;
             }
@@ -182,8 +191,8 @@ namespace LotReport.Models
 
             foreach (XElement reject in rejectsElement.Elements())
             {
-                int.TryParse(reject.Attribute("Id").Value, out int id);
-                int.TryParse(reject.Attribute("Count").Value, out int count);
+                int.TryParse(reject.Attribute("Id")?.Value, out int id);
+                int.TryParse(reject.Attribute("Count")?.Value, out int count);
 
                 BinCount.Add(id, count);
             }
@@ -211,6 +220,9 @@ namespace LotReport.Models
                 writer.WriteElementString("LotId", LotId);
                 writer.WriteElementString("OperatorId", OperatorId);
                 writer.WriteElementString("ProductCode", ProductCode);
+                writer.WriteElementString("DieAttach", DieAttach);
+                writer.WriteElementString("WireBond0", WireBond0);
+                writer.WriteElementString("WireBond1", WireBond1);
                 writer.WriteElementString("BondingDiagram", BondingDiagram);
                 writer.WriteElementString("Recipe", RecipeName);
                 writer.WriteElementString("RecipePath", RecipePath);
