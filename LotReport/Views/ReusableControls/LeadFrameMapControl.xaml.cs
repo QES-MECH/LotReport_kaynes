@@ -67,6 +67,7 @@ namespace LotReport.Views.ReusableControls
         public LeadFrameMapControl()
         {
             InitializeComponent();
+            LeadFrameGrid.Visibility = Visibility.Collapsed;
         }
 
         public LeadFrameMap LeadFrameTable
@@ -121,8 +122,11 @@ namespace LotReport.Views.ReusableControls
         {
             if (LeadFrameTable == null)
             {
+                LeadFrameGrid.Visibility = Visibility.Collapsed;
                 return;
             }
+
+            LeadFrameGrid.Visibility = Visibility.Visible;
 
             _dataGridMap.Columns.Clear();
 

@@ -6,6 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid
+        Name="LeadFrameGrid"
         MaxWidth="{Binding GridMaxWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
         MaxHeight="{Binding GridMaxHeight, RelativeSource={RelativeSource AncestorType=UserControl}}">
         <Grid.RowDefinitions>
