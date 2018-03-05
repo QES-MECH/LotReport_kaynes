@@ -46,6 +46,7 @@ namespace LotReport.Views
                 if (dataGrid.SelectedItem != null)
                 {
                     vm.SelectedTabIndex = (int)MainWindowViewModel.TabIndex.Map;
+                    vm.UpdateSelectedLotCommand.Execute(vm.SelectedLot);
                     e.Handled = true;
                 }
             }

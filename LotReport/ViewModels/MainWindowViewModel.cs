@@ -47,18 +47,7 @@ namespace LotReport.ViewModels
 
         public LeadFrameMap LeadFrameMapMachine { get => _leadFrameMapMachine; set => SetProperty(ref _leadFrameMapMachine, value); }
 
-        public LotData SelectedLot
-        {
-            get => _selectedLot;
-            set
-            {
-                SetProperty(ref _selectedLot, value);
-                if (value != null)
-                {
-                    UpdateSelectedLot(value);
-                }
-            }
-        }
+        public LotData SelectedLot { get => _selectedLot; set => SetProperty(ref _selectedLot, value); }
 
         public List<Item> SelectedLotDirectory { get => _selectedLotDirectory; set => SetProperty(ref _selectedLotDirectory, value); }
 
@@ -75,6 +64,8 @@ namespace LotReport.ViewModels
         public RelayCommand RefreshLotsCommand { get; private set; }
 
         public RelayCommand SettingsCommand { get; private set; }
+
+        public RelayCommand UpdateSelectedLotCommand { get; private set; }
 
         public RelayCommand GenerateMapCommand { get; private set; }
 
@@ -132,6 +123,46 @@ namespace LotReport.ViewModels
 
             SettingsCommand = new RelayCommand(
                 param => SettingsWindow.ShowDialog<SettingsView>(new SettingsViewModel()));
+
+            UpdateSelectedLotCommand = new RelayCommand(
+                param =>
+                {
+                    LotData selectedLotData = param as LotData;
+                    if (selectedLotData == null)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        List<Item> selectedLotDirectory = DirectoryProvider.GetItems(selectedLotData.FileInfo.Directory.FullName);
+                        Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
+                        selectedLotDirectory.Remove(lotFile);
+                        SelectedLotDirectory = selectedLotDirectory;
+
+                        Dictionary<BinCode, int> rejectCount = new Dictionary<BinCode, int>();
+                        BinCodeRepository repository = new BinCodeRepository();
+                        repository.LoadFromFile();
+
+                        foreach (var reject in selectedLotData.BinCount)
+                        {
+                            BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
+
+                            if (rejectCode?.Id != 0)
+                            {
+                                rejectCount.Add(rejectCode, reject.Value);
+                            }
+                        }
+
+                        RejectCount = rejectCount;
+                        LeadFrameMapOperator = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
+                        LeadFrameMapMachine = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
+                    }
+                    catch (Exception ex)
+                    {
+                        Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", selectedLotData.FileInfo.Directory.FullName, ex.Message);
+                    }
+                });
 
             GenerateMapCommand = new RelayCommand(
                 param =>
@@ -220,39 +251,6 @@ namespace LotReport.ViewModels
                 {
                     return SelectedLot != null && LeadFrameMapMachine?.XmlPath != null;
                 });
-        }
-
-        private void UpdateSelectedLot(LotData lot)
-        {
-            try
-            {
-                List<Item> selectedLotDirectory = DirectoryProvider.GetItems(lot.FileInfo.Directory.FullName);
-                Item lotFile = selectedLotDirectory.FirstOrDefault(item => item.Name.Contains(".lot"));
-                selectedLotDirectory.Remove(lotFile);
-                SelectedLotDirectory = selectedLotDirectory;
-
-                Dictionary<BinCode, int> rejectCount = new Dictionary<BinCode, int>();
-                BinCodeRepository repository = new BinCodeRepository();
-                repository.LoadFromFile();
-
-                foreach (var reject in lot.BinCount)
-                {
-                    BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
-
-                    if (rejectCode?.Id != 0)
-                    {
-                        rejectCount.Add(rejectCode, reject.Value);
-                    }
-                }
-
-                RejectCount = rejectCount;
-                LeadFrameMapOperator = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
-                LeadFrameMapMachine = LeadFrameMap.LoadTemplate(lot.LeadFrameXUnits, lot.LeadFrameYUnits);
-            }
-            catch (Exception ex)
-            {
-                Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", lot.FileInfo.Directory.FullName, ex.Message);
-            }
         }
 
         private class WaitCursor : IDisposable
