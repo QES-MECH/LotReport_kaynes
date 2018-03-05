@@ -14,6 +14,11 @@
     <Window.DataContext>
         <viewModels:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding RefreshLotsCommand}"/>
+        <KeyBinding Key="R" Command="{Binding RefreshLotsCommand}"/>
+        <KeyBinding Key="M" Command="{Binding UpdateSelectedLotCommand}" CommandParameter="{Binding SelectedLot}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

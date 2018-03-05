@@ -157,6 +157,7 @@ namespace LotReport.ViewModels
                         RejectCount = rejectCount;
                         LeadFrameMapOperator = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
                         LeadFrameMapMachine = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
+                        SelectedTabIndex = (int)TabIndex.Map;
                     }
                     catch (Exception ex)
                     {
