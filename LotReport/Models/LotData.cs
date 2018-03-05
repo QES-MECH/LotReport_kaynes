@@ -71,7 +71,9 @@ namespace LotReport.Models
 
         public double MarkedUnitsYieldPercentage { get; set; }
 
-        public Dictionary<int, int> BinCount { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, int> ModifiedBinCount { get; set; } = new Dictionary<int, int>();
+
+        public Dictionary<int, int> VisionBinCount { get; set; } = new Dictionary<int, int>();
 
         public void LoadFromFile(string path)
         {
@@ -187,14 +189,24 @@ namespace LotReport.Models
                 MarkedUnitsYieldPercentage = markedUnitsYieldPercentage;
             }
 
-            XElement rejectsElement = summaryElement.Element("Rejects");
+            XElement modifiedRejectsElement = summaryElement.Element("ModifiedRejects");
 
-            foreach (XElement reject in rejectsElement.Elements())
+            foreach (XElement reject in modifiedRejectsElement.Elements())
             {
                 int.TryParse(reject.Attribute("Id")?.Value, out int id);
                 int.TryParse(reject.Attribute("Count")?.Value, out int count);
 
-                BinCount.Add(id, count);
+                ModifiedBinCount.Add(id, count);
+            }
+
+            XElement visionRejectsElement = summaryElement.Element("VisionRejects");
+
+            foreach (XElement reject in visionRejectsElement.Elements())
+            {
+                int.TryParse(reject.Attribute("Id")?.Value, out int id);
+                int.TryParse(reject.Attribute("Count")?.Value, out int count);
+
+                VisionBinCount.Add(id, count);
             }
         }
 
@@ -250,9 +262,22 @@ namespace LotReport.Models
                 writer.WriteElementString("MarkedUnitsPassed", MarkedUnitsPassed.ToString());
                 writer.WriteElementString("MarkedUnitsRejected", MarkedUnitsRejected.ToString());
                 writer.WriteElementString("MarkedUnitsYieldPercentage", MarkedUnitsYieldPercentage.ToString());
-                writer.WriteStartElement("Rejects");
 
-                foreach (KeyValuePair<int, int> reject in BinCount)
+                writer.WriteStartElement("ModifiedRejects");
+
+                foreach (KeyValuePair<int, int> reject in ModifiedBinCount)
+                {
+                    writer.WriteStartElement("Reject");
+                    writer.WriteAttributeString("Id", reject.Key.ToString());
+                    writer.WriteAttributeString("Count", reject.Value.ToString());
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("VisionRejects");
+
+                foreach (KeyValuePair<int, int> reject in VisionBinCount)
                 {
                     writer.WriteStartElement("Reject");
                     writer.WriteAttributeString("Id", reject.Key.ToString());
@@ -300,17 +325,29 @@ namespace LotReport.Models
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
-            BinCount.Clear();
+            ModifiedBinCount.Clear();
 
             foreach (Die modifiedDie in modifiedDies)
             {
-                if (BinCount.ContainsKey(modifiedDie.BinCode.Id))
+                if (ModifiedBinCount.ContainsKey(modifiedDie.BinCode.Id))
                 {
-                    BinCount[modifiedDie.BinCode.Id]++;
+                    ModifiedBinCount[modifiedDie.BinCode.Id]++;
                 }
                 else
                 {
-                    BinCount.Add(modifiedDie.BinCode.Id, 1);
+                    ModifiedBinCount.Add(modifiedDie.BinCode.Id, 1);
+                }
+            }
+
+            foreach (Die visionDie in visionDies)
+            {
+                if (VisionBinCount.ContainsKey(visionDie.BinCode.Id))
+                {
+                    VisionBinCount[visionDie.BinCode.Id]++;
+                }
+                else
+                {
+                    VisionBinCount.Add(visionDie.BinCode.Id, 1);
                 }
             }
         }
