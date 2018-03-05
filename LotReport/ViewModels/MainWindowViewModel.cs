@@ -39,6 +39,8 @@ namespace LotReport.ViewModels
             Map
         }
 
+        public ExportViewModel ExportViewModel { get; private set; } = new ExportViewModel();
+
         public ICollectionView LotDataView { get; private set; }
 
         public string Status { get => _status; set => SetProperty(ref _status, value); }
@@ -144,7 +146,7 @@ namespace LotReport.ViewModels
                         BinCodeRepository repository = new BinCodeRepository();
                         repository.LoadFromFile();
 
-                        foreach (var reject in selectedLotData.BinCount)
+                        foreach (var reject in selectedLotData.ModifiedBinCount)
                         {
                             BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
 

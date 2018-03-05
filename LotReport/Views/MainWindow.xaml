@@ -242,7 +242,7 @@
                             </DataGrid>
                             <y:LotControl Grid.Column="1"/>
                             <WrapPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Button Content="Print" Width="75" Height="20" Margin="3"/>
+                                <Button Content="_Export" Command="{Binding ExportViewModel.ExportCommand}" CommandParameter="{Binding SelectedLot}" Width="75" Height="20" Margin="3"/>
                             </WrapPanel>
                         </Grid>
                     </Grid>
