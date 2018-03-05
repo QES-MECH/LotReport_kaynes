@@ -53,7 +53,10 @@ namespace LotReport.ViewModels
             set
             {
                 SetProperty(ref _selectedLot, value);
-                UpdateSelectedLot(value);
+                if (value != null)
+                {
+                    UpdateSelectedLot(value);
+                }
             }
         }
 
