@@ -67,6 +67,7 @@ namespace LotReport.ViewModels
                 GenerateMapping(LeadFrameMap.Type.Modified, lotData, package);
                 GenerateSummary(LeadFrameMap.Type.Vision, lotData, package);
                 GenerateMapping(LeadFrameMap.Type.Vision, lotData, package);
+                GenerateMarkVerification(lotData, package);
                 package.Save();
             }
         }
@@ -280,6 +281,90 @@ namespace LotReport.ViewModels
             }
 
             mappingWorksheet.Cells.AutoFitColumns();
+        }
+
+        private void GenerateMarkVerification(LotData lotData, ExcelPackage package)
+        {
+            ExcelWorksheet markWorksheet = package.Workbook.Worksheets.Add("Mark Verification");
+
+            markWorksheet.Cells["A1"].Value = "Machine ID";
+            markWorksheet.Cells["B1"].Value = lotData.MachineId;
+            markWorksheet.Cells["A2"].Value = "Lot ID";
+            markWorksheet.Cells["B2"].Value = lotData.LotId;
+            markWorksheet.Cells["A3"].Value = "Operator";
+            markWorksheet.Cells["B3"].Value = lotData.OperatorId;
+            markWorksheet.Cells["A4"].Value = "Recipe";
+            markWorksheet.Cells["B4"].Value = lotData.RecipeName;
+
+            markWorksheet.Cells["A6"].Value = "Good";
+            markWorksheet.Cells["B6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            markWorksheet.Cells["B6"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+            markWorksheet.Cells["A7"].Value = "Mark Passed";
+            markWorksheet.Cells["B7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            markWorksheet.Cells["B7"].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+            markWorksheet.Cells["A8"].Value = "Mark Failed";
+            markWorksheet.Cells["B8"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            markWorksheet.Cells["B8"].Style.Fill.BackgroundColor.SetColor(Color.Magenta);
+            markWorksheet.Cells["A9"].Value = "Not Marked";
+            markWorksheet.Cells["B9"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            markWorksheet.Cells["B9"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            string[] leadFramePaths = Directory.GetFiles(lotData.FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+            List<LeadFrameMap> leadFrameMaps = new List<LeadFrameMap>();
+
+            foreach (string lfPath in leadFramePaths)
+            {
+                LeadFrameMap leadFrameMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Modified);
+                leadFrameMaps.Add(leadFrameMap);
+            }
+
+            int row = 10;
+
+            foreach (var lfMap in leadFrameMaps)
+            {
+                row++;
+                markWorksheet.Cells[row, 1].Value = lfMap.LeadFrameId;
+
+                for (int x = 0; x < lfMap.SumOfXDies; x++)
+                {
+                    markWorksheet.Cells[row, 3 + x].Value = x + 1;
+                }
+
+                int y = 0;
+                foreach (DieRow dieRow in lfMap.Rows)
+                {
+                    row++;
+                    markWorksheet.Cells[row, 2].Value = ++y;
+
+                    foreach (Die die in dieRow.Dies)
+                    {
+                        markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
+
+                        switch (die.MarkStatus)
+                        {
+                            case Die.Mark.NA:
+                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                                break;
+                            case Die.Mark.Pass:
+                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+                                break;
+                            case Die.Mark.Fail:
+                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Magenta);
+                                break;
+                        }
+
+                        if (die.BinCode.Id != 0 && die.MarkStatus == Die.Mark.NA)
+                        {
+                            markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                        }
+                    }
+                }
+
+                row++;
+            }
+
+            markWorksheet.Cells.AutoFitColumns();
         }
     }
 }
