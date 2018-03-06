@@ -279,6 +279,8 @@ namespace LotReport.Models
                         }
                         else
                         {
+                            die.Modified = true;
+
                             if (int.TryParse(modifiedBinCode.Value, out int modifiedBinCodeId))
                             {
                                 die.BinCode.Id = modifiedBinCodeId;
