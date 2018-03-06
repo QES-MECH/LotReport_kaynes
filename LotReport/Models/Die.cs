@@ -6,12 +6,13 @@ namespace LotReport.Models
 {
     public class Die : PropertyChangedBase
     {
+        private Point _coordinate;
         private BinCode _binCode;
-        private Mark _markStatus;
         private string _diePath;
         private string _markPath;
+        private Mark _markStatus;
         private Brush _color;
-        private Point _coordinate;
+        private bool _modified;
 
         public Die()
         {
@@ -25,40 +26,20 @@ namespace LotReport.Models
             Fail
         }
 
-        public BinCode BinCode
-        {
-            get => _binCode;
-            set => SetProperty(ref _binCode, value);
-        }
+        public Point Coordinate { get => _coordinate; set => SetProperty(ref _coordinate, value); }
 
-        public Mark MarkStatus
-        {
-            get => _markStatus;
-            set => SetProperty(ref _markStatus, value);
-        }
+        public BinCode BinCode { get => _binCode; set => SetProperty(ref _binCode, value); }
 
-        public string DiePath
-        {
-            get => _diePath;
-            set => SetProperty(ref _diePath, value);
-        }
+        public string DiePath { get => _diePath; set => SetProperty(ref _diePath, value); }
 
-        public string MarkPath
-        {
-            get => _markPath;
-            set => SetProperty(ref _markPath, value);
-        }
+        public string MarkPath { get => _markPath; set => SetProperty(ref _markPath, value); }
 
-        public Brush Color
-        {
-            get => _color;
-            set => SetProperty(ref _color, value);
-        }
+        public Mark MarkStatus { get => _markStatus; set => SetProperty(ref _markStatus, value); }
 
-        public Point Coordinate
-        {
-            get => _coordinate;
-            set => SetProperty(ref _coordinate, value);
-        }
+        public Brush Color { get => _color; set => SetProperty(ref _color, value); }
+
+        public bool Modified { get => _modified; set => SetProperty(ref _modified, value); }
+
+        public bool Reviewed { get; set; }
     }
 }
