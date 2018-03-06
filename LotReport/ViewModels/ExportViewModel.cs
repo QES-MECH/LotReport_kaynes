@@ -235,49 +235,49 @@ namespace LotReport.ViewModels
                 leadFrameMaps.Add(leadFrameMap);
             }
 
-            int row = 9;
-
+            int startingRow = 9;
             foreach (var lfMap in leadFrameMaps)
             {
-                row++;
-                mappingWorksheet.Cells[row, 1].Value = lfMap.LeadFrameId;
+                startingRow++;
+                mappingWorksheet.Cells[startingRow, 1].Value = lfMap.LeadFrameId;
 
                 for (int x = 0; x < lfMap.SumOfXDies; x++)
                 {
-                    mappingWorksheet.Cells[row, 3 + x].Value = x + 1;
+                    mappingWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
                 }
 
+                int startingColumn = 2;
                 int y = 0;
                 foreach (DieRow dieRow in lfMap.Rows)
                 {
-                    row++;
-                    mappingWorksheet.Cells[row, 2].Value = ++y;
+                    startingRow++;
+                    mappingWorksheet.Cells[startingRow, startingColumn].Value = ++y;
 
                     foreach (Die die in dieRow.Dies)
                     {
-                        mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                         if (die.BinCode.Id == 0)
                         {
-                            mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
                         }
                         else
                         {
-                            mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Red);
                         }
 
                         if (die.Modified)
                         {
                             if (die.BinCode.Id == 0)
                             {
-                                mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
                             }
                         }
                     }
                 }
 
-                row++;
+                startingRow++;
             }
 
             mappingWorksheet.Cells.AutoFitColumns();
@@ -318,50 +318,50 @@ namespace LotReport.ViewModels
                 leadFrameMaps.Add(leadFrameMap);
             }
 
-            int row = 10;
-
+            int startingRow = 10;
             foreach (var lfMap in leadFrameMaps)
             {
-                row++;
-                markWorksheet.Cells[row, 1].Value = lfMap.LeadFrameId;
+                startingRow++;
+                markWorksheet.Cells[startingRow, 1].Value = lfMap.LeadFrameId;
 
                 for (int x = 0; x < lfMap.SumOfXDies; x++)
                 {
-                    markWorksheet.Cells[row, 3 + x].Value = x + 1;
+                    markWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
                 }
 
+                int startingColumn = 2;
                 int y = 0;
                 foreach (DieRow dieRow in lfMap.Rows)
                 {
-                    row++;
-                    markWorksheet.Cells[row, 2].Value = ++y;
+                    startingRow++;
+                    markWorksheet.Cells[startingRow, startingColumn].Value = ++y;
 
                     foreach (Die die in dieRow.Dies)
                     {
-                        markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                         switch (die.MarkStatus)
                         {
                             case Die.Mark.NA:
-                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                                markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
                                 break;
                             case Die.Mark.Pass:
-                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
+                                markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Cyan);
                                 break;
                             case Die.Mark.Fail:
-                                markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Magenta);
+                                markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Magenta);
                                 break;
                         }
 
                         if (die.BinCode.Id != 0 && die.MarkStatus == Die.Mark.NA)
                         {
-                            markWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                            markWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
                         }
                     }
                 }
 
-                row++;
+                startingRow++;
             }
 
             markWorksheet.Cells.AutoFitColumns();
