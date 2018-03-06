@@ -67,6 +67,8 @@ namespace LotReport.ViewModels
 
         public RelayCommand SettingsCommand { get; private set; }
 
+        public RelayCommand RegenerateSummaryCommand { get; private set; }
+
         public RelayCommand UpdateSelectedLotCommand { get; private set; }
 
         public RelayCommand GenerateMapCommand { get; private set; }
@@ -125,6 +127,20 @@ namespace LotReport.ViewModels
 
             SettingsCommand = new RelayCommand(
                 param => SettingsWindow.ShowDialog<SettingsView>(new SettingsViewModel()));
+
+            RegenerateSummaryCommand = new RelayCommand(
+                param =>
+                {
+                    if (param is LotData lotData)
+                    {
+                        lotData.GenerateSummary();
+                        lotData.SaveToFile(lotData.FileInfo.FullName);
+                    }
+                },
+                param =>
+                {
+                    return SelectedLot != null;
+                });
 
             UpdateSelectedLotCommand = new RelayCommand(
                 param =>
