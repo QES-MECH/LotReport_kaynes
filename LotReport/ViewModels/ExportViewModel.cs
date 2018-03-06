@@ -239,7 +239,8 @@ namespace LotReport.ViewModels
             foreach (var lfMap in leadFrameMaps)
             {
                 startingRow++;
-                mappingWorksheet.Cells[startingRow, 1].Value = lfMap.LeadFrameId;
+                int headerRow = startingRow;
+                mappingWorksheet.Cells[headerRow, 1].Value = lfMap.LeadFrameId;
 
                 for (int x = 0; x < lfMap.SumOfXDies; x++)
                 {
@@ -247,6 +248,7 @@ namespace LotReport.ViewModels
                 }
 
                 int startingColumn = 2;
+                int imageStartingColumn = startingColumn + lfMap.SumOfXDies;
                 int y = 0;
                 foreach (DieRow dieRow in lfMap.Rows)
                 {
@@ -255,6 +257,23 @@ namespace LotReport.ViewModels
 
                     foreach (Die die in dieRow.Dies)
                     {
+                        try
+                        {
+                            if (die.BinCode.Id != 0)
+                            {
+                                imageStartingColumn += 2;
+                                mappingWorksheet.Cells[headerRow, imageStartingColumn].Value = die.Coordinate;
+                                Image image = Image.FromFile(die.DiePath);
+                                var pic = mappingWorksheet.Drawings.AddPicture(string.Format("{0}-{1}", lfMap.LeadFrameId, die.Coordinate), image);
+                                pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
+                                pic.SetSize(6);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Failed to attach Image to Excel file. {0}", e.Message);
+                        }
+
                         mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
