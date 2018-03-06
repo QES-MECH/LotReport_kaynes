@@ -9,6 +9,7 @@ using Framework.MVVM;
 using LotReport.Models;
 using Microsoft.Win32;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace LotReport.ViewModels
 {
@@ -63,7 +64,9 @@ namespace LotReport.ViewModels
             using (var package = new ExcelPackage(excelFile))
             {
                 GenerateSummary(LeadFrameMap.Type.Modified, lotData, package);
+                GenerateMapping(LeadFrameMap.Type.Modified, lotData, package);
                 GenerateSummary(LeadFrameMap.Type.Vision, lotData, package);
+                GenerateMapping(LeadFrameMap.Type.Vision, lotData, package);
                 package.Save();
             }
         }
@@ -175,8 +178,108 @@ namespace LotReport.ViewModels
                     break;
             }
 
-            summaryWorksheet.Cells["B1:B100"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Left;
+            summaryWorksheet.Cells["B1:B100"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             summaryWorksheet.Cells.AutoFitColumns();
+        }
+
+        private void GenerateMapping(LeadFrameMap.Type type, LotData lotData, ExcelPackage package)
+        {
+            ExcelWorksheet mappingWorksheet = null;
+
+            switch (type)
+            {
+                case LeadFrameMap.Type.Vision:
+                    mappingWorksheet = package.Workbook.Worksheets.Add("Machine Mapping");
+                    break;
+                case LeadFrameMap.Type.Modified:
+                    mappingWorksheet = package.Workbook.Worksheets.Add("Operator Mapping");
+                    break;
+            }
+
+            mappingWorksheet.Cells["A1"].Value = "Machine ID";
+            mappingWorksheet.Cells["B1"].Value = lotData.MachineId;
+            mappingWorksheet.Cells["A2"].Value = "Lot ID";
+            mappingWorksheet.Cells["B2"].Value = lotData.LotId;
+            mappingWorksheet.Cells["A3"].Value = "Operator";
+            mappingWorksheet.Cells["B3"].Value = lotData.OperatorId;
+            mappingWorksheet.Cells["A4"].Value = "Recipe";
+            mappingWorksheet.Cells["B4"].Value = lotData.RecipeName;
+
+            mappingWorksheet.Cells["A6"].Value = "Pass";
+            mappingWorksheet.Cells["B6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            mappingWorksheet.Cells["B6"].Style.Fill.BackgroundColor.SetColor(Color.Green);
+            mappingWorksheet.Cells["A7"].Value = "Fail";
+            mappingWorksheet.Cells["B7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            mappingWorksheet.Cells["B7"].Style.Fill.BackgroundColor.SetColor(Color.Red);
+            mappingWorksheet.Cells["A8"].Value = "False Call";
+            mappingWorksheet.Cells["B8"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            mappingWorksheet.Cells["B8"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+
+            string[] leadFramePaths = Directory.GetFiles(lotData.FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
+            List<LeadFrameMap> leadFrameMaps = new List<LeadFrameMap>();
+
+            foreach (string lfPath in leadFramePaths)
+            {
+                LeadFrameMap leadFrameMap = null;
+                switch (type)
+                {
+                    case LeadFrameMap.Type.Vision:
+                        leadFrameMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Vision);
+                        break;
+                    case LeadFrameMap.Type.Modified:
+                        leadFrameMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Modified);
+                        break;
+                }
+
+                leadFrameMaps.Add(leadFrameMap);
+            }
+
+            int row = 9;
+
+            foreach (var lfMap in leadFrameMaps)
+            {
+                row++;
+                mappingWorksheet.Cells[row, 1].Value = lfMap.LeadFrameId;
+
+                for (int x = 0; x < lfMap.SumOfXDies; x++)
+                {
+                    mappingWorksheet.Cells[row, 3 + x].Value = x + 1;
+                }
+
+                int y = 0;
+                foreach (DieRow dieRow in lfMap.Rows)
+                {
+                    row++;
+                    mappingWorksheet.Cells[row, 2].Value = ++y;
+
+                    foreach (Die die in dieRow.Dies)
+                    {
+                        mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
+
+                        if (die.BinCode.Id == 0)
+                        {
+                            mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                        }
+                        else
+                        {
+                            mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        }
+
+                        if (die.Modified)
+                        {
+                            if (die.BinCode.Id == 0)
+                            {
+                                mappingWorksheet.Cells[row, 2 + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                            }
+                        }
+                    }
+                }
+
+                row++;
+            }
+
+            mappingWorksheet.Cells.AutoFitColumns();
         }
     }
 }
