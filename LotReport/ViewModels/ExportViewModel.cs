@@ -263,10 +263,12 @@ namespace LotReport.ViewModels
                             {
                                 imageStartingColumn += 2;
                                 mappingWorksheet.Cells[headerRow, imageStartingColumn].Value = die.Coordinate;
-                                Image image = Image.FromFile(die.DiePath);
-                                var pic = mappingWorksheet.Drawings.AddPicture(string.Format("{0}-{1}", lfMap.LeadFrameId, die.Coordinate), image);
-                                pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
-                                pic.SetSize(6);
+                                using (Image image = Image.FromFile(die.DiePath))
+                                {
+                                    var pic = mappingWorksheet.Drawings.AddPicture(string.Format("{0}-{1}", lfMap.LeadFrameId, die.Coordinate), image);
+                                    pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
+                                    pic.SetSize(6);
+                                }
                             }
                         }
                         catch (Exception e)
@@ -365,10 +367,13 @@ namespace LotReport.ViewModels
                             {
                                 imageStartingColumn += 2;
                                 markWorksheet.Cells[headerRow, imageStartingColumn].Value = die.Coordinate;
-                                Image image = Image.FromFile(die.MarkPath);
-                                var pic = markWorksheet.Drawings.AddPicture(string.Format("{0}-{1}", lfMap.LeadFrameId, die.Coordinate), image);
-                                pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
-                                pic.SetSize(6);
+                                using (Image image = Image.FromFile(die.MarkPath))
+                                {
+                                    var pic = markWorksheet.Drawings.AddPicture(string.Format("{0}-{1}", lfMap.LeadFrameId, die.Coordinate), image);
+                                    pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
+                                    pic.SetSize(6);
+                                }
+
                             }
                         }
                         catch (Exception e)
