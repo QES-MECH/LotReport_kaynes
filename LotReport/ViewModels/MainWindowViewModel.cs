@@ -30,6 +30,7 @@ namespace LotReport.ViewModels
         public MainWindowViewModel()
         {
             LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
+            LotDataView.SortDescriptions.Add(new SortDescription("StartTime", ListSortDirection.Descending));
             WireCommands();
         }
 
