@@ -373,7 +373,6 @@ namespace LotReport.ViewModels
                                     pic.SetPosition(headerRow, 0, imageStartingColumn - 1, 0);
                                     pic.SetSize(6);
                                 }
-
                             }
                         }
                         catch (Exception e)
