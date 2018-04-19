@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Framework.MVVM;
 using LotReport.Models;
 using Microsoft.Win32;
@@ -21,6 +22,8 @@ namespace LotReport.ViewModels
         {
             WireCommands();
         }
+
+        public IMessageBoxService MessageBoxService { get; set; } = new MessageBoxService();
 
         public string ExportPath { get => _exportPath; set => SetProperty(ref _exportPath, value); }
 
@@ -58,7 +61,15 @@ namespace LotReport.ViewModels
             var excelFile = new FileInfo(excelPath);
             if (excelFile.Exists)
             {
-                excelFile.Delete();
+                try
+                {
+                    excelFile.Delete();
+                }
+                catch (Exception e)
+                {
+                    ShowMessage(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
 
             using (var package = new ExcelPackage(excelFile))
@@ -369,6 +380,21 @@ namespace LotReport.ViewModels
             }
 
             markWorksheet.Cells.AutoFitColumns();
+        }
+
+        private bool ShowMessage(string text, string caption, MessageBoxButton button, MessageBoxImage image)
+        {
+            if (Application.Current.Dispatcher.CheckAccess())
+            {
+                return MessageBoxService.Show(text, caption, button, image);
+            }
+            else
+            {
+                bool result = false;
+                Application.Current.Dispatcher.Invoke(() =>
+                    result = MessageBoxService.Show(text, caption, button, image));
+                return result;
+            }
         }
     }
 }
