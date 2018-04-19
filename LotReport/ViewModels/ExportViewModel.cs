@@ -138,18 +138,18 @@ namespace LotReport.ViewModels
             summaryWorksheet.Cells["B12"].Value = lotData.LeadFrameYUnits;
             summaryWorksheet.Cells["B13"].Value = lotData.StartTime.ToString();
             summaryWorksheet.Cells["B14"].Value = lotData.EndTime.ToString();
-            summaryWorksheet.Cells["B15"].Value = lotData.UPH;
+            summaryWorksheet.Cells["B15"].Value = Math.Round(lotData.UPH, 3);
             summaryWorksheet.Cells["B16"].Value = lotData.LeadFramesInspected;
             summaryWorksheet.Cells["B17"].Value = lotData.UnitsPassed;
             summaryWorksheet.Cells["B18"].Value = lotData.UnitsRejected;
             summaryWorksheet.Cells["B19"].Value = lotData.UnitsOverRejected;
-            summaryWorksheet.Cells["B20"].Value = lotData.UnitsYieldPercentage;
-            summaryWorksheet.Cells["B21"].Value = lotData.OverRejectPercentage;
+            summaryWorksheet.Cells["B20"].Value = Math.Round(lotData.UnitsYieldPercentage, 3);
+            summaryWorksheet.Cells["B21"].Value = Math.Round(lotData.OverRejectPercentage, 3);
             summaryWorksheet.Cells["B22"].Value = lotData.MarkedUnits;
             summaryWorksheet.Cells["B23"].Value = lotData.UnmarkedUnits;
             summaryWorksheet.Cells["B24"].Value = lotData.MarkedUnitsPassed;
             summaryWorksheet.Cells["B25"].Value = lotData.MarkedUnitsRejected;
-            summaryWorksheet.Cells["B26"].Value = lotData.MarkedUnitsYieldPercentage;
+            summaryWorksheet.Cells["B26"].Value = Math.Round(lotData.MarkedUnitsYieldPercentage, 3);
 
             BinCodeRepository repository = new BinCodeRepository();
             repository.LoadFromFile();
