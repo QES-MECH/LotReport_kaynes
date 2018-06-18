@@ -10,6 +10,7 @@ namespace LotReport.Models
 {
     public class LeadFrameMap
     {
+        private static Brush _black = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
         private static Brush _red = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3333"));
         private static Brush _green = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33FF33"));
         private static Brush _yellow = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEA00"));
@@ -173,6 +174,12 @@ namespace LotReport.Models
             return true;
         }
 
+        public double CalculateRejectionPercentage()
+        {
+            double rejectedDieCount = Dies.Count(d => d.BinCode.Id != 0);
+            return rejectedDieCount / Dies.Count * 100d;
+        }
+
         private void GenerateRows(int sumOfXDies, int sumOfYDies)
         {
             for (int y = 1; y <= sumOfYDies; y++)
@@ -230,54 +237,11 @@ namespace LotReport.Models
                         .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
                         .FirstOrDefault();
 
-                    XElement visionBinCode = dieElement.Element("BinCode").Element("Vision");
-
-                    if (type == Type.Vision)
-                    {
-                        if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
-                        {
-                            die.BinCode.Id = visionBinCodeId;
-                        }
-                        else
-                        {
-                            die.BinCode.Id = 999;
-                        }
-
-                        if (die.BinCode.Id == 0)
-                        {
-                            die.Color = _green;
-                        }
-                        else
-                        {
-                            die.Color = _red;
-                        }
-                    }
-
                     if (type == Type.Modified)
                     {
                         XElement modifiedBinCode = dieElement.Element("BinCode").Element("Modified");
 
-                        if (modifiedBinCode == null)
-                        {
-                            if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
-                            {
-                                die.BinCode.Id = visionBinCodeId;
-                            }
-                            else
-                            {
-                                die.BinCode.Id = 999;
-                            }
-
-                            if (die.BinCode.Id == 0)
-                            {
-                                die.Color = _green;
-                            }
-                            else
-                            {
-                                die.Color = _red;
-                            }
-                        }
-                        else
+                        if (modifiedBinCode != null)
                         {
                             die.Modified = true;
 
@@ -290,14 +254,45 @@ namespace LotReport.Models
                                 die.BinCode.Id = 999;
                             }
 
-                            if (die.BinCode.Id == 0)
+                            switch (die.BinCode.Id)
                             {
-                                die.Color = _yellow;
+                                case -1:
+                                    die.Color = _black;
+                                    break;
+                                case 0:
+                                    die.Color = _yellow;
+                                    break;
+                                default:
+                                    die.Color = _red;
+                                    break;
                             }
-                            else
-                            {
+                        }
+                    }
+
+                    if (!die.Modified)
+                    {
+                        XElement visionBinCode = dieElement.Element("BinCode").Element("Vision");
+
+                        if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
+                        {
+                            die.BinCode.Id = visionBinCodeId;
+                        }
+                        else
+                        {
+                            die.BinCode.Id = 999;
+                        }
+
+                        switch (die.BinCode.Id)
+                        {
+                            case -1:
+                                die.Color = _black;
+                                break;
+                            case 0:
+                                die.Color = _green;
+                                break;
+                            default:
                                 die.Color = _red;
-                            }
+                                break;
                         }
                     }
 
