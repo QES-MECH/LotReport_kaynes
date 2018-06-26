@@ -165,11 +165,15 @@ namespace LotReport.ViewModels
 
                         foreach (var reject in selectedLotData.ModifiedBinCount)
                         {
-                            BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
-
-                            if (rejectCode?.Id != 0)
+                            // Do not display inspection excluded rows.
+                            if (reject.Key > -1)
                             {
-                                rejectCount.Add(rejectCode, reject.Value);
+                                BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
+
+                                if (rejectCode?.Id != 0)
+                                {
+                                    rejectCount.Add(rejectCode, reject.Value);
+                                }
                             }
                         }
 
