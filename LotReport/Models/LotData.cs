@@ -310,6 +310,9 @@ namespace LotReport.Models
                 modifiedDies.AddRange(modifiedLFMap.Dies);
             }
 
+            visionDies.RemoveAll(die => die.BinCode.Id == -1);
+            modifiedDies.RemoveAll(die => die.BinCode.Id == -1);
+
             LeadFramesInspected = leadFramePaths.Length;
             UnitsPassed = modifiedDies.Count(die => die.BinCode.Id == 0);
             UnitsRejected = modifiedDies.Count - UnitsPassed;
