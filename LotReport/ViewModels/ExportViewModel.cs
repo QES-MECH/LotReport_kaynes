@@ -226,6 +226,9 @@ namespace LotReport.ViewModels
             mappingWorksheet.Cells["A8"].Value = "False Call";
             mappingWorksheet.Cells["B8"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             mappingWorksheet.Cells["B8"].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+            mappingWorksheet.Cells["A9"].Value = "Dummy";
+            mappingWorksheet.Cells["B9"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            mappingWorksheet.Cells["B9"].Style.Fill.BackgroundColor.SetColor(Color.Black);
 
             string[] leadFramePaths = Directory.GetFiles(lotData.FileInfo.Directory.FullName, "*.xml", SearchOption.AllDirectories);
             List<LeadFrameMap> leadFrameMaps = new List<LeadFrameMap>();
@@ -246,7 +249,7 @@ namespace LotReport.ViewModels
                 leadFrameMaps.Add(leadFrameMap);
             }
 
-            int startingRow = 9;
+            int startingRow = 10;
             foreach (var lfMap in leadFrameMaps)
             {
                 startingRow++;
@@ -271,7 +274,11 @@ namespace LotReport.ViewModels
                         mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
-                        if (die.BinCode.Id == 0)
+                        if (die.BinCode.Id == -1)
+                        {
+                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Black);
+                        }
+                        else if (die.BinCode.Id == 0)
                         {
                             mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
                         }
