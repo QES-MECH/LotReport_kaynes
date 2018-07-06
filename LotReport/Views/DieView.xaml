@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LotReport.Views"
+        xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:DieViewModel}"
         Title="Die" Height="720" Width="1280"
         WindowState="Maximized"
         Loaded="Window_Loaded">
@@ -50,6 +52,10 @@
                                     <TextBlock Grid.Column="0" Text="Mark" Margin="5,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                     <CheckBox Grid.Column="1" IsChecked="{Binding CurrentRejectCode.Mark}" IsEnabled="False" VerticalAlignment="Center"/>
                                 </Grid>
+                                <WrapPanel HorizontalAlignment="Center" Margin="3">
+                                    <Button Content="Die Image" Command="{Binding LoadImageCommand}" CommandParameter="{Binding Die.DiePath}" Width="75" Height="23" Margin="3"/>
+                                    <Button Content="Mark Image" Command="{Binding LoadImageCommand}" CommandParameter="{Binding Die.MarkPath}" Width="75" Height="23" Margin="3"/>
+                                </WrapPanel>
                             </StackPanel>
                         </Grid>
                     </GroupBox>

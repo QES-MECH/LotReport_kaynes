@@ -27,7 +27,7 @@ namespace LotReport.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DieViewModel vm = this.DataContext as DieViewModel;
+            DieViewModel vm = DataContext as DieViewModel;
             if (vm == null)
             {
                 return;
