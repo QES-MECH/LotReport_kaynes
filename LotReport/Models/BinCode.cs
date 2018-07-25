@@ -15,5 +15,7 @@ namespace LotReport.Models
         public string Description { get; set; }
 
         public bool Mark { get; set; }
+
+        public bool SkipReview { get; set; }
     }
 }

@@ -54,9 +54,11 @@
                             <DataGridTextColumn Header="UPH" Binding="{Binding UPH, StringFormat={}{0:0.000}}"/>
                             <DataGridTextColumn Header="LFs Inspected" Binding="{Binding LeadFramesInspected}"/>
                             <DataGridTextColumn Header="Units Passed" Binding="{Binding UnitsPassed}"/>
+                            <DataGridTextColumn Header="Units Skipped" Binding="{Binding UnitsSkipped}"/>
                             <DataGridTextColumn Header="Units Rejected" Binding="{Binding UnitsRejected}"/>
                             <DataGridTextColumn Header="Units Over-Rejected" Binding="{Binding UnitsOverRejected}"/>
                             <DataGridTextColumn Header="Units Yield(%)" Binding="{Binding UnitsYieldPercentage, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn Header="Units Yield 2(%)" Binding="{Binding UnitsYieldPercentage2, StringFormat={}{0:0.000}}"/>
                             <DataGridTextColumn Header="Over-Reject(%)" Binding="{Binding OverRejectPercentage, StringFormat={}{0:0.000}}"/>
                             <DataGridTextColumn Header="Marked Units" Binding="{Binding MarkedUnits}"/>
                             <DataGridTextColumn Header="Un-marked Units" Binding="{Binding UnmarkedUnits}"/>
@@ -95,9 +97,11 @@
                                     <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH, StringFormat={}{0:0.000}}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="LFs Inspected" Value="{Binding SelectedLot.LeadFramesInspected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Passed" Value="{Binding SelectedLot.UnitsPassed}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Skipped" Value="{Binding SelectedLot.UnitsSkipped}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Rejected" Value="{Binding SelectedLot.UnitsRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units False-Called" Value="{Binding SelectedLot.UnitsOverRejected}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Units Yield (%)" Value="{Binding SelectedLot.UnitsYieldPercentage, StringFormat={}{0:0.000}}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="Units Yield 2 (%)" Value="{Binding SelectedLot.UnitsYieldPercentage2, StringFormat={}{0:0.000}}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="False-Called (%)" Value="{Binding SelectedLot.OverRejectPercentage, StringFormat={}{0:0.000}}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Marked Units" Value="{Binding SelectedLot.MarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Unmarked Units" Value="{Binding SelectedLot.UnmarkedUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>

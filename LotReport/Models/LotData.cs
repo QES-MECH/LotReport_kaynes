@@ -53,11 +53,15 @@ namespace LotReport.Models
 
         public int UnitsPassed { get; set; }
 
+        public int UnitsSkipped { get; set; }
+
         public int UnitsRejected { get; set; }
 
         public int UnitsOverRejected { get; set; }
 
         public double UnitsYieldPercentage { get; set; }
+
+        public double UnitsYieldPercentage2 { get; set; }
 
         public double OverRejectPercentage { get; set; }
 
@@ -144,6 +148,11 @@ namespace LotReport.Models
                 UnitsPassed = unitsPassed;
             }
 
+            if (int.TryParse(summaryElement.Element(nameof(UnitsSkipped))?.Value, out int unitsSkipped))
+            {
+                UnitsSkipped = unitsSkipped;
+            }
+
             if (int.TryParse(summaryElement.Element("UnitsRejected")?.Value, out int unitsRejected))
             {
                 UnitsRejected = unitsRejected;
@@ -157,6 +166,11 @@ namespace LotReport.Models
             if (double.TryParse(summaryElement.Element("UnitsYieldPercentage")?.Value, out double unitsYieldPercentage))
             {
                 UnitsYieldPercentage = unitsYieldPercentage;
+            }
+
+            if (double.TryParse(summaryElement.Element(nameof(UnitsYieldPercentage2))?.Value, out double unitsYieldPercentage2))
+            {
+                UnitsYieldPercentage2 = unitsYieldPercentage2;
             }
 
             if (double.TryParse(summaryElement.Element("OverRejectPercentage")?.Value, out double overRejectPercentage))
@@ -253,9 +267,11 @@ namespace LotReport.Models
                 writer.WriteElementString("LeadFrames", LeadFrames.ToString());
                 writer.WriteElementString("LeadFramesInspected", LeadFramesInspected.ToString());
                 writer.WriteElementString("UnitsPassed", UnitsPassed.ToString());
+                writer.WriteElementString(nameof(UnitsSkipped), UnitsSkipped.ToString());
                 writer.WriteElementString("UnitsRejected", UnitsRejected.ToString());
                 writer.WriteElementString("UnitsOverRejected", UnitsOverRejected.ToString());
                 writer.WriteElementString("UnitsYieldPercentage", UnitsYieldPercentage.ToString());
+                writer.WriteElementString(nameof(UnitsYieldPercentage2), UnitsYieldPercentage2.ToString());
                 writer.WriteElementString("OverRejectPercentage", OverRejectPercentage.ToString());
                 writer.WriteElementString("MarkedUnits", MarkedUnits.ToString());
                 writer.WriteElementString("UnmarkedUnits", UnmarkedUnits.ToString());
@@ -318,6 +334,12 @@ namespace LotReport.Models
             UnitsRejected = modifiedDies.Count - UnitsPassed;
             UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.BinCode.Id == 0);
             UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count * 100;
+
+            UnitsSkipped = modifiedDies.Count(die => die.BinCode.Id != 0 && die.BinCode.SkipReview);
+            double unitsPassed2 = (double)UnitsPassed - UnitsSkipped;
+            double totalUnits2 = (double)modifiedDies.Count - UnitsSkipped;
+            UnitsYieldPercentage2 = unitsPassed2 / totalUnits2 * 100;
+
             OverRejectPercentage = (double)UnitsOverRejected / modifiedDies.Count * 100;
 
             MarkedUnits = modifiedDies.Count(die => die.MarkStatus != Die.Mark.NA);

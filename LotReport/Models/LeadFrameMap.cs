@@ -324,6 +324,7 @@ namespace LotReport.Models
                 die.BinCode.Value = sourceBinCode.Value;
                 die.BinCode.Description = sourceBinCode.Description;
                 die.BinCode.Mark = sourceBinCode.Mark;
+                die.BinCode.SkipReview = sourceBinCode.SkipReview;
             }
         }
 

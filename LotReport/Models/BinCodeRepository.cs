@@ -40,6 +40,11 @@ namespace LotReport.Models
                     binCode.Mark = mark;
                 }
 
+                if (bool.TryParse(binCodeElement.Element(nameof(binCode.SkipReview))?.Value, out bool skipReview))
+                {
+                    binCode.SkipReview = skipReview;
+                }
+
                 BinCodes.Add(binCode);
             }
         }
@@ -61,6 +66,7 @@ namespace LotReport.Models
                 element.Add(new XElement("Value", binCode.Value));
                 element.Add(new XElement("Description", binCode.Description));
                 element.Add(new XElement("Mark", binCode.Mark));
+                element.Add(new XElement(nameof(binCode.SkipReview), binCode.SkipReview));
 
                 // Add BinCode Element to current XDocment
                 document.Root.Add(element);
