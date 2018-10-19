@@ -74,7 +74,9 @@ namespace LotReport.ViewModels
 
         public RelayCommand GenerateMapCommand { get; private set; }
 
-        public RelayCommand DieCommand { get; private set; }
+        public RelayCommand MachineDieCommand { get; private set; }
+
+        public RelayCommand ModifiedDieCommand { get; private set; }
 
         public RelayCommand PreviousLFCommand { get; private set; }
 
@@ -208,7 +210,7 @@ namespace LotReport.ViewModels
                     }
                 });
 
-            DieCommand = new RelayCommand(
+            MachineDieCommand = new RelayCommand(
                 param =>
                 {
                     Die selectedDie = param as Die;
@@ -218,10 +220,32 @@ namespace LotReport.ViewModels
                         return;
                     }
 
-                    DieViewModel vm = new DieViewModel();
-                    vm.Die = selectedDie;
+                    DieViewModel vm = new DieViewModel
+                    {
+                        Die = selectedDie,
+                        LeadFrameMap = LeadFrameMapMachine
+                    };
 
-                    this.DieWindow.ShowDialog<DieView>(vm);
+                    DieWindow.ShowDialog<DieView>(vm);
+                });
+
+            ModifiedDieCommand = new RelayCommand(
+                param =>
+                {
+                    Die selectedDie = param as Die;
+
+                    if (selectedDie == null)
+                    {
+                        return;
+                    }
+
+                    DieViewModel vm = new DieViewModel
+                    {
+                        Die = selectedDie,
+                        LeadFrameMap = LeadFrameMapOperator
+                    };
+
+                    DieWindow.ShowDialog<DieView>(vm);
                 });
 
             PreviousLFCommand = new RelayCommand(

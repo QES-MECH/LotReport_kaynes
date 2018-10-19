@@ -84,6 +84,7 @@
     <Compile Include="Models\LotData.cs" />
     <Compile Include="Models\BinCode.cs" />
     <Compile Include="Models\BinCodeRepository.cs" />
+    <Compile Include="Models\Origin.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />

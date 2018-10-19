@@ -140,7 +140,7 @@
                                         <r:LeadFrameMapControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        DoubleClickCell="{Binding DieCommand}"
+                                        DoubleClickCell="{Binding ModifiedDieCommand}"
                                         LeadFrameTable="{Binding LeadFrameMapOperator}"
                                         GridMaxWidth="{Binding ElementName=leadFrameMapOperatorGrid, Path=ActualWidth}"
                                         GridMaxHeight="{Binding ElementName=leadFrameMapOperatorGrid, Path=ActualHeight}"
@@ -166,7 +166,7 @@
                                         <r:LeadFrameMapControl
                                         HorizontalContentAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        DoubleClickCell="{Binding DieCommand}"
+                                        DoubleClickCell="{Binding MachineDieCommand}"
                                         LeadFrameTable="{Binding LeadFrameMapMachine}"
                                         GridMaxWidth="{Binding ElementName=leadFrameMapMachineGrid, Path=ActualWidth}"
                                         GridMaxHeight="{Binding ElementName=leadFrameMapMachineGrid, Path=ActualHeight}"

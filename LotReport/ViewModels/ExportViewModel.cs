@@ -258,7 +258,19 @@ namespace LotReport.ViewModels
 
                 for (int x = 0; x < lfMap.SumOfXDies; x++)
                 {
-                    mappingWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
+                    switch (lfMap.MapOrigin)
+                    {
+                        case Origin.Top_Left:
+                        case Origin.Bottom_Left:
+                            mappingWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
+                            break;
+                        case Origin.Top_Right:
+                        case Origin.Bottom_Right:
+                            mappingWorksheet.Cells[startingRow, 3 + x].Value = lfMap.SumOfXDies - x;
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 int startingColumn = 2;
@@ -267,7 +279,20 @@ namespace LotReport.ViewModels
                 foreach (DieRow dieRow in lfMap.Rows)
                 {
                     startingRow++;
-                    mappingWorksheet.Cells[startingRow, startingColumn].Value = ++y;
+
+                    switch (lfMap.MapOrigin)
+                    {
+                        case Origin.Top_Left:
+                        case Origin.Top_Right:
+                            mappingWorksheet.Cells[startingRow, startingColumn].Value = ++y;
+                            break;
+                        case Origin.Bottom_Left:
+                        case Origin.Bottom_Right:
+                            mappingWorksheet.Cells[startingRow, startingColumn].Value = lfMap.SumOfYDies - y++;
+                            break;
+                        default:
+                            break;
+                    }
 
                     foreach (Die die in dieRow.Dies)
                     {
@@ -347,7 +372,19 @@ namespace LotReport.ViewModels
 
                 for (int x = 0; x < lfMap.SumOfXDies; x++)
                 {
-                    markWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
+                    switch (lfMap.MapOrigin)
+                    {
+                        case Origin.Top_Left:
+                        case Origin.Bottom_Left:
+                            markWorksheet.Cells[startingRow, 3 + x].Value = x + 1;
+                            break;
+                        case Origin.Top_Right:
+                        case Origin.Bottom_Right:
+                            markWorksheet.Cells[startingRow, 3 + x].Value = lfMap.SumOfXDies - x;
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 int startingColumn = 2;
@@ -356,7 +393,20 @@ namespace LotReport.ViewModels
                 foreach (DieRow dieRow in lfMap.Rows)
                 {
                     startingRow++;
-                    markWorksheet.Cells[startingRow, startingColumn].Value = ++y;
+
+                    switch (lfMap.MapOrigin)
+                    {
+                        case Origin.Top_Left:
+                        case Origin.Top_Right:
+                            markWorksheet.Cells[startingRow, startingColumn].Value = ++y;
+                            break;
+                        case Origin.Bottom_Left:
+                        case Origin.Bottom_Right:
+                            markWorksheet.Cells[startingRow, startingColumn].Value = lfMap.SumOfYDies - y++;
+                            break;
+                        default:
+                            break;
+                    }
 
                     foreach (Die die in dieRow.Dies)
                     {

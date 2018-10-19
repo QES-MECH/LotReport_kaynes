@@ -37,7 +37,7 @@
                 <StackPanel Grid.Row="0">
                     <GroupBox Margin="5">
                         <GroupBox.Header>
-                            <TextBlock Text="{Binding Die.Coordinate, StringFormat='{}[{0}] Reject Code'}" FontWeight="Medium" FontSize="13"/>
+                            <TextBlock Text="{Binding MapCoordinate, StringFormat='{}[{0}] Reject Code'}" FontWeight="Medium" FontSize="13"/>
                         </GroupBox.Header>
                         <Grid>
                             <StackPanel>

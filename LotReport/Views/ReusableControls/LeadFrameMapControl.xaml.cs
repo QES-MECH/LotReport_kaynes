@@ -130,18 +130,29 @@ namespace LotReport.Views.ReusableControls
 
             _dataGridMap.Columns.Clear();
 
-            for (int x = 1; x <= LeadFrameTable.SumOfXDies; x++)
+            for (int x = 0; x < LeadFrameTable.SumOfXDies; x++)
             {
                 DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
-                templateColumn.Header = x.ToString("D2");
 
-                int dieIndex = x - 1;
+                switch (LeadFrameTable.MapOrigin)
+                {
+                    case Origin.Top_Left:
+                    case Origin.Bottom_Left:
+                        templateColumn.Header = (x + 1).ToString("D2");
+                        break;
+                    case Origin.Top_Right:
+                    case Origin.Bottom_Right:
+                        templateColumn.Header = (LeadFrameTable.SumOfXDies - x).ToString("D2");
+                        break;
+                    default:
+                        break;
+                }
 
                 var xamlString =
                     "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
-                        "<Grid Background=\"{Binding Dies[" + dieIndex + "].Color}\">" +
+                        "<Grid Background=\"{Binding Dies[" + x + "].Color}\">" +
                             "<TextBlock" +
-                            " Text=\"{Binding Dies[" + dieIndex + "].BinCode.Value}\"" +
+                            " Text=\"{Binding Dies[" + x + "].BinCode.Value}\"" +
                             " FontWeight=\"Bold\"" +
                             " Foreground=\"#212121\"" +
                             " HorizontalAlignment=\"Center\"" +
@@ -152,7 +163,6 @@ namespace LotReport.Views.ReusableControls
                     "</DataTemplate>";
 
                 XmlReader xr = XmlReader.Create(new StringReader(xamlString));
-
                 DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(xr);
                 templateColumn.CellTemplate = dataTemplate;
 
@@ -170,7 +180,19 @@ namespace LotReport.Views.ReusableControls
 
         private void DataGridMap_LoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString("D2");
+            switch (LeadFrameTable.MapOrigin)
+            {
+                case Origin.Top_Left:
+                case Origin.Top_Right:
+                    e.Row.Header = (e.Row.GetIndex() + 1).ToString("D2");
+                    break;
+                case Origin.Bottom_Left:
+                case Origin.Bottom_Right:
+                    e.Row.Header = (LeadFrameTable.SumOfYDies - e.Row.GetIndex()).ToString("D2");
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void DataGridMap_PreviewKeyUp(object sender, KeyEventArgs e)
@@ -195,7 +217,7 @@ namespace LotReport.Views.ReusableControls
                 return;
             }
 
-            status.Text = dieData.Coordinate.ToString();
+            status.Text = GetMapCoordinate(dieData).ToString();
             SelectedDie = dieData;
         }
 
@@ -208,7 +230,7 @@ namespace LotReport.Views.ReusableControls
                 return;
             }
 
-            status.Text = dieData.Coordinate.ToString();
+            status.Text = GetMapCoordinate(dieData).ToString();
             SelectedDie = dieData;
 
             if (DoubleClickCell != null)
@@ -239,6 +261,38 @@ namespace LotReport.Views.ReusableControls
             Die selectedDieData = dieRowData.Dies[columnIndex];
 
             return selectedDieData;
+        }
+
+        private Point GetMapCoordinate(Die dieData)
+        {
+            Point mapCoordinate = default(Point);
+            switch (LeadFrameTable.MapOrigin)
+            {
+                case Origin.Top_Left:
+                    mapCoordinate = new Point(
+                        dieData.Coordinate.X,
+                        dieData.Coordinate.Y);
+                    break;
+                case Origin.Top_Right:
+                    mapCoordinate = new Point(
+                        LeadFrameTable.SumOfXDies - dieData.Coordinate.X + 1,
+                        dieData.Coordinate.Y);
+                    break;
+                case Origin.Bottom_Left:
+                    mapCoordinate = new Point(
+                            dieData.Coordinate.X,
+                            LeadFrameTable.SumOfYDies - dieData.Coordinate.Y + 1);
+                    break;
+                case Origin.Bottom_Right:
+                    mapCoordinate = new Point(
+                            LeadFrameTable.SumOfXDies - dieData.Coordinate.X + 1,
+                            LeadFrameTable.SumOfYDies - dieData.Coordinate.Y + 1);
+                    break;
+                default:
+                    break;
+            }
+
+            return mapCoordinate;
         }
     }
 }

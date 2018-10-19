@@ -37,6 +37,8 @@ namespace LotReport.Models
 
         public int SumOfYDies { get; private set; }
 
+        public Origin MapOrigin { get; private set; }
+
         public List<DieRow> Rows { get; } = new List<DieRow>();
 
         public List<Die> Dies { get; private set; } = new List<Die>();
@@ -131,6 +133,41 @@ namespace LotReport.Models
             return true;
         }
 
+        public static void ClearMarkStatus(string xmlPath)
+        {
+            XDocument document = XDocument.Load(xmlPath);
+
+            string elementX = document.Root.Attribute("X").Value;
+            string elementY = document.Root.Attribute("Y").Value;
+            int.TryParse(elementX, out int sumOfXDies);
+            int.TryParse(elementY, out int sumOfYDies);
+
+            for (int x = 1; x <= sumOfXDies; x++)
+            {
+                for (int y = 1; y <= sumOfYDies; y++)
+                {
+                    Point coordinate = new Point(x, y);
+                    var dieElement = document
+                        .Root
+                        .Elements("Die")
+                        .Where(e => e.Attribute("Coordinate").Value == coordinate.ToString())
+                        .FirstOrDefault();
+
+                    if (dieElement != null)
+                    {
+                        var markElement = dieElement.Elements().SingleOrDefault(e => e.Name == "Mark");
+
+                        if (markElement != null)
+                        {
+                            markElement.Value = Die.Mark.NA.ToString();
+                        }
+                    }
+                }
+            }
+
+            document.Save(xmlPath);
+        }
+
         public bool SetDieBinCode(Die die, BinCode binCode)
         {
             XDocument doc = XDocument.Load(XmlPath);
@@ -209,6 +246,7 @@ namespace LotReport.Models
             XDocument doc = XDocument.Load(xmlPath);
             string elementX = doc.Root.Attribute("X").Value;
             string elementY = doc.Root.Attribute("Y").Value;
+            string elementMapOrigin = doc.Root.Attribute("MapOrigin")?.Value;
 
             if (int.TryParse(elementX, out int sumOfXDies))
             {
@@ -218,6 +256,11 @@ namespace LotReport.Models
             if (int.TryParse(elementY, out int sumOfYDies))
             {
                 SumOfYDies = sumOfYDies;
+            }
+
+            if (Enum.TryParse(elementMapOrigin, out Origin mapOrigin))
+            {
+                MapOrigin = mapOrigin;
             }
 
             for (int y = 1; y <= sumOfYDies; y++)

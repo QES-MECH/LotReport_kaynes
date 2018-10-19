@@ -24,9 +24,13 @@ namespace LotReport.ViewModels
 
         public IMessageBoxService MessageService { get; set; } = new MessageBoxService();
 
+        public LeadFrameMap LeadFrameMap { get; set; }
+
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
         public Die Die { get => _die; set => SetProperty(ref _die, value); }
+
+        public Point MapCoordinate => GetMapCoordinate(Die.Coordinate);
 
         public BitmapImage Image { get => _image; set => SetProperty(ref _image, value); }
 
@@ -85,6 +89,29 @@ namespace LotReport.ViewModels
                             MessageBoxImage.Error);
                     }
                 });
+        }
+
+        private Point GetMapCoordinate(Point coordinate)
+        {
+            switch (LeadFrameMap.MapOrigin)
+            {
+                case Origin.Top_Left:
+                    return coordinate;
+                case Origin.Top_Right:
+                    return new Point(
+                        LeadFrameMap.SumOfXDies - coordinate.X + 1,
+                        coordinate.Y);
+                case Origin.Bottom_Left:
+                    return new Point(
+                        coordinate.X,
+                        LeadFrameMap.SumOfYDies - coordinate.Y + 1);
+                case Origin.Bottom_Right:
+                    return new Point(
+                        LeadFrameMap.SumOfXDies - coordinate.X + 1,
+                        LeadFrameMap.SumOfYDies - coordinate.Y + 1);
+                default:
+                    return default(Point);
+            }
         }
     }
 }
