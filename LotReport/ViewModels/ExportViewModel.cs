@@ -23,7 +23,7 @@ namespace LotReport.ViewModels
             WireCommands();
         }
 
-        public IMessageBoxService MessageBoxService { get; set; } = new MessageBoxService();
+        public IMessageBoxService MessageService { get; set; } = new MessageBoxService();
 
         public string ExportPath { get => _exportPath; set => SetProperty(ref _exportPath, value); }
 
@@ -34,24 +34,31 @@ namespace LotReport.ViewModels
             ExportCommand = AsyncCommand.Create(
                 async param =>
                 {
-                    LotData lotData = param as LotData;
-                    if (lotData == null)
+                    try
                     {
-                        return;
+                        LotData lotData = param as LotData;
+                        if (lotData == null)
+                        {
+                            return;
+                        }
+
+                        SaveFileDialog dialog = new SaveFileDialog
+                        {
+                            Filter = "Excel Workbook|*.xlsx",
+                            FileName = Path.GetFileNameWithoutExtension(lotData.FileInfo.Name)
+                        };
+
+                        bool? result = dialog.ShowDialog();
+
+                        if (result.HasValue && result.Value)
+                        {
+                            ExportPath = dialog.FileName;
+                            await Task.Run(() => GenerateExcelReport(ExportPath, lotData));
+                        }
                     }
-
-                    SaveFileDialog dialog = new SaveFileDialog
+                    catch (Exception e)
                     {
-                        Filter = "Excel Workbook|*.xlsx",
-                        FileName = Path.GetFileNameWithoutExtension(lotData.FileInfo.Name)
-                    };
-
-                    bool? result = dialog.ShowDialog();
-
-                    if (result.HasValue && result.Value)
-                    {
-                        ExportPath = dialog.FileName;
-                        await Task.Run(() => GenerateExcelReport(ExportPath, lotData));
+                        ShowMessage(e.Message, "Export", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 });
         }
@@ -160,34 +167,31 @@ namespace LotReport.ViewModels
 
             int row = 29;
 
+            Dictionary<int, int> binCount = null;
             switch (type)
             {
                 case LeadFrameMap.Type.Vision:
-                    foreach (var bin in lotData.VisionBinCount)
-                    {
-                        if (bin.Key != 0)
-                        {
-                            BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
-                            summaryWorksheet.Cells[row, 1].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
-                            summaryWorksheet.Cells[row, 2].Value = bin.Value;
-                            row++;
-                        }
-                    }
-
+                    binCount = lotData.VisionBinCount;
                     break;
                 case LeadFrameMap.Type.Modified:
-                    foreach (var bin in lotData.ModifiedBinCount)
+                    binCount = lotData.ModifiedBinCount;
+                    break;
+            }
+
+            foreach (var bin in binCount)
+            {
+                if (bin.Key != 0)
+                {
+                    BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
+                    if (bc == null)
                     {
-                        if (bin.Key != 0)
-                        {
-                            BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
-                            summaryWorksheet.Cells[row, 1].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
-                            summaryWorksheet.Cells[row, 2].Value = bin.Value;
-                            row++;
-                        }
+                        throw new InvalidOperationException($"Bin Code ID: {bin.Key} data is missing.");
                     }
 
-                    break;
+                    summaryWorksheet.Cells[row, 1].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
+                    summaryWorksheet.Cells[row, 2].Value = bin.Value;
+                    row++;
+                }
             }
 
             summaryWorksheet.Cells["B1:B100"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -443,13 +447,13 @@ namespace LotReport.ViewModels
         {
             if (Application.Current.Dispatcher.CheckAccess())
             {
-                return MessageBoxService.Show(text, caption, button, image);
+                return MessageService.Show(text, caption, button, image);
             }
             else
             {
                 bool result = false;
                 Application.Current.Dispatcher.Invoke(() =>
-                    result = MessageBoxService.Show(text, caption, button, image));
+                    result = MessageService.Show(text, caption, button, image));
                 return result;
             }
         }

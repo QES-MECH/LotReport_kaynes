@@ -40,6 +40,8 @@ namespace LotReport.ViewModels
             Map
         }
 
+        public IMessageBoxService MessageService { get; set; } = new MessageBoxService();
+
         public ExportViewModel ExportViewModel { get; private set; } = new ExportViewModel();
 
         public ICollectionView LotDataView { get; private set; }
@@ -95,7 +97,7 @@ namespace LotReport.ViewModels
                         }
                         catch (Exception ex)
                         {
-                            Status = string.Format("Failed to load Settings. Error: {0}", ex.Message);
+                            MessageService.Show($"Failed to load Settings. Error: {ex.Message}", "Loaded", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
 
                         Application.Current.Dispatcher.Invoke(() => RefreshLotsCommand.Execute(null));
@@ -124,7 +126,7 @@ namespace LotReport.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Status = string.Format("Failed to load Lots. Error: {0}", ex.Message);
+                        MessageService.Show($"Failed to load Lots. Error: {ex.Message}", "Refresh Lots", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 });
 
@@ -171,8 +173,12 @@ namespace LotReport.ViewModels
                             if (reject.Key > -1)
                             {
                                 BinCode rejectCode = repository.BinCodes.FirstOrDefault(rc => rc.Id == reject.Key);
+                                if (rejectCode == null)
+                                {
+                                    throw new InvalidOperationException($"Bin Code ID: {reject.Key} data is missing.");
+                                }
 
-                                if (rejectCode?.Id != 0)
+                                if (rejectCode.Id != 0)
                                 {
                                     rejectCount.Add(rejectCode, reject.Value);
                                 }
@@ -186,7 +192,11 @@ namespace LotReport.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Status = string.Format("Failed to load Lot ID: {0}. Error: {1}", selectedLotData.FileInfo.Directory.FullName, ex.Message);
+                        MessageService.Show(
+                            $"Failed to load Lot ID: {selectedLotData.FileInfo.Directory.FullName}. Error: {ex.Message}",
+                            "Load Lot Data",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
                     }
                 });
 
@@ -206,7 +216,11 @@ namespace LotReport.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Status = string.Format("Failed to load Lead Frame Map. Error: {0}", ex.Message);
+                        MessageService.Show(
+                            $"Failed to load Lead Frame Map.Error: {ex.Message}",
+                            "Display Mapping",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
                     }
                 });
 
@@ -261,7 +275,7 @@ namespace LotReport.ViewModels
 
                         if (currentIndex < 0)
                         {
-                            MessageBox.Show("First Lead Frame Reached.", "Previous", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageService.Show("First Lead Frame Reached.", "Previous", MessageBoxButton.OK, MessageBoxImage.Information);
                             return;
                         }
 
@@ -287,7 +301,7 @@ namespace LotReport.ViewModels
 
                         if (currentIndex >= leadFramePaths.Length)
                         {
-                            MessageBox.Show("Last Lead Frame Reached.", "Next", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageService.Show("Last Lead Frame Reached.", "Next", MessageBoxButton.OK, MessageBoxImage.Information);
                             return;
                         }
 
