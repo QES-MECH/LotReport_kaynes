@@ -316,6 +316,8 @@ namespace LotReport.ViewModels
                             mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Red);
                         }
 
+                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Value = die.BinCode.Value;
+
                         if (die.Modified)
                         {
                             if (die.BinCode.Id == 0)
