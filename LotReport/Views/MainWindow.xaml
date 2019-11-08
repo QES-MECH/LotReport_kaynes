@@ -29,6 +29,7 @@
         <Menu Grid.Row="0">
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Refresh Lot(s)" Command="{Binding RefreshLotsCommand}"/>
+                <MenuItem Header="_Database Subdirectory" Command="{Binding DatabaseSubdirectoryCommand}"/>
                 <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
                 <Separator/>
                 <MenuItem Header="_Regenerate Summary" Command="{Binding RegenerateSummaryCommand}" CommandParameter="{Binding SelectedLot}"/>

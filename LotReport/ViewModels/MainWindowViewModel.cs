@@ -42,9 +42,13 @@ namespace LotReport.ViewModels
 
         public IMessageBoxService MessageService { get; set; } = new MessageBoxService();
 
+        public IWindowService WindowService { get; private set; } = new WindowService();
+
         public ExportViewModel ExportViewModel { get; private set; } = new ExportViewModel();
 
         public ICollectionView LotDataView { get; private set; }
+
+        public string DatabaseSubdirectory { get; set; }
 
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
@@ -60,13 +64,11 @@ namespace LotReport.ViewModels
 
         public Dictionary<BinCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
 
-        public WindowService SettingsWindow { get; private set; } = new WindowService();
-
-        public WindowService DieWindow { get; private set; } = new WindowService();
-
         public AsyncCommand<object> LoadedCommand { get; private set; }
 
         public RelayCommand RefreshLotsCommand { get; private set; }
+
+        public RelayCommand DatabaseSubdirectoryCommand { get; private set; }
 
         public RelayCommand SettingsCommand { get; private set; }
 
@@ -94,13 +96,14 @@ namespace LotReport.ViewModels
                         try
                         {
                             Settings.LoadFromFile();
+                            DatabaseSubdirectory = Settings.DatabaseDirectory;
+                            Application.Current.Dispatcher.Invoke(() => DatabaseSubdirectoryCommand.Execute(null));
+                            Application.Current.Dispatcher.Invoke(() => RefreshLotsCommand.Execute(null));
                         }
                         catch (Exception ex)
                         {
                             MessageService.Show($"Failed to load Settings. Error: {ex.Message}", "Loaded", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-
-                        Application.Current.Dispatcher.Invoke(() => RefreshLotsCommand.Execute(null));
                     });
                 });
 
@@ -113,14 +116,13 @@ namespace LotReport.ViewModels
                         {
                             _lotDataSource.Clear();
 
-                            string[] lotFiles = Directory.GetFiles(Settings.DatabaseDirectory, "*.lot", SearchOption.AllDirectories);
+                            string[] lotFiles = Directory.GetFiles(DatabaseSubdirectory, "*.lot", SearchOption.AllDirectories);
 
                             foreach (string lotFile in lotFiles)
                             {
                                 LotData lotData = new LotData();
                                 lotData.LoadFromFile(lotFile);
                                 _lotDataSource.Add(lotData);
-                                LotDataView.Refresh();
                             }
                         }
                     }
@@ -128,10 +130,30 @@ namespace LotReport.ViewModels
                     {
                         MessageService.Show($"Failed to load Lots. Error: {ex.Message}", "Refresh Lots", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+
+                    LotDataView.Refresh();
+                });
+
+            DatabaseSubdirectoryCommand = new RelayCommand(
+                param =>
+                {
+                    try
+                    {
+                        var vm = new DatabaseSubdirectoryViewModel();
+                        vm.Init(Settings.DatabaseDirectory);
+                        WindowService.ShowDialog<DatabaseSubdirectoryView>(vm);
+                        DatabaseSubdirectory = vm.SelectedDirectory.FullName;
+
+                        RefreshLotsCommand.Execute(null);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageService.Show(e.Message, "Database Subdirectory", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 });
 
             SettingsCommand = new RelayCommand(
-                param => SettingsWindow.ShowDialog<SettingsView>(new SettingsViewModel()));
+                param => WindowService.ShowDialog<SettingsView>(new SettingsViewModel()));
 
             RegenerateSummaryCommand = new RelayCommand(
                 param =>
@@ -240,7 +262,7 @@ namespace LotReport.ViewModels
                         LeadFrameMap = LeadFrameMapMachine
                     };
 
-                    DieWindow.ShowDialog<DieView>(vm);
+                    WindowService.ShowDialog<DieView>(vm);
                 });
 
             ModifiedDieCommand = new RelayCommand(
@@ -259,7 +281,7 @@ namespace LotReport.ViewModels
                         LeadFrameMap = LeadFrameMapOperator
                     };
 
-                    DieWindow.ShowDialog<DieView>(vm);
+                    WindowService.ShowDialog<DieView>(vm);
                 });
 
             PreviousLFCommand = new RelayCommand(

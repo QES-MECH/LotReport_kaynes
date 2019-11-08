@@ -86,10 +86,14 @@
     <Compile Include="Models\BinCodeRepository.cs" />
     <Compile Include="Models\Origin.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="ViewModels\DatabaseSubdirectoryViewModel.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\DatabaseSubdirectoryView.xaml.cs">
+      <DependentUpon>DatabaseSubdirectoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DieView.xaml.cs">
       <DependentUpon>DieView.xaml</DependentUpon>
     </Compile>
@@ -111,6 +115,10 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\DatabaseSubdirectoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DieView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
