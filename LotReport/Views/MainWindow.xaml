@@ -39,7 +39,18 @@
         <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex}">
             <TabItem Header="Lot" Width="100">
                 <Grid>
-                    <DataGrid ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" MouseDoubleClick="DataGrid_MouseDoubleClick" IsReadOnly="True" AutoGenerateColumns="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Filter">
+                        <WrapPanel>
+                            <TextBlock Text="Date:" VerticalAlignment="Center" Margin="3"/>
+                            <DatePicker SelectedDate="{Binding DateFilter}" Margin="3"/>
+                            <Button Content="Clear" Command="{Binding ClearFilterCommand}" Width="75" Margin="3"/>
+                        </WrapPanel>
+                    </GroupBox>
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" MouseDoubleClick="DataGrid_MouseDoubleClick" IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Lot ID" Binding="{Binding LotId}"/>
                             <DataGridTextColumn Header="Machine ID" Binding="{Binding MachineId}"/>

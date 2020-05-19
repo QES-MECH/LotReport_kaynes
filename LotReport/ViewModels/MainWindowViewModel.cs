@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Framework.MVVM;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
@@ -18,7 +20,9 @@ namespace LotReport.ViewModels
     public class MainWindowViewModel : PropertyChangedBase
     {
         private List<LotData> _lotDataSource = new List<LotData>();
+        private DispatcherTimer _filterTimer;
 
+        private DateTime? _dateFilter = DateTime.Now;
         private string _status;
         private LeadFrameMap _leadFrameMapOperator;
         private LeadFrameMap _leadFrameMapMachine;
@@ -31,6 +35,11 @@ namespace LotReport.ViewModels
         {
             LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
             LotDataView.SortDescriptions.Add(new SortDescription("StartTime", ListSortDirection.Descending));
+
+            _filterTimer = new DispatcherTimer();
+            _filterTimer.Interval = TimeSpan.FromMilliseconds(500);
+            _filterTimer.Tick += FilterTimer_Tick;
+
             WireCommands();
         }
 
@@ -49,6 +58,8 @@ namespace LotReport.ViewModels
         public ICollectionView LotDataView { get; private set; }
 
         public string DatabaseSubdirectory { get; set; }
+
+        public DateTime? DateFilter { get => _dateFilter; set => SetFilterProperty(ref _dateFilter, value); }
 
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
@@ -75,6 +86,8 @@ namespace LotReport.ViewModels
         public RelayCommand RegenerateSummaryCommand { get; private set; }
 
         public RelayCommand UpdateSelectedLotCommand { get; private set; }
+
+        public RelayCommand ClearFilterCommand { get; private set; }
 
         public RelayCommand GenerateMapCommand { get; private set; }
 
@@ -222,6 +235,8 @@ namespace LotReport.ViewModels
                     }
                 });
 
+            ClearFilterCommand = new RelayCommand(param => DateFilter = null);
+
             GenerateMapCommand = new RelayCommand(
                 param =>
                 {
@@ -335,6 +350,24 @@ namespace LotReport.ViewModels
                 {
                     return SelectedLot != null && LeadFrameMapMachine?.XmlPath != null;
                 });
+        }
+
+        private void FilterTimer_Tick(object sender, EventArgs e)
+        {
+            _filterTimer.Stop();
+
+            LotDataView.Filter = o =>
+            {
+                LotData lot = (LotData)o;
+                return DateFilter == null ? true : lot.StartTime.Date == DateFilter.Value.Date;
+            };
+        }
+
+        private void SetFilterProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            SetProperty(ref field, value, propertyName);
+            _filterTimer.Stop();
+            _filterTimer.Start();
         }
 
         private class WaitCursor : IDisposable
