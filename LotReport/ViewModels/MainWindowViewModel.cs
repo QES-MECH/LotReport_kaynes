@@ -359,7 +359,38 @@ namespace LotReport.ViewModels
             LotDataView.Filter = o =>
             {
                 LotData lot = (LotData)o;
-                return DateFilter == null ? true : lot.StartTime.Date == DateFilter.Value.Date;
+                if (DateFilter.HasValue)
+                {
+                    if (Settings.ShiftFilter)
+                    {
+                        TimeSpan currentTime = DateTime.Now.TimeOfDay;
+                        DateTime dayShift = DateFilter.Value.Date.Add(Settings.DayShift.TimeOfDay);
+                        DateTime nightShift = DateFilter.Value.Date.Add(Settings.NightShift.TimeOfDay);
+
+                        if (currentTime < Settings.DayShift.TimeOfDay)
+                        {
+                            nightShift = nightShift.AddDays(-1);
+                            return lot.StartTime >= nightShift && lot.StartTime < dayShift;
+                        }
+                        else if (currentTime >= Settings.NightShift.TimeOfDay)
+                        {
+                            dayShift = dayShift.AddDays(1);
+                            return lot.StartTime >= nightShift && lot.StartTime < dayShift;
+                        }
+                        else
+                        {
+                            return lot.StartTime >= dayShift && lot.StartTime < nightShift;
+                        }
+                    }
+                    else
+                    {
+                        return lot.StartTime.Date == DateFilter.Value.Date;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
             };
         }
 
