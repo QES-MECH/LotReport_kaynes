@@ -16,6 +16,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -39,7 +40,16 @@
                             </Grid>
                         </StackPanel>
                     </GroupBox>
-                    <WrapPanel Grid.Row="2" HorizontalAlignment="Right" Margin="5">
+                    <GroupBox Grid.Row="1" Header="Shifts" Margin="3">
+                        <StackPanel>
+                            <CheckBox Content="Shift Filter" IsChecked="{Binding ShiftFilter}" Margin="3"/>
+                            <r:UnitTextBox Grid.Column="0" Label="Day" Value="{Binding DayShift, StringFormat={}{0:HH:mm}}" Unit="HH:MM"
+                                           LabelAlignment="Left" ValueAlignment="Left" Height="20" Margin="3"/>
+                            <r:UnitTextBox Grid.Column="0" Label="Night" Value="{Binding NightShift, StringFormat={}{0:HH:mm}}" Unit="HH:MM"
+                                           LabelAlignment="Left" ValueAlignment="Left" Height="20" Margin="3"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <WrapPanel Grid.Row="3" HorizontalAlignment="Right" Margin="5">
                         <Button Content="OK" IsDefault="True" Click="OK_Click" Width="75" Height="20" Margin="3"/>
                         <Button Content="Cancel" IsCancel="True" Width="75" Height="20" Margin="3"/>
                     </WrapPanel>

@@ -16,6 +16,12 @@ namespace LotReport.Models
 
         public static string BinCodeDirectory { get; set; }
 
+        public static bool ShiftFilter { get; set; }
+
+        public static DateTime DayShift { get; set; }
+
+        public static DateTime NightShift { get; set; }
+
         public static void LoadFromFile()
         {
             XDocument document = XDocument.Load(SettingsDirectory);
@@ -33,6 +39,39 @@ namespace LotReport.Models
                 .Element("Directories")
                 .Element("BinCode")
                 .Value;
+
+            string shiftFilterStr = document
+                .Root
+                .Element("General")
+                .Element("Shifts")
+                .Element(nameof(ShiftFilter))
+                .Value;
+            if (bool.TryParse(shiftFilterStr, out bool shiftFilter))
+            {
+                ShiftFilter = shiftFilter;
+            }
+
+            string dayShiftStr = document
+                .Root
+                .Element("General")
+                .Element("Shifts")
+                .Element(nameof(DayShift))
+                .Value;
+            if (DateTime.TryParseExact(dayShiftStr, "HH:mm", null, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out DateTime dayShift))
+            {
+                DayShift = dayShift;
+            }
+
+            string nightShiftStr = document
+                .Root
+                .Element("General")
+                .Element("Shifts")
+                .Element(nameof(NightShift))
+                .Value;
+            if (DateTime.TryParseExact(nightShiftStr, "HH:mm", null, System.Globalization.DateTimeStyles.NoCurrentDateDefault, out DateTime nightShift))
+            {
+                NightShift = nightShift;
+            }
         }
 
         public static void SaveToFile()
@@ -47,10 +86,18 @@ namespace LotReport.Models
                 writer.WriteStartElement("Settings");
 
                 writer.WriteStartElement("General");
+
                 writer.WriteStartElement("Directories");
                 writer.WriteElementString("Database", DatabaseDirectory);
                 writer.WriteElementString("BinCode", BinCodeDirectory);
                 writer.WriteEndElement();
+
+                writer.WriteStartElement("Shifts");
+                writer.WriteElementString(nameof(ShiftFilter), ShiftFilter.ToString());
+                writer.WriteElementString(nameof(DayShift), DayShift.ToString("HH:mm"));
+                writer.WriteElementString(nameof(NightShift), NightShift.ToString("HH:mm"));
+                writer.WriteEndElement();
+
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();

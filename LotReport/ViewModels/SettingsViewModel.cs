@@ -14,6 +14,9 @@ namespace LotReport.ViewModels
     {
         private string _databaseDirectory;
         private string _binCodeDirectory;
+        private bool _shiftFilter;
+        private DateTime _dayShift;
+        private DateTime _nightShift;
 
         public SettingsViewModel()
         {
@@ -24,6 +27,12 @@ namespace LotReport.ViewModels
         public string DatabaseDirectory { get => _databaseDirectory; set => SetProperty(ref _databaseDirectory, value); }
 
         public string BinCodeDirectory { get => _binCodeDirectory; set => SetProperty(ref _binCodeDirectory, value); }
+
+        public bool ShiftFilter { get => _shiftFilter; set => SetProperty(ref _shiftFilter, value); }
+
+        public DateTime DayShift { get => _dayShift; set => SetProperty(ref _dayShift, value); }
+
+        public DateTime NightShift { get => _nightShift; set => SetProperty(ref _nightShift, value); }
 
         public RelayCommand<bool> OkCommand { get; private set; }
 
@@ -71,6 +80,9 @@ namespace LotReport.ViewModels
         {
             DatabaseDirectory = Settings.DatabaseDirectory;
             BinCodeDirectory = Settings.BinCodeDirectory;
+            ShiftFilter = Settings.ShiftFilter;
+            DayShift = Settings.DayShift;
+            NightShift = Settings.NightShift;
         }
 
         private bool SaveData()
@@ -87,6 +99,9 @@ namespace LotReport.ViewModels
 
             Settings.DatabaseDirectory = DatabaseDirectory;
             Settings.BinCodeDirectory = BinCodeDirectory;
+            Settings.ShiftFilter = ShiftFilter;
+            Settings.DayShift = DayShift;
+            Settings.NightShift = NightShift;
 
             try
             {
