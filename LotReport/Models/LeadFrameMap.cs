@@ -31,6 +31,8 @@ namespace LotReport.Models
 
         public string MagazineId { get; private set; }
 
+        public string PreviousMagazineId { get; set; }
+
         public string LeadFrameId { get; private set; }
 
         public int SumOfXDies { get; private set; }
@@ -67,6 +69,15 @@ namespace LotReport.Models
             table.GenerateRows(table.SumOfXDies, table.SumOfYDies);
 
             return table;
+        }
+
+        public static void SetMagazineId(string xmlPath, string magazineId)
+        {
+            XDocument document = XDocument.Load(xmlPath);
+            var previousMagazineId = document.Root.Attribute("MagazineId")?.Value;
+            document.Root.SetAttributeValue("PreviousMagazineId", previousMagazineId);
+            document.Root.SetAttributeValue("MagazineId", magazineId);
+            document.Save(xmlPath);
         }
 
         public static bool SetMarkStatus(string xmlPath, Point coordinate, Die.Mark markStatus)
@@ -244,6 +255,8 @@ namespace LotReport.Models
             repo.LoadFromFile();
 
             XDocument doc = XDocument.Load(xmlPath);
+            PreviousMagazineId = doc.Root.Attribute("PreviousMagazineId")?.Value;
+            MagazineId = doc.Root.Attribute("MagazineId")?.Value;
             string elementX = doc.Root.Attribute("X").Value;
             string elementY = doc.Root.Attribute("Y").Value;
             string elementMapOrigin = doc.Root.Attribute("MapOrigin")?.Value;
@@ -375,10 +388,7 @@ namespace LotReport.Models
         {
             LeadFrameId = Path.GetFileNameWithoutExtension(xmlPath);
 
-            string magazinePath = Path.GetDirectoryName(xmlPath);
-            MagazineId = Path.GetFileName(magazinePath);
-
-            string lotPath = Path.GetDirectoryName(magazinePath);
+            string lotPath = Path.GetDirectoryName(xmlPath);
             LotId = Path.GetFileName(lotPath);
         }
     }
