@@ -78,6 +78,7 @@
     <Compile Include="Framework\RelayCommand.cs" />
     <Compile Include="Framework\RelayCommand{TResult}.cs" />
     <Compile Include="Framework\WindowService.cs" />
+    <Compile Include="Models\BinQuality.cs" />
     <Compile Include="Models\Die.cs" />
     <Compile Include="Models\DieRow.cs" />
     <Compile Include="Models\LeadFrameMap.cs" />

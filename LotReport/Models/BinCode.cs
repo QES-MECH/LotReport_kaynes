@@ -10,6 +10,8 @@ namespace LotReport.Models
     {
         public int Id { get; set; }
 
+        public BinQuality Quality { get; set; }
+
         public string Value { get; set; }
 
         public string Description { get; set; }

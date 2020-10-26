@@ -32,6 +32,11 @@ namespace LotReport.Models
                     binCode.Id = id;
                 }
 
+                if (Enum.TryParse(binCodeElement.Element("Quality")?.Value, out BinQuality quality))
+                {
+                    binCode.Quality = quality;
+                }
+
                 binCode.Value = binCodeElement.Element("Value").Value;
                 binCode.Description = binCodeElement.Element("Description").Value;
 
@@ -63,6 +68,7 @@ namespace LotReport.Models
                 // Create new BinCode Element
                 XElement element = new XElement("BinCode");
                 element.Add(new XElement("Id", binCode.Id));
+                element.Add(new XElement("Quality", binCode.Quality));
                 element.Add(new XElement("Value", binCode.Value));
                 element.Add(new XElement("Description", binCode.Description));
                 element.Add(new XElement("Mark", binCode.Mark));

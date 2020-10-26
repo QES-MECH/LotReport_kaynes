@@ -319,23 +319,26 @@ namespace LotReport.Models
 
             foreach (string lfPath in leadFramePaths)
             {
-                LeadFrameMap visionLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Vision);
-                visionDies.AddRange(visionLFMap.Dies);
+                if (!lfPath.Contains("E142XML"))
+                {
+                    LeadFrameMap visionLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Vision);
+                    visionDies.AddRange(visionLFMap.Dies);
 
-                LeadFrameMap modifiedLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Modified);
-                modifiedDies.AddRange(modifiedLFMap.Dies);
+                    LeadFrameMap modifiedLFMap = LeadFrameMap.Load(lfPath, LeadFrameMap.Type.Modified);
+                    modifiedDies.AddRange(modifiedLFMap.Dies);
+                }
             }
 
             visionDies.RemoveAll(die => die.BinCode.Id == -1);
             modifiedDies.RemoveAll(die => die.BinCode.Id == -1);
 
             LeadFramesInspected = leadFramePaths.Length;
-            UnitsPassed = modifiedDies.Count(die => die.BinCode.Id == 0);
+            UnitsPassed = modifiedDies.Count(die => die.BinCode.Quality == BinQuality.Pass);
             UnitsRejected = modifiedDies.Count - UnitsPassed;
-            UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.BinCode.Id == 0);
+            UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.BinCode.Quality == BinQuality.Pass);
             UnitsYieldPercentage = (double)UnitsPassed / modifiedDies.Count * 100;
 
-            UnitsSkipped = modifiedDies.Count(die => die.BinCode.Id != 0 && die.BinCode.SkipReview);
+            UnitsSkipped = modifiedDies.Count(die => die.BinCode.Quality != BinQuality.Pass && die.BinCode.SkipReview);
             double unitsPassed2 = (double)UnitsPassed - UnitsSkipped;
             double totalUnits2 = (double)modifiedDies.Count - UnitsSkipped;
             UnitsYieldPercentage2 = unitsPassed2 / totalUnits2 * 100;

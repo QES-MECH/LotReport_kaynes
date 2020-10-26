@@ -11,7 +11,7 @@ namespace LotReport.Models
         private string _diePath;
         private string _markPath;
         private Mark _markStatus;
-        private Brush _color;
+        private Color _color;
         private bool _modified;
 
         public Die()
@@ -36,7 +36,7 @@ namespace LotReport.Models
 
         public Mark MarkStatus { get => _markStatus; set => SetProperty(ref _markStatus, value); }
 
-        public Brush Color { get => _color; set => SetProperty(ref _color, value); }
+        public Color Color { get => _color; set => SetProperty(ref _color, value); }
 
         public bool Modified { get => _modified; set => SetProperty(ref _modified, value); }
 

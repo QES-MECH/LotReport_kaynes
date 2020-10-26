@@ -10,10 +10,10 @@ namespace LotReport.Models
 {
     public class LeadFrameMap
     {
-        private static Brush _black = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000"));
-        private static Brush _red = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF3333"));
-        private static Brush _green = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33FF33"));
-        private static Brush _yellow = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEA00"));
+        private static Color _black = (Color)ColorConverter.ConvertFromString("#000000");
+        private static Color _red = (Color)ColorConverter.ConvertFromString("#FF3333");
+        private static Color _green = (Color)ColorConverter.ConvertFromString("#33FF33");
+        private static Color _yellow = (Color)ColorConverter.ConvertFromString("#FFEA00");
 
         private LeadFrameMap()
         {
@@ -210,7 +210,7 @@ namespace LotReport.Models
 
             die.BinCode = binCode;
 
-            if (die.BinCode.Id == 0)
+            if (die.BinCode.Quality == BinQuality.Pass)
             {
                 die.Color = _yellow;
             }
@@ -224,7 +224,7 @@ namespace LotReport.Models
 
         public double CalculateRejectionPercentage()
         {
-            double rejectedDieCount = Dies.Count(d => d.BinCode.Id != 0);
+            double rejectedDieCount = Dies.Count(d => d.BinCode.Quality != BinQuality.Pass);
             return rejectedDieCount / Dies.Count * 100d;
         }
 
@@ -239,7 +239,7 @@ namespace LotReport.Models
                     Die die = new Die()
                     {
                         Coordinate = new Point(x, y),
-                        Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121"))
+                        Color = (Color)ColorConverter.ConvertFromString("#212121")
                     };
 
                     dies.Add(die);
@@ -309,19 +309,6 @@ namespace LotReport.Models
                             {
                                 die.BinCode.Id = 999;
                             }
-
-                            switch (die.BinCode.Id)
-                            {
-                                case -1:
-                                    die.Color = _black;
-                                    break;
-                                case 0:
-                                    die.Color = _yellow;
-                                    break;
-                                default:
-                                    die.Color = _red;
-                                    break;
-                            }
                         }
                     }
 
@@ -337,19 +324,6 @@ namespace LotReport.Models
                         {
                             die.BinCode.Id = 999;
                         }
-
-                        switch (die.BinCode.Id)
-                        {
-                            case -1:
-                                die.Color = _black;
-                                break;
-                            case 0:
-                                die.Color = _green;
-                                break;
-                            default:
-                                die.Color = _red;
-                                break;
-                        }
                     }
 
                     die.DiePath = dieElement.Element("DiePath")?.Value;
@@ -362,6 +336,19 @@ namespace LotReport.Models
                     die.MarkPath = dieElement.Element("MarkPath")?.Value;
 
                     TryGetBinCodeInfo(repo.BinCodes, die);
+
+                    switch (die.BinCode.Quality)
+                    {
+                        case BinQuality.Unknown:
+                            die.Color = _black;
+                            break;
+                        case BinQuality.Pass:
+                            die.Color = die.Modified ? _yellow : _green;
+                            break;
+                        default:
+                            die.Color = _red;
+                            break;
+                    }
 
                     dies.Add(die);
                     Dies.Add(die);
@@ -377,6 +364,7 @@ namespace LotReport.Models
 
             if (sourceBinCode != null)
             {
+                die.BinCode.Quality = sourceBinCode.Quality;
                 die.BinCode.Value = sourceBinCode.Value;
                 die.BinCode.Description = sourceBinCode.Description;
                 die.BinCode.Mark = sourceBinCode.Mark;
