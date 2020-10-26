@@ -4,13 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LotReport.Views"
+        xmlns:cog="clr-namespace:CognexDisplay.Views;assembly=CognexDisplay"
         xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:DieViewModel}"
         Title="Die" Height="720" Width="1280"
         WindowState="Maximized"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -23,9 +29,9 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" x:Name="imageGrid">
-                <r:ImageControl
-                Grid.Column="0"
-                Image="{Binding Image}"/>
+                <r:ImageControl Grid.Column="0" Image="{Binding Image}"/>
+                <cog:CognexDisplayView ViewModel="{Binding CognexDisplayViewModel}"
+                                       Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </Grid>
 
             <Grid Grid.Column="1">
@@ -54,6 +60,7 @@
                                 </Grid>
                                 <WrapPanel HorizontalAlignment="Center" Margin="3">
                                     <Button Content="Die Image" Command="{Binding LoadImageCommand}" CommandParameter="{Binding Die.DiePath}" Width="75" Height="23" Margin="3"/>
+                                    <Button Content="Graphic" Command="{Binding GraphicCommand}" Width="75" Height="23" Margin="3"/>
                                     <Button Content="Mark Image" Command="{Binding LoadImageCommand}" CommandParameter="{Binding Die.MarkPath}" Width="75" Height="23" Margin="3"/>
                                 </WrapPanel>
                             </StackPanel>

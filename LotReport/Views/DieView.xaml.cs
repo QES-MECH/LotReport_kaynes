@@ -40,5 +40,13 @@ namespace LotReport.Views
         {
             Close();
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (DataContext is DieViewModel vm)
+            {
+                vm.CognexDisplayViewModel?.Dispose();
+            }
+        }
     }
 }

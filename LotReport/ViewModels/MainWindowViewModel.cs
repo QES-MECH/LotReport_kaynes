@@ -271,12 +271,8 @@ namespace LotReport.ViewModels
                         return;
                     }
 
-                    DieViewModel vm = new DieViewModel
-                    {
-                        Die = selectedDie,
-                        LeadFrameMap = LeadFrameMapMachine
-                    };
-
+                    DieViewModel vm = new DieViewModel();
+                    vm.Init(LeadFrameMapMachine, selectedDie);
                     WindowService.ShowDialog<DieView>(vm);
                 });
 
@@ -290,12 +286,8 @@ namespace LotReport.ViewModels
                         return;
                     }
 
-                    DieViewModel vm = new DieViewModel
-                    {
-                        Die = selectedDie,
-                        LeadFrameMap = LeadFrameMapOperator
-                    };
-
+                    DieViewModel vm = new DieViewModel();
+                    vm.Init(LeadFrameMapOperator, selectedDie);
                     WindowService.ShowDialog<DieView>(vm);
                 });
 
