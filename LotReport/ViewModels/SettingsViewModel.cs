@@ -17,6 +17,8 @@ namespace LotReport.ViewModels
         private bool _shiftFilter;
         private DateTime _dayShift;
         private DateTime _nightShift;
+        private bool _cognexDisplay;
+        private string _visionImageDirectory;
 
         public SettingsViewModel()
         {
@@ -34,11 +36,17 @@ namespace LotReport.ViewModels
 
         public DateTime NightShift { get => _nightShift; set => SetProperty(ref _nightShift, value); }
 
+        public bool CognexDisplay { get => _cognexDisplay; set => SetProperty(ref _cognexDisplay, value); }
+
+        public string VisionImageDirectory { get => _visionImageDirectory; set => SetProperty(ref _visionImageDirectory, value); }
+
         public RelayCommand<bool> OkCommand { get; private set; }
 
         public RelayCommand DatabaseFolderCommand { get; private set; }
 
         public RelayCommand BinCodeFileCommand { get; private set; }
+
+        public RelayCommand VisionImageFolderCommand { get; private set; }
 
         private void WireCommands()
         {
@@ -74,6 +82,23 @@ namespace LotReport.ViewModels
                         BinCodeDirectory = fileDialog.FileName;
                     }
                 });
+
+            VisionImageFolderCommand = new RelayCommand(
+                param =>
+                {
+                    using (var folderDialog = new System.Windows.Forms.FolderBrowserDialog())
+                    {
+                        folderDialog.Description = "Browse for Vision Image Folder";
+                        folderDialog.RootFolder = Environment.SpecialFolder.Desktop;
+                        folderDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        var result = folderDialog.ShowDialog();
+
+                        if (result == System.Windows.Forms.DialogResult.OK)
+                        {
+                            VisionImageDirectory = folderDialog.SelectedPath;
+                        }
+                    }
+                });
         }
 
         private void LoadData()
@@ -83,6 +108,8 @@ namespace LotReport.ViewModels
             ShiftFilter = Settings.ShiftFilter;
             DayShift = Settings.DayShift;
             NightShift = Settings.NightShift;
+            CognexDisplay = Settings.CognexDisplay;
+            VisionImageDirectory = Settings.VisionImageDirectory;
         }
 
         private bool SaveData()
@@ -102,6 +129,8 @@ namespace LotReport.ViewModels
             Settings.ShiftFilter = ShiftFilter;
             Settings.DayShift = DayShift;
             Settings.NightShift = NightShift;
+            Settings.CognexDisplay = CognexDisplay;
+            Settings.VisionImageDirectory = VisionImageDirectory;
 
             try
             {

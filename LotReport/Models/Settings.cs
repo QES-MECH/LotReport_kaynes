@@ -22,6 +22,10 @@ namespace LotReport.Models
 
         public static DateTime NightShift { get; set; }
 
+        public static bool CognexDisplay { get; set; }
+
+        public static string VisionImageDirectory { get; set; }
+
         public static void LoadFromFile()
         {
             XDocument document = XDocument.Load(SettingsDirectory);
@@ -72,6 +76,24 @@ namespace LotReport.Models
             {
                 NightShift = nightShift;
             }
+
+            string cognexDisplayStr = document
+                .Root
+                .Element("Advanced")
+                .Element("Miscellaneous")
+                .Element(nameof(CognexDisplay))
+                .Value;
+            if (bool.TryParse(cognexDisplayStr, out bool cognexDisplay))
+            {
+                CognexDisplay = cognexDisplay;
+            }
+
+            VisionImageDirectory = document
+                .Root
+                .Element("Advanced")
+                .Element("Miscellaneous")
+                .Element(nameof(VisionImageDirectory))
+                .Value;
         }
 
         public static void SaveToFile()
@@ -96,6 +118,15 @@ namespace LotReport.Models
                 writer.WriteElementString(nameof(ShiftFilter), ShiftFilter.ToString());
                 writer.WriteElementString(nameof(DayShift), DayShift.ToString("HH:mm"));
                 writer.WriteElementString(nameof(NightShift), NightShift.ToString("HH:mm"));
+                writer.WriteEndElement();
+
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("Advanced");
+
+                writer.WriteStartElement("Miscellaneous");
+                writer.WriteElementString(nameof(CognexDisplay), CognexDisplay.ToString());
+                writer.WriteElementString(nameof(VisionImageDirectory), VisionImageDirectory);
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();

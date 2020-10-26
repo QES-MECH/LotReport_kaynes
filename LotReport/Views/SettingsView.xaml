@@ -11,13 +11,16 @@
         Title="Settings" Height="300" Width="500"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
             <TabItem Header="General">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="Directories" Margin="3">
@@ -49,12 +52,27 @@
                                            LabelAlignment="Left" ValueAlignment="Left" Height="20" Margin="3"/>
                         </StackPanel>
                     </GroupBox>
-                    <WrapPanel Grid.Row="3" HorizontalAlignment="Right" Margin="5">
-                        <Button Content="OK" IsDefault="True" Click="OK_Click" Width="75" Height="20" Margin="3"/>
-                        <Button Content="Cancel" IsCancel="True" Width="75" Height="20" Margin="3"/>
-                    </WrapPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="Advanced">
+                <GroupBox Grid.Row="1" Header="Miscellaneous" Margin="3">
+                    <StackPanel>
+                        <CheckBox Content="Cognex Display" IsChecked="{Binding CognexDisplay}" Margin="3"/>
+                        <Grid Margin="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <r:LabelTextBox Grid.Column="0" Label="Vision Image" Value="{Binding VisionImageDirectory}" Height="20"/>
+                            <Button Grid.Column="1" Content="..." Command="{Binding VisionImageFolderCommand}" HorizontalAlignment="Left"  Margin="3" Width="20" Height="20"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+            </TabItem>
         </TabControl>
+        <WrapPanel Grid.Row="2" HorizontalAlignment="Right" Margin="5">
+            <Button Content="OK" IsDefault="True" Click="OK_Click" Width="75" Height="20" Margin="3"/>
+            <Button Content="Cancel" IsCancel="True" Width="75" Height="20" Margin="3"/>
+        </WrapPanel>
     </Grid>
 </Window>
