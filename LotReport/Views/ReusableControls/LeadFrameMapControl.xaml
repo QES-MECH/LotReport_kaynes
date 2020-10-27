@@ -35,10 +35,6 @@
             </DataGrid.ColumnHeaderStyle>
         </DataGrid>
 
-        <Grid>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        </Grid>
-
         <StatusBar Grid.Row="1" Background="#2962FF">
             <StatusBarItem HorizontalAlignment="Right">
                 <TextBlock Text="{Binding LotId, RelativeSource={RelativeSource AncestorType=UserControl}}" Foreground="White"/>

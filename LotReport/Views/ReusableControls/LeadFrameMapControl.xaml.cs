@@ -132,7 +132,22 @@ namespace LotReport.Views.ReusableControls
 
             for (int x = 0; x < LeadFrameTable.SumOfXDies; x++)
             {
+                FrameworkElementFactory gridFactory = new FrameworkElementFactory(typeof(Grid));
+                gridFactory.SetBinding(Panel.BackgroundProperty, new Binding($"Dies[{x}].Color") { Converter = new Converters.ColorToBrushConverter() });
+                FrameworkElementFactory tbFactory = new FrameworkElementFactory(typeof(TextBlock));
+                tbFactory.SetBinding(TextBlock.TextProperty, new Binding($"Dies[{x}].BinCode.Value"));
+                tbFactory.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                tbFactory.SetValue(TextBlock.ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121")));
+                tbFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
+                tbFactory.SetValue(VerticalAlignmentProperty, VerticalAlignment.Center);
+                tbFactory.SetValue(MarginProperty, new Thickness(3));
+                gridFactory.AppendChild(tbFactory);
+
+                DataTemplate template = new DataTemplate();
+                template.VisualTree = gridFactory;
+
                 DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                templateColumn.CellTemplate = template;
 
                 switch (LeadFrameTable.MapOrigin)
                 {
@@ -147,24 +162,6 @@ namespace LotReport.Views.ReusableControls
                     default:
                         break;
                 }
-
-                var xamlString =
-                    "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">" +
-                        "<Grid Background=\"{Binding Dies[" + x + "].Color}\">" +
-                            "<TextBlock" +
-                            " Text=\"{Binding Dies[" + x + "].BinCode.Value}\"" +
-                            " FontWeight=\"Bold\"" +
-                            " Foreground=\"#212121\"" +
-                            " HorizontalAlignment=\"Center\"" +
-                            " VerticalAlignment=\"Center\"" +
-                            " Margin=\"3\"" +
-                            "/>" +
-                        "</Grid>" +
-                    "</DataTemplate>";
-
-                XmlReader xr = XmlReader.Create(new StringReader(xamlString));
-                DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(xr);
-                templateColumn.CellTemplate = dataTemplate;
 
                 _dataGridMap.Columns.Add(templateColumn);
             }

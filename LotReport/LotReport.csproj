@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Framework\AsyncCommand.cs" />
     <Compile Include="Framework\AsyncCommand{TResult}.cs" />
     <Compile Include="Framework\IAsyncCommand.cs" />
