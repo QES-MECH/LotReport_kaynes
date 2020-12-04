@@ -38,6 +38,7 @@ namespace LotReport.Models
                 }
 
                 binCode.Value = binCodeElement.Element("Value").Value;
+                binCode.Display = binCodeElement.Element(nameof(binCode.Display))?.Value;
                 binCode.Description = binCodeElement.Element("Description").Value;
 
                 if (bool.TryParse(binCodeElement.Element("Mark").Value, out bool mark))
@@ -70,6 +71,7 @@ namespace LotReport.Models
                 element.Add(new XElement("Id", binCode.Id));
                 element.Add(new XElement("Quality", binCode.Quality));
                 element.Add(new XElement("Value", binCode.Value));
+                element.Add(new XElement(nameof(binCode.Display), binCode.Display));
                 element.Add(new XElement("Description", binCode.Description));
                 element.Add(new XElement("Mark", binCode.Mark));
                 element.Add(new XElement(nameof(binCode.SkipReview), binCode.SkipReview));

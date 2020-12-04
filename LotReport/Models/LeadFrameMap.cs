@@ -366,6 +366,7 @@ namespace LotReport.Models
             {
                 die.BinCode.Quality = sourceBinCode.Quality;
                 die.BinCode.Value = sourceBinCode.Value;
+                die.BinCode.Display = sourceBinCode.Display;
                 die.BinCode.Description = sourceBinCode.Description;
                 die.BinCode.Mark = sourceBinCode.Mark;
                 die.BinCode.SkipReview = sourceBinCode.SkipReview;

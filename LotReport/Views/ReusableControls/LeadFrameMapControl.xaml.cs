@@ -135,7 +135,7 @@ namespace LotReport.Views.ReusableControls
                 FrameworkElementFactory gridFactory = new FrameworkElementFactory(typeof(Grid));
                 gridFactory.SetBinding(Panel.BackgroundProperty, new Binding($"Dies[{x}].Color") { Converter = new Converters.ColorToBrushConverter() });
                 FrameworkElementFactory tbFactory = new FrameworkElementFactory(typeof(TextBlock));
-                tbFactory.SetBinding(TextBlock.TextProperty, new Binding($"Dies[{x}].BinCode.Value"));
+                tbFactory.SetBinding(TextBlock.TextProperty, new Binding($"Dies[{x}].BinCode.Display"));
                 tbFactory.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
                 tbFactory.SetValue(TextBlock.ForegroundProperty, new SolidColorBrush((Color)ColorConverter.ConvertFromString("#212121")));
                 tbFactory.SetValue(HorizontalAlignmentProperty, HorizontalAlignment.Center);
