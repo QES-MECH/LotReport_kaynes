@@ -332,7 +332,7 @@ namespace LotReport.Models
             visionDies.RemoveAll(die => die.BinCode.Id == -1);
             modifiedDies.RemoveAll(die => die.BinCode.Id == -1);
 
-            LeadFramesInspected = leadFramePaths.Length;
+            LeadFramesInspected = leadFramePaths.Count(path => !path.Contains("E142XML"));
             UnitsPassed = modifiedDies.Count(die => die.BinCode.Quality == BinQuality.Pass);
             UnitsRejected = modifiedDies.Count - UnitsPassed;
             UnitsOverRejected = UnitsPassed - visionDies.Count(die => die.BinCode.Quality == BinQuality.Pass);
