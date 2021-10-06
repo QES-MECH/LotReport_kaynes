@@ -47,7 +47,6 @@ namespace LotReport.ViewModels
             ChartTypeSelection[0] = "Yield vs WW";
             ChartTypeSelection[1] = "Yield vs Month";
 
-
             WireCommands();
         }
 
