@@ -87,7 +87,7 @@ namespace LotReport.Models
                     CultureInfo myCI = new CultureInfo("en-US");
                     Calendar myCalender = myCI.Calendar;
                     CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
-                    rawDataSheet.Cells[rowIdx, 1].Value = lotData.EndTime.ToString("dd/mm/yyyy");
+                    rawDataSheet.Cells[rowIdx, 1].Value = lotData.EndTime.ToString("dd/MM/yyyy");
                     rawDataSheet.Cells[rowIdx, 2].Value = myCalender.GetWeekOfYear(lotData.EndTime, myCWR, DayOfWeek.Sunday);
                     rawDataSheet.Cells[rowIdx, 3].Value = myCalender.GetMonth(lotData.EndTime);
 
@@ -121,6 +121,8 @@ namespace LotReport.Models
                     rowIdx++;
                 }
 
+                rawDataSheet.Column(16).Style.Numberformat.Format = "dd/MM/yyyy hh:mm";
+                rawDataSheet.Column(17).Style.Numberformat.Format = "d/MM/yyyy hh:mm";
                 rawDataSheet.Cells.AutoFitColumns();
 
                 ExcelWorksheet pivotSheet = package.Workbook.Worksheets.Add("Report");
@@ -149,6 +151,15 @@ namespace LotReport.Models
                 var chart = pivotSheet.Drawings.AddChart("PivotChart", eChartType.Line, pivotTable);
                 chart.SetPosition(1, 0, 4, 0);
                 chart.SetSize(720, 240);
+
+                if (_chartType == "Yield vs WW")
+                {
+                    pivotTable.RowHeaderCaption = "WorkWeek";
+                }
+                else
+                {
+                    pivotTable.RowHeaderCaption = "Month";
+                }
 
                 pivotSheet.Select("A1");
 
