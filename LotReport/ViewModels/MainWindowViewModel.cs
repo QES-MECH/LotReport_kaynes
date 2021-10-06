@@ -23,6 +23,9 @@ namespace LotReport.ViewModels
         private DispatcherTimer _filterTimer;
 
         private DateTime? _dateFilter = DateTime.Now;
+        private DateTime? _startDateFilter = null;
+        private DateTime? _endDateFilter = null;
+        private string _recipeFilter;
         private string _status;
         private LeadFrameMap _leadFrameMapOperator;
         private LeadFrameMap _leadFrameMapMachine;
@@ -30,6 +33,7 @@ namespace LotReport.ViewModels
         private List<Item> _selectedLotDirectory;
         private int _selectedTabIndex;
         private Dictionary<BinCode, int> _rejectCount;
+        private bool _autoLaunchExcel;
 
         public MainWindowViewModel()
         {
@@ -39,6 +43,10 @@ namespace LotReport.ViewModels
             _filterTimer = new DispatcherTimer();
             _filterTimer.Interval = TimeSpan.FromMilliseconds(500);
             _filterTimer.Tick += FilterTimer_Tick;
+            ChartTypeSelection = new string[2];
+            ChartTypeSelection[0] = "Yield vs WW";
+            ChartTypeSelection[1] = "Yield vs Month";
+
 
             WireCommands();
         }
@@ -61,6 +69,12 @@ namespace LotReport.ViewModels
 
         public DateTime? DateFilter { get => _dateFilter; set => SetFilterProperty(ref _dateFilter, value); }
 
+        public DateTime? StartDateFilter { get => _startDateFilter; set => SetFilterProperty(ref _startDateFilter, value); }
+
+        public DateTime? EndDateFilter { get => _endDateFilter; set => SetFilterProperty(ref _endDateFilter, value); }
+
+        public string RecipeFilter { get => _recipeFilter; set => SetProperty(ref _recipeFilter, value); }
+
         public string Status { get => _status; set => SetProperty(ref _status, value); }
 
         public LeadFrameMap LeadFrameMapOperator { get => _leadFrameMapOperator; set => SetProperty(ref _leadFrameMapOperator, value); }
@@ -74,6 +88,12 @@ namespace LotReport.ViewModels
         public int SelectedTabIndex { get => _selectedTabIndex; set => SetProperty(ref _selectedTabIndex, value); }
 
         public Dictionary<BinCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
+
+        public bool AutoLaunchExcel { get => _autoLaunchExcel; set => SetProperty(ref _autoLaunchExcel, value); }
+
+        public string[] ChartTypeSelection { get; set; }
+
+        public string SelectedChart { get; set; }
 
         public AsyncCommand<object> LoadedCommand { get; private set; }
 
@@ -98,6 +118,8 @@ namespace LotReport.ViewModels
         public RelayCommand PreviousLFCommand { get; private set; }
 
         public RelayCommand NextLFCommand { get; private set; }
+
+        public RelayCommand PullSummaryData { get; private set; }
 
         private void WireCommands()
         {
@@ -341,6 +363,60 @@ namespace LotReport.ViewModels
                 param =>
                 {
                     return SelectedLot != null && LeadFrameMapMachine?.XmlPath != null;
+                });
+
+            PullSummaryData = new RelayCommand(
+                param =>
+                {
+                    try
+                    {
+                        string[] lotFiles = Directory.GetFiles(Settings.DatabaseDirectory, "*.lot", SearchOption.AllDirectories);
+                        List<LotData> allLotData = new List<LotData>();
+
+                        foreach (string lotFile in lotFiles)
+                        {
+                            LotData lotData = new LotData();
+                            lotData.LoadFromFile(lotFile);
+                            allLotData.Add(lotData);
+                        }
+
+                        List<LotData> filteredLotData = new List<LotData>();
+                        foreach (LotData lotData in allLotData)
+                        {
+                            if (string.IsNullOrEmpty(RecipeFilter))
+                            {
+                                if (lotData.EndTime > StartDateFilter && lotData.EndTime < EndDateFilter)
+                                {
+                                    filteredLotData.Add(lotData);
+                                }
+                            }
+                            else
+                            {
+                                if (lotData.EndTime > StartDateFilter && lotData.EndTime < EndDateFilter && lotData.RecipeName == RecipeFilter)
+                                {
+                                    filteredLotData.Add(lotData);
+                                }
+                            }
+                        }
+
+                        if (filteredLotData.Count == 0)
+                        {
+                            throw new Exception("No data available within this Date Range or Recipe.");
+                        }
+
+                        SummaryReport summaryReport = new SummaryReport(filteredLotData, SelectedChart, AutoLaunchExcel);
+                        summaryReport.GenerateSummaryReportToExcel();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error Pulling Data", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    Status = "Data pulled completed!";
+                },
+                param =>
+                {
+                    return SelectedChart != null && StartDateFilter != null && EndDateFilter != null;
                 });
         }
 

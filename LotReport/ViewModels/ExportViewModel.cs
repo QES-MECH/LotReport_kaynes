@@ -79,6 +79,7 @@ namespace LotReport.ViewModels
                 }
             }
 
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage(excelFile))
             {
                 GenerateSummary(LeadFrameMap.Type.Modified, lotData, package);
@@ -104,7 +105,7 @@ namespace LotReport.ViewModels
                     break;
             }
 
-            summaryWorksheet.Cells["A1"].Value = "Macine ID";
+            summaryWorksheet.Cells["A1"].Value = "Machine ID";
             summaryWorksheet.Cells["A2"].Value = "Lot ID";
             summaryWorksheet.Cells["A3"].Value = "Operator ID";
             summaryWorksheet.Cells["A4"].Value = "Product Code";

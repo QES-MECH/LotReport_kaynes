@@ -84,11 +84,12 @@
             <TabItem Header="Map" Width="100">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*"/>
-                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="228*"/>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="1013*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2">
                         <GroupBox Header="Lot Summary" Margin="3">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                 <StackPanel>
@@ -125,7 +126,7 @@
                         </GroupBox>
                     </Grid>
 
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.7*"/>
                             <RowDefinition Height="Auto"/>
@@ -271,6 +272,45 @@
                                 <Button Content="_Export" Command="{Binding ExportViewModel.ExportCommand}" CommandParameter="{Binding SelectedLot}" Width="75" Height="20" Margin="3"/>
                             </WrapPanel>
                         </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Summary" Width="100">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <StackPanel>
+                            <WrapPanel>
+                                <TextBlock Text="Start Date:" VerticalAlignment="Center" Margin="3"/>
+                                <DatePicker SelectedDate="{Binding StartDateFilter}" Margin="3"/>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <TextBlock Text=" End Date:" VerticalAlignment="Center" Margin="3"/>
+                                <DatePicker SelectedDate="{Binding EndDateFilter}" Margin="3"/>
+                            </WrapPanel>
+                            <WrapPanel>
+                                <TextBlock Text=" Recipe    :" VerticalAlignment="Center" Margin="3"/>
+                                <TextBox Text="{Binding RecipeFilter}" Margin="3" Width="129"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <StackPanel>
+                            <TextBlock Text="Select Output Chart Type:" VerticalAlignment="Center" Margin="3"/>
+                            <ComboBox ItemsSource="{Binding ChartTypeSelection}" SelectedItem="{Binding SelectedChart}" Width="250" HorizontalAlignment="Left"/>
+                            <CheckBox Content="Auto Launch MS Excel" IsChecked="{Binding AutoLaunchExcel}" Margin="0,50,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <Button Content="Pull Data" Command="{Binding PullSummaryData}" Margin="25" FontSize="22" FontWeight="Bold"/>
                     </Grid>
                 </Grid>
             </TabItem>
