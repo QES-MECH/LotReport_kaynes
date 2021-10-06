@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
 using OfficeOpenXml.Table.PivotTable;
-using OfficeOpenXml.Drawing.Chart;
 
 namespace LotReport.Models
 {
