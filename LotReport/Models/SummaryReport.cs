@@ -122,7 +122,7 @@ namespace LotReport.Models
                 }
 
                 rawDataSheet.Column(16).Style.Numberformat.Format = "dd/MM/yyyy hh:mm";
-                rawDataSheet.Column(17).Style.Numberformat.Format = "d/MM/yyyy hh:mm";
+                rawDataSheet.Column(17).Style.Numberformat.Format = "dd/MM/yyyy hh:mm";
                 rawDataSheet.Cells.AutoFitColumns();
 
                 ExcelWorksheet pivotSheet = package.Workbook.Worksheets.Add("Report");
