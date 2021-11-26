@@ -242,8 +242,10 @@ namespace LotReport.ViewModels
                         }
 
                         RejectCount = rejectCount;
-                        LeadFrameMapOperator = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
-                        LeadFrameMapMachine = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
+                        LeadFrameMapOperator = LeadFrameMap.Load(selectedLotDirectory[0].Path, LeadFrameMap.Type.Modified);
+                        //LeadFrameMapOperator = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
+                        LeadFrameMapMachine = LeadFrameMap.Load(selectedLotDirectory[0].Path, LeadFrameMap.Type.Vision);
+                        //LeadFrameMapMachine = LeadFrameMap.LoadTemplate(selectedLotData.LeadFrameXUnits, selectedLotData.LeadFrameYUnits);
                         SelectedTabIndex = (int)TabIndex.Map;
                     }
                     catch (Exception ex)
