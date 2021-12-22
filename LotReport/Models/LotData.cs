@@ -125,7 +125,7 @@ namespace LotReport.Models
 
             if (double.TryParse(summaryElement.Element("UPH")?.Value, out double uph))
             {
-                UPH = uph;
+                UPH = Math.Round(uph);
             }
 
             if (double.TryParse(summaryElement.Element("ProcessUPH")?.Value, out double processUPH))
