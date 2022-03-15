@@ -214,7 +214,9 @@ namespace LotReport.Views.ReusableControls
                 return;
             }
 
-            status.Text = GetMapCoordinate(dieData).ToString();
+            status.Text = dieData.Coordinate.ToString();
+            //status.Text = GetMapCoordinate(dieData).ToString();
+
             SelectedDie = dieData;
         }
 
@@ -227,7 +229,8 @@ namespace LotReport.Views.ReusableControls
                 return;
             }
 
-            status.Text = GetMapCoordinate(dieData).ToString();
+            status.Text = dieData.Coordinate.ToString();
+            //status.Text = GetMapCoordinate(dieData).ToString();
             SelectedDie = dieData;
 
             if (DoubleClickCell != null)

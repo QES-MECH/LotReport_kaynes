@@ -276,15 +276,41 @@ namespace LotReport.Models
                 MapOrigin = mapOrigin;
             }
 
+            bool forwardX = false;
+            bool forwardY = false;
+
+            switch (MapOrigin)
+            {
+                case Origin.Top_Left:
+                    forwardX = true;
+                    forwardY = true;
+                    break;
+                case Origin.Top_Right:
+                    forwardX = false;
+                    forwardY = true;
+                    break;
+                case Origin.Bottom_Left:
+                    forwardX = true;
+                    forwardY = false;
+                    break;
+                case Origin.Bottom_Right:
+                    forwardX = false;
+                    forwardY = false;
+                    break;
+                default:
+                    break;
+            }
+
             for (int y = 1; y <= sumOfYDies; y++)
             {
                 List<Die> dies = new List<Die>();
-
+                int dieY = forwardY ? y : sumOfYDies - y + 1;
                 for (int x = 1; x <= sumOfXDies; x++)
                 {
+                    int dieX = forwardX ? x : sumOfXDies - x + 1;
                     Die die = new Die
                     {
-                        Coordinate = new Point(x, y)
+                        Coordinate = new Point(dieX, dieY)
                     };
 
                     var dieElement = doc

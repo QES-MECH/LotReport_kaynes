@@ -38,7 +38,9 @@ namespace LotReport.ViewModels
 
         public Die Die { get => _die; set => SetProperty(ref _die, value); }
 
-        public Point MapCoordinate => GetMapCoordinate(Die.Coordinate);
+        public Point MapCoordinate => Die.Coordinate;
+
+        // public Point MapCoordinate => GetMapCoordinate(Die.Coordinate);
 
         public BitmapImage Image { get => _image; set => SetProperty(ref _image, value); }
 
