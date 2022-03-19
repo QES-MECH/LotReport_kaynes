@@ -109,13 +109,16 @@ namespace LotReport.ViewModels
                 {
                     try
                     {
+                        Application.Current.Dispatcher.Invoke(() => Image = null);
+
                         BitmapImage image = new BitmapImage();
                         image.BeginInit();
                         image.UriSource = new Uri((string)param);
                         image.EndInit();
                         image.Freeze();
 
-                        Image = image;
+                        Application.Current.Dispatcher.Invoke(() => Image = image);
+                        MessageBox.Show($"{param} is image is loaded");
                     }
                     catch (Exception e)
                     {
