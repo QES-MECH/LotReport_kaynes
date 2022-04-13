@@ -60,7 +60,14 @@ namespace LotReport.ViewModels
             CognexDisplay = Settings.CognexDisplay;
             if (CognexDisplay)
             {
-                CognexDisplayViewModel = new CognexDisplayViewModel();
+                try
+                {
+                    CognexDisplayViewModel = new CognexDisplayViewModel();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Failed to Load Cognex Display Library");
+                }
             }
         }
 
@@ -77,6 +84,7 @@ namespace LotReport.ViewModels
                         {
                             if (CognexDisplay)
                             {
+                                GC.Collect();
                                 CognexDisplayViewModel.LoadImage(Die.DiePath);
                                 CognexDisplayViewModel.DisplayImage(true);
 
