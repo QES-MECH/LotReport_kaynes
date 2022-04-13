@@ -85,6 +85,9 @@ namespace LotReport.ViewModels
                             if (CognexDisplay)
                             {
                                 GC.Collect();
+                                CognexDisplayViewModel.DisplayGraphic(false);
+                                CognexDisplayViewModel.DisplayImage(false);
+
                                 CognexDisplayViewModel.LoadImage(Die.DiePath);
                                 CognexDisplayViewModel.DisplayImage(true);
 
