@@ -301,29 +301,54 @@ namespace LotReport.ViewModels
 
                     foreach (Die die in dieRow.Dies)
                     {
-                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        int rowIdx = 0;
+                        int colIdx = 0;
+
+                        switch (lfMap.MapOrigin)
+                        {
+                            case Origin.Top_Left:
+                                rowIdx = startingRow;
+                                colIdx = startingColumn + (int)die.Coordinate.X + 1;
+                                break;
+                            case Origin.Top_Right:
+                                rowIdx = startingRow;
+                                colIdx = startingColumn + dieRow.Dies.Count() - (int)die.Coordinate.X + 1;
+                                break;
+                            case Origin.Bottom_Left:
+                                rowIdx = startingRow;
+                                colIdx = startingColumn + (int)die.Coordinate.X;
+                                break;
+                            case Origin.Bottom_Right:
+                                rowIdx = startingRow;
+                                colIdx = startingColumn + dieRow.Dies.Count() - (int)die.Coordinate.X + 1;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        mappingWorksheet.Cells[rowIdx, colIdx].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.PatternType = ExcelFillStyle.Solid;
 
                         if (die.BinCode.Id == -1)
                         {
-                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Black);
+                            mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.BackgroundColor.SetColor(Color.Black);
                         }
                         else if (die.BinCode.Id == 0)
                         {
-                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Green);
+                            mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.BackgroundColor.SetColor(Color.Green);
                         }
                         else
                         {
-                            mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                            mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.BackgroundColor.SetColor(Color.Red);
                         }
 
-                        mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Value = die.BinCode.Value;
+                        mappingWorksheet.Cells[rowIdx, colIdx].Value = die.BinCode.Display;
 
                         if (die.Modified)
                         {
                             if (die.BinCode.Id == 0)
                             {
-                                mappingWorksheet.Cells[startingRow, startingColumn + (int)die.Coordinate.X].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
+                                mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
                             }
                         }
                     }
