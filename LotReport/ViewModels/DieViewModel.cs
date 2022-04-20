@@ -120,6 +120,13 @@ namespace LotReport.ViewModels
                 {
                     try
                     {
+                        if (CognexDisplay)
+                        {
+                            GC.Collect();
+                            CognexDisplayViewModel.DisplayGraphic(false);
+                            CognexDisplayViewModel.DisplayImage(false);
+                        }
+
                         Application.Current.Dispatcher.Invoke(() => Image = null);
 
                         BitmapImage image = new BitmapImage();
