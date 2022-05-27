@@ -79,12 +79,12 @@ namespace LotReport.ViewModels
                     return Task.Run(() =>
                     {
                         CurrentRejectCode = Die.BinCode;
+                        GC.Collect();
 
                         try
                         {
                             if (CognexDisplay)
                             {
-                                GC.Collect();
                                 CognexDisplayViewModel.DisplayGraphic(false);
                                 CognexDisplayViewModel.DisplayImage(false);
 
