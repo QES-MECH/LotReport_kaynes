@@ -301,30 +301,8 @@ namespace LotReport.ViewModels
 
                     foreach (Die die in dieRow.Dies)
                     {
-                        int rowIdx = 0;
-                        int colIdx = 0;
-
-                        switch (lfMap.MapOrigin)
-                        {
-                            case Origin.Top_Left:
-                                rowIdx = startingRow;
-                                colIdx = startingColumn + (int)die.Coordinate.X + 1;
-                                break;
-                            case Origin.Top_Right:
-                                rowIdx = startingRow;
-                                colIdx = startingColumn + dieRow.Dies.Count() - (int)die.Coordinate.X + 1;
-                                break;
-                            case Origin.Bottom_Left:
-                                rowIdx = startingRow;
-                                colIdx = startingColumn + (int)die.Coordinate.X;
-                                break;
-                            case Origin.Bottom_Right:
-                                rowIdx = startingRow;
-                                colIdx = startingColumn + dieRow.Dies.Count() - (int)die.Coordinate.X + 1;
-                                break;
-                            default:
-                                break;
-                        }
+                        int rowIdx = startingRow;
+                        int colIdx = startingColumn + (int)die.Coordinate.X;
 
                         mappingWorksheet.Cells[rowIdx, colIdx].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.PatternType = ExcelFillStyle.Solid;
