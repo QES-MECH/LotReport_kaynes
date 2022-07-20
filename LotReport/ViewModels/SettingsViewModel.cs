@@ -18,6 +18,7 @@ namespace LotReport.ViewModels
         private DateTime _dayShift;
         private DateTime _nightShift;
         private bool _cognexDisplay;
+        private bool _markGraphics;
         private string _visionImageDirectory;
 
         public SettingsViewModel()
@@ -37,6 +38,8 @@ namespace LotReport.ViewModels
         public DateTime NightShift { get => _nightShift; set => SetProperty(ref _nightShift, value); }
 
         public bool CognexDisplay { get => _cognexDisplay; set => SetProperty(ref _cognexDisplay, value); }
+
+        public bool MarkGraphics { get => _markGraphics; set => SetProperty(ref _markGraphics, value); }
 
         public string VisionImageDirectory { get => _visionImageDirectory; set => SetProperty(ref _visionImageDirectory, value); }
 
@@ -109,6 +112,7 @@ namespace LotReport.ViewModels
             DayShift = Settings.DayShift;
             NightShift = Settings.NightShift;
             CognexDisplay = Settings.CognexDisplay;
+            MarkGraphics = Settings.MarkGraphics;
             VisionImageDirectory = Settings.VisionImageDirectory;
         }
 
@@ -130,6 +134,7 @@ namespace LotReport.ViewModels
             Settings.DayShift = DayShift;
             Settings.NightShift = NightShift;
             Settings.CognexDisplay = CognexDisplay;
+            Settings.MarkGraphics = MarkGraphics;
             Settings.VisionImageDirectory = VisionImageDirectory;
 
             try

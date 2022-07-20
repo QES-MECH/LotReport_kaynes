@@ -58,6 +58,7 @@
                 <GroupBox Grid.Row="1" Header="Miscellaneous" Margin="3">
                     <StackPanel>
                         <CheckBox Content="Cognex Display" IsChecked="{Binding CognexDisplay}" Margin="3"/>
+                        <CheckBox Content="Mark Image Graphics" IsChecked="{Binding MarkGraphics}" Margin="3"/>
                         <Grid Margin="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

@@ -24,6 +24,8 @@ namespace LotReport.Models
 
         public static bool CognexDisplay { get; set; }
 
+        public static bool MarkGraphics { get; set; }
+
         public static string VisionImageDirectory { get; set; }
 
         public static void LoadFromFile()
@@ -88,6 +90,17 @@ namespace LotReport.Models
                 CognexDisplay = cognexDisplay;
             }
 
+            string markGraphicsStr = document
+                .Root
+                .Element("Advanced")
+                .Element("Miscellaneous")
+                .Element(nameof(MarkGraphics))
+                .Value;
+            if (bool.TryParse(markGraphicsStr, out bool markGraphics))
+            {
+                MarkGraphics = markGraphics;
+            }
+
             VisionImageDirectory = document
                 .Root
                 .Element("Advanced")
@@ -126,6 +139,7 @@ namespace LotReport.Models
 
                 writer.WriteStartElement("Miscellaneous");
                 writer.WriteElementString(nameof(CognexDisplay), CognexDisplay.ToString());
+                writer.WriteElementString(nameof(MarkGraphics), MarkGraphics.ToString());
                 writer.WriteElementString(nameof(VisionImageDirectory), VisionImageDirectory);
                 writer.WriteEndElement();
 
