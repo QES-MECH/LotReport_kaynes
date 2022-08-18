@@ -16,7 +16,10 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-
+    <Window.InputBindings>
+        <KeyBinding Key="G" Command="{Binding GraphicCommand}"/>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
