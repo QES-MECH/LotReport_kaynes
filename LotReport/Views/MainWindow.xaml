@@ -63,8 +63,8 @@
                             <DataGridTextColumn Header="LF Y Unit(s)" Binding="{Binding LeadFrameYUnits}"/>
                             <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}"/>
                             <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}"/>
-                            <DataGridTextColumn Header="UPH" Binding="{Binding UPH, StringFormat={}{0:0.000}}"/>
-                            <DataGridTextColumn Header="Processed UPH" Binding="{Binding ProcessUPH, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn Header="UPH" Binding="{Binding UPH, StringFormat={}{0:0}}"/>
+                            <DataGridTextColumn Header="Processed UPH" Binding="{Binding ProcessUPH, StringFormat={}{0:0}}"/>
                             <DataGridTextColumn Header="LFs Inspected" Binding="{Binding LeadFramesInspected}"/>
                             <DataGridTextColumn Header="Units Passed" Binding="{Binding UnitsPassed}"/>
                             <DataGridTextColumn Header="Units Skipped" Binding="{Binding UnitsSkipped}"/>
