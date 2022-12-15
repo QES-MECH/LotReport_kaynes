@@ -14,6 +14,7 @@ using Framework.MVVM;
 using LotReport.Models;
 using LotReport.Models.DirectoryItems;
 using LotReport.Views;
+using Renci.SshNet;
 
 namespace LotReport.ViewModels
 {
@@ -103,6 +104,8 @@ namespace LotReport.ViewModels
         public RelayCommand SettingsCommand { get; private set; }
 
         public RelayCommand RegenerateSummaryCommand { get; private set; }
+
+        public RelayCommand UploadLotCommand { get; private set; }
 
         public RelayCommand UpdateSelectedLotCommand { get; private set; }
 
@@ -202,6 +205,27 @@ namespace LotReport.ViewModels
                 {
                     return SelectedLot != null;
                 });
+
+            UploadLotCommand = new RelayCommand(
+                param =>
+                {
+                    LotSSH lotSSH = new LotSSH(
+                        Settings.SftpHost,
+                        Settings.SftpPort,
+                        Settings.SftpUsername,
+                        Settings.SftpPassword,
+                        Settings.SftpDirectory);
+
+                    try
+                    {
+                        lotSSH.SftpUpload(SelectedLot, Settings.DatabaseDirectory);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageService.Show(e.Message, "Upload Lot", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                },
+                param => SelectedLot != null);
 
             UpdateSelectedLotCommand = new RelayCommand(
                 param =>

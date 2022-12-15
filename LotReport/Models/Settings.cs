@@ -129,7 +129,7 @@ namespace LotReport.Models
                 .Root
                 ?.Element("SSH")
                 ?.Element("SFTP")
-                ?.Element(nameof(SftpHost))
+                ?.Element(nameof(SftpPort))
                 ?.Value;
             ushort.TryParse(sftpPortStr, out ushort sftpPort);
             SftpPort = sftpPort;

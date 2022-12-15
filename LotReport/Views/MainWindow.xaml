@@ -33,6 +33,8 @@
                 <MenuItem Header="_Settings" Command="{Binding SettingsCommand}"/>
                 <Separator/>
                 <MenuItem Header="_Regenerate Summary" Command="{Binding RegenerateSummaryCommand}" CommandParameter="{Binding SelectedLot}"/>
+                <Separator/>
+                <MenuItem Header="_Upload Lot" Command="{Binding UploadLotCommand}" CommandParameter="{Binding SelectedLot}"/>
             </MenuItem>
         </Menu>
 
