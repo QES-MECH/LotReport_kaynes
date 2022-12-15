@@ -28,6 +28,16 @@ namespace LotReport.Models
 
         public static string VisionImageDirectory { get; set; }
 
+        public static string SftpHost { get; set; }
+
+        public static ushort SftpPort { get; set; }
+
+        public static string SftpUsername { get; set; }
+
+        public static string SftpPassword { get; set; }
+
+        public static string SftpDirectory { get; set; }
+
         public static void LoadFromFile()
         {
             XDocument document = XDocument.Load(SettingsDirectory);
@@ -107,6 +117,48 @@ namespace LotReport.Models
                 .Element("Miscellaneous")
                 .Element(nameof(VisionImageDirectory))
                 .Value;
+
+            SftpHost = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpHost))
+                ?.Value;
+
+            string sftpPortStr = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpHost))
+                ?.Value;
+            ushort.TryParse(sftpPortStr, out ushort sftpPort);
+            SftpPort = sftpPort;
+
+            SftpUsername = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpUsername))
+                ?.Value;
+
+            string encryptedSftpPassword = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpPassword))
+                ?.Value;
+            if (!string.IsNullOrEmpty(encryptedSftpPassword))
+            {
+                var encrypter = new Utilities.PasswordEncrypter();
+                SftpPassword = encrypter.Decrypt(encryptedSftpPassword);
+            }
+
+            SftpDirectory = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpDirectory))
+                ?.Value;
         }
 
         public static void SaveToFile()
@@ -141,6 +193,21 @@ namespace LotReport.Models
                 writer.WriteElementString(nameof(CognexDisplay), CognexDisplay.ToString());
                 writer.WriteElementString(nameof(MarkGraphics), MarkGraphics.ToString());
                 writer.WriteElementString(nameof(VisionImageDirectory), VisionImageDirectory);
+                writer.WriteEndElement();
+
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("SSH");
+
+                writer.WriteStartElement("SFTP");
+                writer.WriteElementString(nameof(SftpHost), SftpHost);
+                writer.WriteElementString(nameof(SftpPort), SftpPort.ToString());
+                writer.WriteElementString(nameof(SftpUsername), SftpUsername);
+
+                var encrypter = new Utilities.PasswordEncrypter();
+                string encryptedSftpPassword = encrypter.Encrypt(SftpPassword ?? string.Empty);
+                writer.WriteElementString(nameof(SftpPassword), encryptedSftpPassword);
+                writer.WriteElementString(nameof(SftpDirectory), SftpDirectory ?? string.Empty);
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();

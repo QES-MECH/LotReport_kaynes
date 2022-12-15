@@ -25,6 +25,12 @@ namespace LotReport.Views
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            SettingsViewModel vm = DataContext as SettingsViewModel;
+            SftpPassword.Password = vm?.SftpPassword;
+        }
+
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             SettingsViewModel vm = DataContext as SettingsViewModel;
@@ -32,6 +38,8 @@ namespace LotReport.Views
             {
                 return;
             }
+
+            vm.SftpPassword = SftpPassword.Password;
 
             vm.OkCommand.Execute(null);
 

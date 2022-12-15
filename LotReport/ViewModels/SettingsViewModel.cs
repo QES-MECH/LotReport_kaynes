@@ -20,6 +20,11 @@ namespace LotReport.ViewModels
         private bool _cognexDisplay;
         private bool _markGraphics;
         private string _visionImageDirectory;
+        private string _sftpHost;
+        private ushort _sftpPort;
+        private string _sftpUsername;
+        private string _sftpPassword;
+        private string _sftpDirectory;
 
         public SettingsViewModel()
         {
@@ -42,6 +47,16 @@ namespace LotReport.ViewModels
         public bool MarkGraphics { get => _markGraphics; set => SetProperty(ref _markGraphics, value); }
 
         public string VisionImageDirectory { get => _visionImageDirectory; set => SetProperty(ref _visionImageDirectory, value); }
+
+        public string SftpHost { get => _sftpHost; set => SetProperty(ref _sftpHost, value); }
+
+        public ushort SftpPort { get => _sftpPort; set => SetProperty(ref _sftpPort, value); }
+
+        public string SftpUsername { get => _sftpUsername; set => SetProperty(ref _sftpUsername, value); }
+
+        public string SftpPassword { get => _sftpPassword; set => SetProperty(ref _sftpPassword, value); }
+
+        public string SftpDirectory { get => _sftpDirectory; set => SetProperty(ref _sftpDirectory, value); }
 
         public RelayCommand<bool> OkCommand { get; private set; }
 
@@ -114,6 +129,11 @@ namespace LotReport.ViewModels
             CognexDisplay = Settings.CognexDisplay;
             MarkGraphics = Settings.MarkGraphics;
             VisionImageDirectory = Settings.VisionImageDirectory;
+            SftpHost = Settings.SftpHost;
+            SftpPort = Settings.SftpPort;
+            SftpUsername = Settings.SftpUsername;
+            SftpPassword = Settings.SftpPassword;
+            SftpDirectory = Settings.SftpDirectory;
         }
 
         private bool SaveData()
@@ -136,6 +156,11 @@ namespace LotReport.ViewModels
             Settings.CognexDisplay = CognexDisplay;
             Settings.MarkGraphics = MarkGraphics;
             Settings.VisionImageDirectory = VisionImageDirectory;
+            Settings.SftpHost = SftpHost;
+            Settings.SftpPort = SftpPort;
+            Settings.SftpUsername = SftpUsername;
+            Settings.SftpPassword = SftpPassword;
+            Settings.SftpDirectory = SftpDirectory;
 
             try
             {

@@ -134,6 +134,7 @@
     <Compile Include="Models\Origin.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SummaryReport.cs" />
+    <Compile Include="Utilities\PasswordEncrypter.cs" />
     <Compile Include="ViewModels\DatabaseSubdirectoryViewModel.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
