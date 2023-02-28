@@ -37,9 +37,10 @@ namespace LotReport.Models
             string relativePath = absolutePath.Substring(1);
 
             var connectionInfo = new ConnectionInfo(
-                Settings.SftpHost,
-                Settings.SftpUsername,
-                new PasswordAuthenticationMethod(Settings.SftpUsername, Settings.SftpPassword));
+                Host,
+                Port,
+                Username,
+                new PasswordAuthenticationMethod(Username, Password));
 
             using (var client = new SftpClient(connectionInfo))
             {
