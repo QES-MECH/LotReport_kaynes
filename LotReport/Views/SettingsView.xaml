@@ -118,6 +118,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <r:LabelTextBox Grid.Column="0" Label="Private Key File (RSA)" Value="{Binding SftpPrivateKeyFileName}" Height="20"/>
+                            <Button Grid.Column="1" Content="..." Command="{Binding PrivateKeyFileCommand}" HorizontalAlignment="Left"  Margin="3" Width="20" Height="20"/>
+                        </Grid>
+                        <Grid Margin="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
                             <r:LabelTextBox Grid.Column="0" Label="Directory" Value="{Binding SftpDirectory}" Height="20"/>
                             <Label Grid.Column="1" Margin="3" Width="20" Height="20"/>
                         </Grid>

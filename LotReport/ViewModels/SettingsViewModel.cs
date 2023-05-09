@@ -24,6 +24,7 @@ namespace LotReport.ViewModels
         private ushort _sftpPort;
         private string _sftpUsername;
         private string _sftpPassword;
+        private string _sftpPrivateKeyFileName;
         private string _sftpDirectory;
 
         public SettingsViewModel()
@@ -56,6 +57,8 @@ namespace LotReport.ViewModels
 
         public string SftpPassword { get => _sftpPassword; set => SetProperty(ref _sftpPassword, value); }
 
+        public string SftpPrivateKeyFileName { get => _sftpPrivateKeyFileName; set => SetProperty(ref _sftpPrivateKeyFileName, value); }
+
         public string SftpDirectory { get => _sftpDirectory; set => SetProperty(ref _sftpDirectory, value); }
 
         public RelayCommand<bool> OkCommand { get; private set; }
@@ -65,6 +68,8 @@ namespace LotReport.ViewModels
         public RelayCommand BinCodeFileCommand { get; private set; }
 
         public RelayCommand VisionImageFolderCommand { get; private set; }
+
+        public RelayCommand PrivateKeyFileCommand { get; private set; }
 
         private void WireCommands()
         {
@@ -117,6 +122,19 @@ namespace LotReport.ViewModels
                         }
                     }
                 });
+
+            PrivateKeyFileCommand = new RelayCommand(
+                param =>
+                {
+                    OpenFileDialog fileDialog = new OpenFileDialog();
+                    fileDialog.Title = "Open Private Key File";
+                    bool? result = fileDialog.ShowDialog();
+
+                    if (result == true)
+                    {
+                        SftpPrivateKeyFileName = fileDialog.FileName;
+                    }
+                });
         }
 
         private void LoadData()
@@ -133,6 +151,7 @@ namespace LotReport.ViewModels
             SftpPort = Settings.SftpPort;
             SftpUsername = Settings.SftpUsername;
             SftpPassword = Settings.SftpPassword;
+            SftpPrivateKeyFileName = Settings.SftpPrivateKeyFileName;
             SftpDirectory = Settings.SftpDirectory;
         }
 
@@ -160,6 +179,7 @@ namespace LotReport.ViewModels
             Settings.SftpPort = SftpPort;
             Settings.SftpUsername = SftpUsername;
             Settings.SftpPassword = SftpPassword;
+            Settings.SftpPrivateKeyFileName = SftpPrivateKeyFileName;
             Settings.SftpDirectory = SftpDirectory;
 
             try

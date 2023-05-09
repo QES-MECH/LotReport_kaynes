@@ -36,6 +36,8 @@ namespace LotReport.Models
 
         public static string SftpPassword { get; set; }
 
+        public static string SftpPrivateKeyFileName { get; set; }
+
         public static string SftpDirectory { get; set; }
 
         public static void LoadFromFile()
@@ -153,6 +155,13 @@ namespace LotReport.Models
                 SftpPassword = encrypter.Decrypt(encryptedSftpPassword);
             }
 
+            SftpPrivateKeyFileName = document
+                .Root
+                ?.Element("SSH")
+                ?.Element("SFTP")
+                ?.Element(nameof(SftpPrivateKeyFileName))
+                ?.Value;
+
             SftpDirectory = document
                 .Root
                 ?.Element("SSH")
@@ -207,6 +216,7 @@ namespace LotReport.Models
                 var encrypter = new Utilities.PasswordEncrypter();
                 string encryptedSftpPassword = encrypter.Encrypt(SftpPassword ?? string.Empty);
                 writer.WriteElementString(nameof(SftpPassword), encryptedSftpPassword);
+                writer.WriteElementString(nameof(SftpPrivateKeyFileName), SftpPrivateKeyFileName);
                 writer.WriteElementString(nameof(SftpDirectory), SftpDirectory ?? string.Empty);
                 writer.WriteEndElement();
 

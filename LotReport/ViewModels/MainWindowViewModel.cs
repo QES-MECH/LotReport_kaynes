@@ -214,6 +214,7 @@ namespace LotReport.ViewModels
                         Settings.SftpPort,
                         Settings.SftpUsername,
                         Settings.SftpPassword,
+                        Settings.SftpPrivateKeyFileName,
                         Settings.SftpDirectory);
 
                     try
