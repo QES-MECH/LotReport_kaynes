@@ -324,7 +324,7 @@ namespace LotReport.ViewModels
 
                         if (die.Modified)
                         {
-                            if (die.BinCode.Id == 0)
+                            if (string.Equals(die.BinCode.Description, "false call", StringComparison.OrdinalIgnoreCase))
                             {
                                 mappingWorksheet.Cells[rowIdx, colIdx].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
                             }
