@@ -70,13 +70,16 @@ namespace LotReport.Models
                     client.ChangeDirectory(Directory);
 
                     string remoteBaseDirectory = Path.Combine(client.WorkingDirectory, relativePath);
+                    remoteBaseDirectory = remoteBaseDirectory.Replace("\\", "/");
                     client.CreateDirectoryRecursively(remoteBaseDirectory);
 
                     foreach (FileInfo fi in lotData.FileInfo.Directory.GetFiles())
                     {
                         using (FileStream fs = new FileStream(fi.FullName, FileMode.Open))
                         {
-                            client.UploadFile(fs, Path.Combine(remoteBaseDirectory, fi.Name), true);
+                            string remoteFilePath = Path.Combine(remoteBaseDirectory, fi.Name);
+                            remoteFilePath = remoteFilePath.Replace("\\", "/");
+                            client.UploadFile(fs, remoteFilePath, true);
                         }
                     }
                 }
