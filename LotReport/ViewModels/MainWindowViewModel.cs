@@ -220,6 +220,7 @@ namespace LotReport.ViewModels
                     try
                     {
                         lotSSH.SftpUpload(SelectedLot, Settings.DatabaseDirectory);
+                        MessageService.Show($"Lot ID: {SelectedLot.LotId} data uploaded.", "Upload Lot.", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     catch (Exception e)
                     {
