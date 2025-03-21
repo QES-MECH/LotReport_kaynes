@@ -276,64 +276,52 @@ namespace LotReport.Models
                 MapOrigin = mapOrigin;
             }
 
+            // Convert XML elements into a dictionary for quick lookups
+            var dieElements = doc.Root.Elements("Die")
+                .ToDictionary(e => e.Attribute("Coordinate").Value, e => e);
+
             for (int y = 1; y <= sumOfYDies; y++)
             {
                 List<Die> dies = new List<Die>();
 
                 for (int x = 1; x <= sumOfXDies; x++)
                 {
+                    string coordinateKey = $"{x},{y}";
+
+                    if (!dieElements.TryGetValue(coordinateKey, out XElement dieElement))
+                    {
+                        continue;
+                    }
+
                     Die die = new Die
                     {
-                        Coordinate = new Point(x, y)
+                        Coordinate = new Point(x, y),
+                        DiePath = dieElement.Element("DiePath")?.Value,
+                        MarkPath = dieElement.Element("MarkPath")?.Value
                     };
-
-                    var dieElement = doc
-                        .Root
-                        .Elements("Die")
-                        .Where(e => e.Attribute("Coordinate").Value == die.Coordinate.ToString())
-                        .FirstOrDefault();
-
-                    if (type == Type.Modified)
-                    {
-                        XElement modifiedBinCode = dieElement.Element("BinCode").Element("Modified");
-
-                        if (modifiedBinCode != null)
-                        {
-                            die.Modified = true;
-
-                            if (int.TryParse(modifiedBinCode.Value, out int modifiedBinCodeId))
-                            {
-                                die.BinCode.Id = modifiedBinCodeId;
-                            }
-                            else
-                            {
-                                die.BinCode.Id = 999;
-                            }
-                        }
-                    }
-
-                    if (!die.Modified)
-                    {
-                        XElement visionBinCode = dieElement.Element("BinCode").Element("Vision");
-
-                        if (int.TryParse(visionBinCode.Value, out int visionBinCodeId))
-                        {
-                            die.BinCode.Id = visionBinCodeId;
-                        }
-                        else
-                        {
-                            die.BinCode.Id = 999;
-                        }
-                    }
-
-                    die.DiePath = dieElement.Element("DiePath")?.Value;
 
                     if (Enum.TryParse(dieElement.Element("Mark")?.Value, out Die.Mark markStatus))
                     {
                         die.MarkStatus = markStatus;
                     }
 
-                    die.MarkPath = dieElement.Element("MarkPath")?.Value;
+                    XElement binCodeElement = dieElement.Element("BinCode");
+                    if (binCodeElement != null)
+                    {
+                        if (type == Type.Modified && binCodeElement.Element("Modified") != null)
+                        {
+                            die.Modified = true;
+                            die.BinCode.Id = int.TryParse(binCodeElement.Element("Modified").Value, out int modifiedBinCodeId)
+                                ? modifiedBinCodeId
+                                : 999;
+                        }
+                        else
+                        {
+                            die.BinCode.Id = int.TryParse(binCodeElement.Element("Vision")?.Value, out int visionBinCodeId)
+                                ? visionBinCodeId
+                                : 999;
+                        }
+                    }
 
                     TryGetBinCodeInfo(repo.BinCodes, die);
 
@@ -353,7 +341,6 @@ namespace LotReport.Models
                     dies.Add(die);
                     Dies.Add(die);
                 }
-
                 Rows.Add(new DieRow(dies));
             }
         }
