@@ -256,7 +256,7 @@ namespace LotReport.Models
 
             XDocument doc = XDocument.Load(xmlPath);
             PreviousMagazineId = doc.Root.Attribute("PreviousMagazineId")?.Value;
-            MagazineId = doc.Root.Attribute("MagazineId")?.Value;
+            MagazineId = doc.Root.Attribute("Id")?.Value;
             string elementX = doc.Root.Attribute("X").Value;
             string elementY = doc.Root.Attribute("Y").Value;
             string elementMapOrigin = doc.Root.Attribute("MapOrigin")?.Value;
@@ -305,23 +305,50 @@ namespace LotReport.Models
                         die.MarkStatus = markStatus;
                     }
 
-                    XElement binCodeElement = dieElement.Element("BinCode");
-                    if (binCodeElement != null)
+                    if (type == Type.Modified && dieElement.Element("Modified") != null)
                     {
-                        if (type == Type.Modified && binCodeElement.Element("Modified") != null)
-                        {
-                            die.Modified = true;
-                            die.BinCode.Id = int.TryParse(binCodeElement.Element("Modified").Value, out int modifiedBinCodeId)
-                                ? modifiedBinCodeId
-                                : 999;
-                        }
-                        else
-                        {
-                            die.BinCode.Id = int.TryParse(binCodeElement.Element("Vision")?.Value, out int visionBinCodeId)
-                                ? visionBinCodeId
-                                : 999;
-                        }
+                        die.Modified = true;
+                        die.BinCode.Id = int.TryParse(dieElement.Element("Modified").Value, out int modifiedBinCodeId)
+                            ? modifiedBinCodeId
+                            : 999;
                     }
+                    else
+                    {
+                        die.BinCode.Id = int.TryParse(dieElement.Element("BinCode")?.Value, out int visionBinCodeId)
+                            ? visionBinCodeId
+                            : 999;
+                    }
+
+                    var inspectionElement = dieElement.Element("Inspection");
+                    var element2D = inspectionElement?.Element("_2D");
+                    var element3D = inspectionElement?.Element("_3D");
+
+                    XElement bincode2D = element2D?.Element("BinCode");
+                    if (int.TryParse(bincode2D.Value, out int bincode2DId))
+                    {
+                        die.BinCode2D.Id = bincode2DId;
+                    }
+                    else
+                    {
+                        die.BinCode2D.Id = 999;
+                    }
+
+                    die.DiePath = element2D?.Element("ImagePath")?.Value;
+
+                    XElement bincode3D = element3D?.Element("BinCode");
+                    if (int.TryParse(bincode3D.Value, out int bincode3DId))
+                    {
+                        die.BinCode3D.Id = bincode3DId;
+                    }
+                    else
+                    {
+                        die.BinCode3D.Id = 999;
+                    }
+
+                    die.DiePath3DLeft = element3D?.Element("ImagePath_Left")?.Value;
+                    die.DiePath3DRight = element3D?.Element("ImagePath_Right")?.Value;
+                    die.DiePath3DFront = element3D?.Element("ImagePath_Front")?.Value;
+                    die.DiePath3DBack = element3D?.Element("ImagePath_Back")?.Value;
 
                     TryGetBinCodeInfo(repo.BinCodes, die);
 
@@ -341,6 +368,7 @@ namespace LotReport.Models
                     dies.Add(die);
                     Dies.Add(die);
                 }
+
                 Rows.Add(new DieRow(dies));
             }
         }
@@ -348,16 +376,32 @@ namespace LotReport.Models
         private void TryGetBinCodeInfo(List<BinCode> binCodes, Die die)
         {
             BinCode sourceBinCode = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode.Id);
-
             if (sourceBinCode != null)
             {
-                die.BinCode.Quality = sourceBinCode.Quality;
-                die.BinCode.Value = sourceBinCode.Value;
-                die.BinCode.Display = sourceBinCode.Display;
-                die.BinCode.Description = sourceBinCode.Description;
-                die.BinCode.Mark = sourceBinCode.Mark;
-                die.BinCode.SkipReview = sourceBinCode.SkipReview;
+                CopyBinCodeInfo(sourceBinCode, die.BinCode);
             }
+
+            BinCode sourceBinCode2D = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode2D.Id);
+            if (sourceBinCode2D != null)
+            {
+                CopyBinCodeInfo(sourceBinCode2D, die.BinCode2D);
+            }
+
+            BinCode sourceBinCode3D = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode3D.Id);
+            if (sourceBinCode3D != null)
+            {
+                CopyBinCodeInfo(sourceBinCode3D, die.BinCode3D);
+            }
+        }
+
+        private void CopyBinCodeInfo(BinCode source, BinCode target)
+        {
+            target.Quality = source.Quality;
+            target.Value = source.Value;
+            target.Display = source.Display;
+            target.Description = source.Description;
+            target.Mark = source.Mark;
+            target.SkipReview = source.SkipReview;
         }
 
         private void GetInfo(string xmlPath)

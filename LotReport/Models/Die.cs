@@ -13,10 +13,18 @@ namespace LotReport.Models
         private Mark _markStatus;
         private Color _color;
         private bool _modified;
+        private BinCode _binCode2D;
+        private BinCode _binCode3D;
+        private string _diePath3DLeft;
+        private string _diePath3DRight;
+        private string _diePath3DFront;
+        private string _diePath3DBack;
 
         public Die()
         {
             BinCode = new BinCode();
+            BinCode2D = new BinCode();
+            BinCode3D = new BinCode();
         }
 
         public enum Mark
@@ -41,5 +49,17 @@ namespace LotReport.Models
         public bool Modified { get => _modified; set => SetProperty(ref _modified, value); }
 
         public bool Reviewed { get; set; }
+
+        public BinCode BinCode2D { get => _binCode2D; set => SetProperty(ref _binCode2D, value); }
+
+        public BinCode BinCode3D { get => _binCode3D; set => SetProperty(ref _binCode3D, value); }
+
+        public string DiePath3DLeft { get => _diePath3DLeft; set => SetProperty(ref _diePath3DLeft, value); }
+
+        public string DiePath3DRight { get => _diePath3DRight; set => SetProperty(ref _diePath3DRight, value); }
+
+        public string DiePath3DFront { get => _diePath3DFront; set => SetProperty(ref _diePath3DFront, value); }
+
+        public string DiePath3DBack { get => _diePath3DBack; set => SetProperty(ref _diePath3DBack, value); }
     }
 }
