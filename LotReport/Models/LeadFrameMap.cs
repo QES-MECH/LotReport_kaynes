@@ -296,14 +296,8 @@ namespace LotReport.Models
                     Die die = new Die
                     {
                         Coordinate = new Point(x, y),
-                        DiePath = dieElement.Element("DiePath")?.Value,
-                        MarkPath = dieElement.Element("MarkPath")?.Value
+                        DiePath = new List<string>(),
                     };
-
-                    if (Enum.TryParse(dieElement.Element("Mark")?.Value, out Die.Mark markStatus))
-                    {
-                        die.MarkStatus = markStatus;
-                    }
 
                     if (type == Type.Modified && dieElement.Element("Modified") != null)
                     {
@@ -319,9 +313,8 @@ namespace LotReport.Models
                             : 999;
                     }
 
-                    var inspectionElement = dieElement.Element("Inspection");
-                    var element2D = inspectionElement?.Element("_2D");
-                    var element3D = inspectionElement?.Element("_3D");
+                    var element2D = doc.Descendants("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "2D");
+                    var element3D = doc.Descendants("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "3D");
 
                     XElement bincode2D = element2D?.Element("BinCode");
                     if (int.TryParse(bincode2D.Value, out int bincode2DId))
@@ -333,10 +326,17 @@ namespace LotReport.Models
                         die.BinCode2D.Id = 999;
                     }
 
-                    die.DiePath = element2D?.Element("ImagePath")?.Value;
+                    var imageCount2D = element2D?.Elements().Count(c => c.Name.LocalName.StartsWith("ImagePath_"));
+                    if (imageCount2D >= 1)
+                    {
+                        for (int i = 1; i <= imageCount2D; i++)
+                        {
+                            die.DiePath.Add(element2D?.Element($"ImagePath_{i}")?.Value);
+                        }
+                    }
 
                     XElement bincode3D = element3D?.Element("BinCode");
-                    if (int.TryParse(bincode3D.Value, out int bincode3DId))
+                    if (int.TryParse(bincode3D?.Value, out int bincode3DId))
                     {
                         die.BinCode3D.Id = bincode3DId;
                     }
@@ -345,10 +345,19 @@ namespace LotReport.Models
                         die.BinCode3D.Id = 999;
                     }
 
-                    die.DiePath3DLeft = element3D?.Element("ImagePath_Left")?.Value;
-                    die.DiePath3DRight = element3D?.Element("ImagePath_Right")?.Value;
-                    die.DiePath3DFront = element3D?.Element("ImagePath_Front")?.Value;
-                    die.DiePath3DBack = element3D?.Element("ImagePath_Back")?.Value;
+                    var sides = new[] { "Left", "Right", "Back", "Front" };
+                    foreach (var side in sides)
+                    {
+                        var count = element3D?.Elements().Count(c => c.Name.LocalName.StartsWith($"ImagePath_{side}_")) ?? 0;
+                        for (int i = 1; i <= count; i++)
+                        {
+                            var path = element3D?.Element($"ImagePath_{side}_{i}")?.Value;
+                            if (!string.IsNullOrEmpty(path))
+                            {
+                                die.DiePath3D[side].Add(path);
+                            }
+                        }
+                    }
 
                     TryGetBinCodeInfo(repo.BinCodes, die);
 

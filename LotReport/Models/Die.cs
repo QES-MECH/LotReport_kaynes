@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using Framework.MVVM;
 
@@ -8,7 +9,7 @@ namespace LotReport.Models
     {
         private Point _coordinate;
         private BinCode _binCode;
-        private string _diePath;
+        private List<string> _diePath;
         private string _markPath;
         private Mark _markStatus;
         private Color _color;
@@ -38,7 +39,7 @@ namespace LotReport.Models
 
         public BinCode BinCode { get => _binCode; set => SetProperty(ref _binCode, value); }
 
-        public string DiePath { get => _diePath; set => SetProperty(ref _diePath, value); }
+        public List<string> DiePath { get => _diePath; set => SetProperty(ref _diePath, value); }
 
         public string MarkPath { get => _markPath; set => SetProperty(ref _markPath, value); }
 
@@ -54,12 +55,12 @@ namespace LotReport.Models
 
         public BinCode BinCode3D { get => _binCode3D; set => SetProperty(ref _binCode3D, value); }
 
-        public string DiePath3DLeft { get => _diePath3DLeft; set => SetProperty(ref _diePath3DLeft, value); }
-
-        public string DiePath3DRight { get => _diePath3DRight; set => SetProperty(ref _diePath3DRight, value); }
-
-        public string DiePath3DFront { get => _diePath3DFront; set => SetProperty(ref _diePath3DFront, value); }
-
-        public string DiePath3DBack { get => _diePath3DBack; set => SetProperty(ref _diePath3DBack, value); }
+        public Dictionary<string, List<string>> DiePath3D { get; set; } = new Dictionary<string, List<string>>()
+        {
+            { "Left", new List<string>() },
+            { "Right", new List<string>() },
+            { "Back", new List<string>() },
+            { "Front", new List<string>() }
+        };
     }
 }
