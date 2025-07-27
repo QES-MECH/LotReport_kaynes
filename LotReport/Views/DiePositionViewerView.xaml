@@ -1,0 +1,127 @@
+﻿<Window x:Class="LotReport.Views.DiePositionViewerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LotReport.Views"
+        xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
+        xmlns:cog="clr-namespace:CognexDisplay.Views;assembly=CognexDisplay"
+        xmlns:viewModels="clr-namespace:LotReport.ViewModels"
+        mc:Ignorable="d"
+        x:Name="ParentWindow"
+        d:DataContext="{d:DesignInstance Type=viewModels:DiePositionViewerViewModel}"
+        Title="DiePositionViewer" Height="720" Width="1280"
+        WindowState="Maximized"
+        Loaded="Window_loaded"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="G" Command="{Binding GraphicCommand}"/>
+    </Window.InputBindings>
+        
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" x:Name="imageGrid">
+                <r:ImageControl Grid.Column="0" Image="{Binding Image}"/>
+                <cog:CognexDisplayView ViewModel="{Binding CognexDisplayViewModel}"
+                                       Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+            
+            <ScrollViewer Grid.Column="1">
+                <StackPanel>
+                    <TextBlock Text="2D Images" FontWeight="Bold" Margin="5"/>
+                    <ItemsControl ItemsSource="{Binding Die.DiePath}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <r:DiePositionPanel DataContext="{Binding}" Margin="5"
+                                                    DiePositionSelectedCommand="{Binding LoadSelectedDieInspect, ElementName=ParentWindow}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Separator Margin="10"/>
+                    <TextBlock Text="3D Images" FontWeight="Bold" Margin="5"/>
+                    <ItemsControl ItemsSource="{Binding Die.DiePath3D}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Key}" FontWeight="SemiBold" Margin="5,10,0,5"/>
+                                    <ItemsControl ItemsSource="{Binding Value}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <r:DiePositionPanel DataContext="{Binding}" Margin="5"
+                                                                    DiePositionSelectedCommand="{Binding LoadSelectedDieInspect, ElementName=ParentWindow}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+            
+            <Grid Grid.Column="2" x:Name="selectedLeadFrameTableGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Margin="3" Grid.Row="0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{Binding PositionHeader}" FontWeight="Medium" FontSize="13"/>
+                    </GroupBox.Header>
+                    <Grid>
+                        <StackPanel>
+                            <r:LabelTextBox Grid.Column="0" Label="ID" LabelAlignment="Right" Value="{Binding CurrentRejectCode.Id}" ReadOnly="True" LabelWidth="0.3*" ValueWidth="0.8*" Margin="3"/>
+                            <r:LabelTextBox Grid.Column="1" Label="Code" LabelAlignment="Right" Value="{Binding CurrentRejectCode.Value}" ReadOnly="True" LabelWidth="0.3*" ValueWidth="0.8*" Margin="3"/>
+                            <r:LabelTextBox Label="Display" LabelAlignment="Right" Value="{Binding CurrentRejectCode.Display}" ReadOnly="True" LabelWidth="0.3*" ValueWidth="0.8*" Margin="3"/>
+                            <r:LabelTextBox Label="Description" LabelAlignment="Right" Value="{Binding CurrentRejectCode.Description}" ReadOnly="True" LabelWidth="0.3*" ValueWidth="0.8*" Margin="3"/>
+
+                            <WrapPanel Grid.Row="2" HorizontalAlignment="Center">
+                                <Button Content="Graphic" Command="{Binding GraphicCommand}" Height="23" Width="75" Margin="5"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <WrapPanel Grid.Row="2" HorizontalAlignment="Right" Margin="10">
+                    <Button Content="O_K" Click="OK_Click" IsDefault="True" Width="75" Height="20" Margin="5"/>
+                    <Button Content="Cancel" IsCancel="True" Width="75" Height="20" Margin="5"/>
+                </WrapPanel>
+            </Grid>
+        </Grid>
+
+        <StatusBar Grid.Row="1" Height="23" Background="#2962FF">
+            <StatusBarItem Content="{Binding Status}" Foreground="White"/>
+        </StatusBar>
+    </Grid>
+</Window>

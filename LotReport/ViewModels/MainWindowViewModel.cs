@@ -318,9 +318,9 @@ namespace LotReport.ViewModels
                         return;
                     }
 
-                    DieViewModel vm = new DieViewModel();
+                    DiePositionViewerViewModel vm = new DiePositionViewerViewModel();
                     vm.Init(LeadFrameMapMachine, selectedDie);
-                    WindowService.ShowDialog<DieView>(vm);
+                    WindowService.ShowDialog<DiePositionViewerView>(vm);
                 });
 
             ModifiedDieCommand = new RelayCommand(
@@ -333,9 +333,9 @@ namespace LotReport.ViewModels
                         return;
                     }
 
-                    DieViewModel vm = new DieViewModel();
-                    vm.Init(LeadFrameMapOperator, selectedDie);
-                    WindowService.ShowDialog<DieView>(vm);
+                    DiePositionViewerViewModel vm = new DiePositionViewerViewModel();
+                    vm.Init(LeadFrameMapMachine, selectedDie);
+                    WindowService.ShowDialog<DiePositionViewerView>(vm);
                 });
 
             PreviousLFCommand = new RelayCommand(

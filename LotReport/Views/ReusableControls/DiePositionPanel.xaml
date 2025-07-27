@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="LotReport.Views.ReusableControls.DiePositionPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LotReport.Views.ReusableControls"
+             xmlns:converters="clr-namespace:LotReport.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="150">
+    <UserControl.Resources>
+        <converters:LazyImageConverter x:Key="LazyImageConverter"/>
+    </UserControl.Resources>
+    <StackPanel Width="200" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+        <Image Source="{Binding ., Converter={StaticResource LazyImageConverter}}" Height="150" Stretch="Uniform"/>
+    </StackPanel>
+</UserControl>

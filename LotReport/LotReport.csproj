@@ -116,6 +116,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\LazyImageConverter.cs" />
     <Compile Include="Framework\AsyncCommand.cs" />
     <Compile Include="Framework\AsyncCommand{TResult}.cs" />
     <Compile Include="Framework\IAsyncCommand.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Utilities\PasswordEncrypter.cs" />
     <Compile Include="Utilities\SftpClientExtensions.cs" />
     <Compile Include="ViewModels\DatabaseSubdirectoryViewModel.cs" />
+    <Compile Include="ViewModels\DiePositionViewerViewModel.cs" />
     <Compile Include="ViewModels\DieViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -148,11 +150,17 @@
     <Compile Include="Views\DatabaseSubdirectoryView.xaml.cs">
       <DependentUpon>DatabaseSubdirectoryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DiePositionViewerView.xaml.cs">
+      <DependentUpon>DiePositionViewerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DieView.xaml.cs">
       <DependentUpon>DieView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindowControls\LotControl.xaml.cs">
       <DependentUpon>LotControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReusableControls\DiePositionPanel.xaml.cs">
+      <DependentUpon>DiePositionPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReusableControls\ImageControl.xaml.cs">
       <DependentUpon>ImageControl.xaml</DependentUpon>
@@ -170,6 +178,10 @@
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\DatabaseSubdirectoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiePositionViewerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -194,6 +206,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MainWindowControls\LotControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReusableControls\DiePositionPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
