@@ -86,12 +86,12 @@ namespace LotReport.ViewModels
                                 CognexDisplayViewModel.DisplayGraphic(false);
                                 CognexDisplayViewModel.DisplayImage(false);
 
-                                CognexDisplayViewModel.LoadImage(Die.DiePath);
+                                CognexDisplayViewModel.LoadImage(Die.DiePath[1]);
                                 CognexDisplayViewModel.DisplayImage(true);
 
                                 string graphicRelativePath = Path.Combine(
-                                    Directory.GetParent(Die.DiePath).Name,
-                                    Path.GetFileNameWithoutExtension(Die.DiePath) + ".vpp");
+                                    Directory.GetParent(Die.DiePath[1]).Name,
+                                    Path.GetFileNameWithoutExtension(Die.DiePath[1]) + ".vpp");
                                 CognexDisplayViewModel.LoadGraphic(Path.Combine(Settings.VisionImageDirectory, graphicRelativePath));
                                 CognexDisplayViewModel.DisplayGraphic(_displayGraphic = true);
                             }
@@ -99,7 +99,7 @@ namespace LotReport.ViewModels
                             {
                                 BitmapImage image = new BitmapImage();
                                 image.BeginInit();
-                                image.UriSource = new Uri(Die.DiePath);
+                                image.UriSource = new Uri(Die.DiePath[1]);
                                 image.EndInit();
                                 image.Freeze();
 
