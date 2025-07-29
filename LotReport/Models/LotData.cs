@@ -350,6 +350,11 @@ namespace LotReport.Models
             MarkedUnitsPassed = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Pass);
             MarkedUnitsRejected = modifiedDies.Count(die => die.MarkStatus == Die.Mark.Fail);
             MarkedUnitsYieldPercentage = (double)MarkedUnitsPassed / MarkedUnits * 100;
+            if (MarkedUnitsYieldPercentage == double.NaN)
+            {
+                MarkedUnitsYieldPercentage = 0;
+            }
+
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
