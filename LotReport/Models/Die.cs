@@ -16,10 +16,6 @@ namespace LotReport.Models
         private bool _modified;
         private BinCode _binCode2D;
         private BinCode _binCode3D;
-        private string _diePath3DLeft;
-        private string _diePath3DRight;
-        private string _diePath3DFront;
-        private string _diePath3DBack;
 
         public Die()
         {
