@@ -57,6 +57,11 @@ namespace LotReport.ViewModels
             get => _selectedImagePath;
             set
             {
+                if (_selectedImagePath != value)
+                {
+                    _displayGraphic = false;
+                }
+
                 CurrentIndex = CombinedImagePaths.IndexOf(value);
                 SetProperty(ref _selectedImagePath, value);
             }
@@ -114,12 +119,6 @@ namespace LotReport.ViewModels
 
                                     CognexDisplayViewModel.LoadImage(SelectedImagePath);
                                     CognexDisplayViewModel.DisplayImage(true);
-
-                                    string graphicRelativePath = Path.Combine(
-                                    Directory.GetParent(SelectedImagePath).Name,
-                                    Path.GetFileNameWithoutExtension(SelectedImagePath) + ".vpp");
-                                    CognexDisplayViewModel.LoadGraphic(Path.Combine(Settings.VisionImageDirectory, graphicRelativePath));
-                                    CognexDisplayViewModel.DisplayGraphic(_displayGraphic = true);
                                 }
                                 else
                                 {
@@ -151,7 +150,16 @@ namespace LotReport.ViewModels
                 {
                     try
                     {
-                        CognexDisplayViewModel.DisplayGraphic(_displayGraphic = !_displayGraphic);
+                        string graphicRelativePath = Path.ChangeExtension(SelectedImagePath, ".vpp");
+                        if (!_displayGraphic)
+                        {
+                            CognexDisplayViewModel.LoadGraphic(graphicRelativePath);
+                            CognexDisplayViewModel.DisplayGraphic(_displayGraphic = true);
+                        }
+                        else
+                        {
+                            CognexDisplayViewModel.DisplayGraphic(_displayGraphic = false);
+                        }
                     }
                     catch (Exception e)
                     {
