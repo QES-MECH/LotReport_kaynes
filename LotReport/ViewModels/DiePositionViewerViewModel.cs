@@ -119,6 +119,11 @@ namespace LotReport.ViewModels
 
                                     CognexDisplayViewModel.LoadImage(SelectedImagePath);
                                     CognexDisplayViewModel.DisplayImage(true);
+
+                                    string graphicRelativePath = Path.ChangeExtension(SelectedImagePath, ".vpp");
+                                    CognexDisplayViewModel.LoadGraphic(graphicRelativePath);
+                                    _displayGraphic = true;
+                                    CognexDisplayViewModel.DisplayGraphic(_displayGraphic = true);
                                 }
                                 else
                                 {
