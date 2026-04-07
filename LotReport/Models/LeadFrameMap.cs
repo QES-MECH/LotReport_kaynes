@@ -313,8 +313,8 @@ namespace LotReport.Models
                             : 999;
                     }
 
-                    var element2D = doc.Descendants("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "2D");
-                    var element3D = doc.Descendants("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "3D");
+                    var element2D = dieElement.Elements("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "2D");
+                    var element3D = dieElement.Elements("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "3D");
 
                     XElement bincode2D = element2D?.Element("BinCode");
                     if (int.TryParse(bincode2D.Value, out int bincode2DId))
