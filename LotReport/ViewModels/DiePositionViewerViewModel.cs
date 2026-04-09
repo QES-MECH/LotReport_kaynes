@@ -63,6 +63,7 @@ namespace LotReport.ViewModels
                 }
 
                 CurrentIndex = CombinedImagePaths.IndexOf(value);
+                UpdateCurrentRejectCode(value);
                 SetProperty(ref _selectedImagePath, value);
             }
         }
@@ -105,7 +106,7 @@ namespace LotReport.ViewModels
                     {
                         try
                         {
-                            CurrentRejectCode = Die.BinCode;
+                            //CurrentRejectCode = Die.BinCode;
                             GC.Collect();
 
                             string imagePath = param as string;
@@ -199,6 +200,36 @@ namespace LotReport.ViewModels
         private void UpdatePositionHeaderDisplay()
         {
             PositionHeader = $"Coordinate[{MapCoordinate}] - Position: {CurrentIndex + 1}";
+        }
+
+        private void UpdateCurrentRejectCode(string path)
+        {
+            if (string.IsNullOrEmpty(path) || SelectedImagePath == null)
+            {
+                return;
+            }
+
+            // 1. Check if the path exists in 2D
+            int index2D = Die.DiePath.IndexOf(path);
+            if (index2D != -1 && index2D < Die.BinCode2D.Count)
+            {
+                CurrentRejectCode = Die.BinCode2D[index2D];
+                return;
+            }
+
+            // 2. Check if the path exists in 3D (Dictionary search)
+            foreach (var side in Die.DiePath3D.Keys)
+            {
+                int index3D = Die.DiePath3D[side].IndexOf(path);
+                if (index3D != -1 && index3D < Die.BinCode3D.Count)
+                {
+                    CurrentRejectCode = Die.BinCode3D[index3D];
+                    return;
+                }
+            }
+
+            // 3. Fallback: If not found in 2D/3D lists, show the Main Die bincode
+            CurrentRejectCode = Die.BinCode;
         }
     }
 }
