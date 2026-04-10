@@ -318,7 +318,7 @@ namespace LotReport.Models
 
                     for (int i = 1; i <= 6; i++)
                     {
-                        string bincodeStr = element2D.Element($"Bincode2D_{i}")?.Value;
+                        string bincodeStr = element2D.Element($"BinCode2D_{i}")?.Value;
                         if (int.TryParse(bincodeStr, out int bincodeId))
                         {
                             BinCode binCode = new BinCode { Id = bincodeId };
@@ -351,7 +351,7 @@ namespace LotReport.Models
 
                     for (int i = 1; i <= 6; i++)
                     {
-                        string bincodeStr = element2D.Element($"Bincode3D_{i}")?.Value;
+                        string bincodeStr = element3D.Element($"BinCode3D_{i}")?.Value;
                         if (int.TryParse(bincodeStr, out int bincodeId))
                         {
                             BinCode binCode = new BinCode { Id = bincodeId };
