@@ -330,16 +330,6 @@ namespace LotReport.Models
                         }
                     }
 
-                    //XElement bincode2D = element2D?.Element("BinCode");
-                    //if (int.TryParse(bincode2D.Value, out int bincode2DId))
-                    //{
-                    //    die.BinCode2D.Id = bincode2DId;
-                    //}
-                    //else
-                    //{
-                    //    die.BinCode2D.Id = 999;
-                    //}
-
                     var imageCount2D = element2D?.Elements().Count(c => c.Name.LocalName.StartsWith("ImagePath_"));
                     if (imageCount2D >= 1)
                     {
@@ -362,16 +352,6 @@ namespace LotReport.Models
                             die.BinCode3D.Add(new BinCode { Id = 999 });
                         }
                     }
-
-                    //XElement bincode3D = element3D?.Element("BinCode");
-                    //if (int.TryParse(bincode3D?.Value, out int bincode3DId))
-                    //{
-                    //    die.BinCode3D.Id = bincode3DId;
-                    //}
-                    //else
-                    //{
-                    //    die.BinCode3D.Id = 999;
-                    //}
 
                     var sides = new[] { "Left", "Right", "Back", "Front" };
                     foreach (var side in sides)
@@ -435,18 +415,6 @@ namespace LotReport.Models
                     CopyBinCodeInfo(source, tergetBin);
                 }
             }
-
-            //BinCode sourceBinCode2D = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode2D.Id);
-            //if (sourceBinCode2D != null)
-            //{
-            //    CopyBinCodeInfo(sourceBinCode2D, die.BinCode2D);
-            //}
-
-            //BinCode sourceBinCode3D = binCodes.FirstOrDefault(bin => bin.Id == die.BinCode3D.Id);
-            //if (sourceBinCode3D != null)
-            //{
-            //    CopyBinCodeInfo(sourceBinCode3D, die.BinCode3D);
-            //}
         }
 
         private void CopyBinCodeInfo(BinCode source, BinCode target)

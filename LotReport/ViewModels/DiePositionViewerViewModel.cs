@@ -106,7 +106,6 @@ namespace LotReport.ViewModels
                     {
                         try
                         {
-                            //CurrentRejectCode = Die.BinCode;
                             GC.Collect();
 
                             string imagePath = param as string;
