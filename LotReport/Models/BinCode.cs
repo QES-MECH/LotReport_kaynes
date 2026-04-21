@@ -18,6 +18,8 @@ namespace LotReport.Models
 
         public string Description { get; set; }
 
+        public string Defect_Category { get; set; }
+
         public bool Mark { get; set; }
 
         public bool SkipReview { get; set; }

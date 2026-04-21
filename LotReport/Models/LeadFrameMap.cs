@@ -423,6 +423,7 @@ namespace LotReport.Models
             target.Value = source.Value;
             target.Display = source.Display;
             target.Description = source.Description;
+            target.Defect_Category = source.Defect_Category;
             target.Mark = source.Mark;
             target.SkipReview = source.SkipReview;
         }
