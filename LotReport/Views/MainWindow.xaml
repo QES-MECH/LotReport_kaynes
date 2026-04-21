@@ -50,36 +50,53 @@
                             <TextBlock Text="Date:" VerticalAlignment="Center" Margin="3"/>
                             <DatePicker SelectedDate="{Binding DateFilter}" Margin="3"/>
                             <Button Content="Clear" Command="{Binding ClearFilterCommand}" Width="75" Margin="3"/>
+                            <Button x:Name="ResetAllColumns" Click="ResetAll_Click" ToolTip="Reset All Columns" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                                <Image Source="/res/Eye.png" Width="24" Height="18" Margin="3"/>
+                            </Button>
                         </WrapPanel>
                     </GroupBox>
-                    <DataGrid Grid.Row="1" ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" MouseDoubleClick="DataGrid_MouseDoubleClick" IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid x:Name="LotDataGrid" Grid.Row="1" ItemsSource="{Binding LotDataView}" SelectedItem="{Binding SelectedLot}" MouseDoubleClick="DataGrid_MouseDoubleClick" IsReadOnly="True" AutoGenerateColumns="False">
+                        <DataGrid.Resources>
+                            <ContextMenu x:Key="ColumnHeaderMenu">
+                                <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                <Separator x:Name="MenuSeperator" Visibility="Collapsed"/>
+                                <MenuItem x:Name="UnhideRoot" Header="Unhide Columns" Visibility="Collapsed"/>
+                            </ContextMenu>
+                        </DataGrid.Resources>
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="ContextMenu" Value="{StaticResource ColumnHeaderMenu}"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Lot ID" Binding="{Binding LotId}"/>
-                            <DataGridTextColumn Header="Machine ID" Binding="{Binding MachineId}"/>
-                            <DataGridTextColumn Header="Operator ID" Binding="{Binding OperatorId}"/>
-                            <DataGridTextColumn Header="Product Code" Binding="{Binding ProductCode}"/>
-                            <DataGridTextColumn Header="Bonding Diagram" Binding="{Binding BondingDiagram}"/>
-                            <DataGridTextColumn Header="Recipe" Binding="{Binding RecipeName}"/>
-                            <DataGridTextColumn Header="LF Unit(s)" Binding="{Binding LeadFrameUnits}"/>
-                            <DataGridTextColumn Header="LF X Unit(s)" Binding="{Binding LeadFrameXUnits}"/>
-                            <DataGridTextColumn Header="LF Y Unit(s)" Binding="{Binding LeadFrameYUnits}"/>
-                            <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime}"/>
-                            <DataGridTextColumn Header="End Time" Binding="{Binding EndTime}"/>
-                            <DataGridTextColumn Header="UPH" Binding="{Binding UPH, StringFormat={}{0:0}}"/>
-                            <DataGridTextColumn Header="Processed UPH" Binding="{Binding ProcessUPH, StringFormat={}{0:0}}"/>
-                            <DataGridTextColumn Header="LFs Inspected" Binding="{Binding LeadFramesInspected}"/>
-                            <DataGridTextColumn Header="Units Passed" Binding="{Binding UnitsPassed}"/>
-                            <DataGridTextColumn Header="Units Skipped" Binding="{Binding UnitsSkipped}"/>
-                            <DataGridTextColumn Header="Units Rejected" Binding="{Binding UnitsRejected}"/>
-                            <DataGridTextColumn Header="Units Over-Rejected" Binding="{Binding UnitsOverRejected}"/>
-                            <DataGridTextColumn Header="Units Yield(%)" Binding="{Binding UnitsYieldPercentage, StringFormat={}{0:0.000}}"/>
-                            <DataGridTextColumn Header="Units Yield 2(%)" Binding="{Binding UnitsYieldPercentage2, StringFormat={}{0:0.000}}"/>
-                            <DataGridTextColumn Header="Over-Reject(%)" Binding="{Binding OverRejectPercentage, StringFormat={}{0:0.000}}"/>
-                            <DataGridTextColumn Header="Marked Units" Binding="{Binding MarkedUnits}"/>
-                            <DataGridTextColumn Header="Un-marked Units" Binding="{Binding UnmarkedUnits}"/>
-                            <DataGridTextColumn Header="Marked Units Passed" Binding="{Binding MarkedUnitsPassed}"/>
-                            <DataGridTextColumn Header="Marked Units Rejected" Binding="{Binding MarkedUnitsRejected}"/>
-                            <DataGridTextColumn Header="Marked Units Yield(%)" Binding="{Binding MarkedUnitsYieldPercentage, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn x:Name="LotID" Header="Lot ID" Binding="{Binding LotId}"/>
+                            <DataGridTextColumn x:Name="MachineID" Header="Machine ID" Binding="{Binding MachineId}"/>
+                            <DataGridTextColumn x:Name="OperatorID" Header="Operator ID" Binding="{Binding OperatorId}"/>
+                            <DataGridTextColumn x:Name="ProductCode" Header="Product Code" Binding="{Binding ProductCode}"/>
+                            <DataGridTextColumn x:Name="BondingDiagram" Header="Bonding Diagram" Binding="{Binding BondingDiagram}"/>
+                            <DataGridTextColumn x:Name="Recipe" Header="Recipe" Binding="{Binding RecipeName}"/>
+                            <DataGridTextColumn x:Name="LFUnit" Header="LF Unit(s)" Binding="{Binding LeadFrameUnits}"/>
+                            <DataGridTextColumn x:Name="LFXUnit" Header="LF X Unit(s)" Binding="{Binding LeadFrameXUnits}"/>
+                            <DataGridTextColumn x:Name="LFYUnit" Header="LF Y Unit(s)" Binding="{Binding LeadFrameYUnits}"/>
+                            <DataGridTextColumn x:Name="StartTime" Header="Start Time" Binding="{Binding StartTime}"/>
+                            <DataGridTextColumn x:Name="EndTime" Header="End Time" Binding="{Binding EndTime}"/>
+                            <DataGridTextColumn x:Name="UPH" Header="UPH" Binding="{Binding UPH, StringFormat={}{0:0}}"/>
+                            <DataGridTextColumn x:Name="ProcessedUPH" Header="Processed UPH" Binding="{Binding ProcessUPH, StringFormat={}{0:0}}"/>
+                            <DataGridTextColumn x:Name="LFInspected" Header="LFs Inspected" Binding="{Binding LeadFramesInspected}"/>
+                            <DataGridTextColumn x:Name="UnitPassed" Header="Units Passed" Binding="{Binding UnitsPassed}"/>
+                            <DataGridTextColumn x:Name="UnitSkipped" Header="Units Skipped" Binding="{Binding UnitsSkipped}"/>
+                            <DataGridTextColumn x:Name="UnitRejected" Header="Units Rejected" Binding="{Binding UnitsRejected}"/>
+                            <DataGridTextColumn x:Name="UnitOverRejected" Header="Units Over-Rejected" Binding="{Binding UnitsOverRejected}"/>
+                            <DataGridTextColumn x:Name="UnitYield" Header="Units Yield(%)" Binding="{Binding UnitsYieldPercentage, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn x:Name="UnitYield2" Header="Units Yield 2(%)" Binding="{Binding UnitsYieldPercentage2, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn x:Name="OverRejectedPercent" Header="Over-Reject(%)" Binding="{Binding OverRejectPercentage, StringFormat={}{0:0.000}}"/>
+                            <DataGridTextColumn x:Name="MarkedUnit" Header="Marked Units" Binding="{Binding MarkedUnits}"/>
+                            <DataGridTextColumn x:Name="UnMarkedUnit" Header="Un-marked Units" Binding="{Binding UnmarkedUnits}"/>
+                            <DataGridTextColumn x:Name="MarkedUnitPassed" Header="Marked Units Passed" Binding="{Binding MarkedUnitsPassed}"/>
+                            <DataGridTextColumn x:Name="MarkedUnitRejected" Header="Marked Units Rejected" Binding="{Binding MarkedUnitsRejected}"/>
+                            <DataGridTextColumn x:Name="MarkedUnitYield" Header="Marked Units Yield(%)" Binding="{Binding MarkedUnitsYieldPercentage, StringFormat={}{0:0.000}}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -95,7 +112,7 @@
                     <Grid Grid.Column="0" Grid.ColumnSpan="2">
                         <GroupBox Header="Lot Summary" Margin="3">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                                <StackPanel>
+                                <StackPanel x:Name="LotSummaryPanel">
                                     <r:LabelTextBox Label="Machine ID" Value="{Binding SelectedLot.MachineId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Lot ID" Value="{Binding SelectedLot.LotId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Operator ID" Value="{Binding SelectedLot.OperatorId}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
@@ -107,7 +124,7 @@
                                     <r:LabelTextBox Label="Recipe" Value="{Binding SelectedLot.RecipeName}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="LF Unit(s)" Value="{Binding SelectedLot.LeadFrameUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="LF X Unit(s)" Value="{Binding SelectedLot.LeadFrameXUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
-                                    <r:LabelTextBox Label="LF Y Units(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
+                                    <r:LabelTextBox Label="LF Y Unit(s)" Value="{Binding SelectedLot.LeadFrameYUnits}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="Start Time" Value="{Binding SelectedLot.StartTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="End Time" Value="{Binding SelectedLot.EndTime}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
                                     <r:LabelTextBox Label="UPH" Value="{Binding SelectedLot.UPH, StringFormat={}{0:0.000}}" LabelWidth="0.5*" ValueWidth="0.5*" ReadOnly="True" Margin="3"/>
