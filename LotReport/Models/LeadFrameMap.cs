@@ -41,6 +41,8 @@ namespace LotReport.Models
 
         public Origin MapOrigin { get; private set; }
 
+        public int NumOfInspectionPoints { get; private set; }
+
         public List<DieRow> Rows { get; } = new List<DieRow>();
 
         public List<Die> Dies { get; private set; } = new List<Die>();
@@ -260,6 +262,7 @@ namespace LotReport.Models
             string elementX = doc.Root.Attribute("X").Value;
             string elementY = doc.Root.Attribute("Y").Value;
             string elementMapOrigin = doc.Root.Attribute("MapOrigin")?.Value;
+            string noOfInspectionPoint = doc.Root.Attribute("NumOfInspectionPoints")?.Value;
 
             if (int.TryParse(elementX, out int sumOfXDies))
             {
@@ -274,6 +277,11 @@ namespace LotReport.Models
             if (Enum.TryParse(elementMapOrigin, out Origin mapOrigin))
             {
                 MapOrigin = mapOrigin;
+            }
+
+            if (int.TryParse(noOfInspectionPoint, out int numOfInspectionPoints))
+            {
+                NumOfInspectionPoints = numOfInspectionPoints;
             }
 
             // Convert XML elements into a dictionary for quick lookups
@@ -316,7 +324,7 @@ namespace LotReport.Models
                     var element2D = dieElement.Elements("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "2D");
                     var element3D = dieElement.Elements("Inspection").FirstOrDefault(t => (string)t.Attribute("Type") == "3D");
 
-                    for (int i = 1; i <= 6; i++)
+                    for (int i = 1; i <= NumOfInspectionPoints; i++)
                     {
                         string bincodeStr = element2D.Element($"BinCode2D_{i}")?.Value;
                         if (int.TryParse(bincodeStr, out int bincodeId))
@@ -339,7 +347,7 @@ namespace LotReport.Models
                         }
                     }
 
-                    for (int i = 1; i <= 6; i++)
+                    for (int i = 1; i <= NumOfInspectionPoints; i++)
                     {
                         string bincodeStr = element3D.Element($"BinCode3D_{i}")?.Value;
                         if (int.TryParse(bincodeStr, out int bincodeId))
