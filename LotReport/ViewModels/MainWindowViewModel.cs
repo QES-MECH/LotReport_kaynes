@@ -36,6 +36,8 @@ namespace LotReport.ViewModels
         private Dictionary<BinCode, int> _rejectCount;
         private bool _autoLaunchExcel;
 
+        public event Action OnLotDataRefreshed;
+
         public MainWindowViewModel()
         {
             LotDataView = CollectionViewSource.GetDefaultView(_lotDataSource);
@@ -162,13 +164,13 @@ namespace LotReport.ViewModels
                                 _lotDataSource.Add(lotData);
                             }
                         }
+                        LotDataView.Refresh();
+                        OnLotDataRefreshed?.Invoke();
                     }
                     catch (Exception ex)
                     {
                         MessageService.Show($"Failed to load Lots. Error: {ex.Message}", "Refresh Lots", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-
-                    LotDataView.Refresh();
                 });
 
             DatabaseSubdirectoryCommand = new RelayCommand(

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,8 @@ namespace LotReport.Models
         public Dictionary<int, int> ModifiedBinCount { get; set; } = new Dictionary<int, int>();
 
         public Dictionary<int, int> VisionBinCount { get; set; } = new Dictionary<int, int>();
+
+        public Dictionary<string, DefectSummary> DefectCategoryYieldsPercentage { get; set; } = new Dictionary<string, DefectSummary>();
 
         public void LoadFromFile(string path)
         {
@@ -222,6 +225,21 @@ namespace LotReport.Models
 
                 VisionBinCount.Add(id, count);
             }
+
+            XElement defectCategoryElement = summaryElement.Element("DefectCategories");
+
+            foreach (XElement defectCat in defectCategoryElement.Elements())
+            {
+                string categoryName = defectCat.Attribute("Name")?.Value;
+                int.TryParse(defectCat.Attribute("Count")?.Value, out int count);
+                double.TryParse(defectCat.Attribute("YieldImpactPercentage")?.Value, out double impact);
+
+                DefectCategoryYieldsPercentage[categoryName] = new DefectSummary
+                {
+                    Count = count,
+                    Impact = impact
+                };
+            }
         }
 
         public void SaveToFile(string path)
@@ -303,6 +321,19 @@ namespace LotReport.Models
 
                 writer.WriteEndElement();
 
+                writer.WriteStartElement("DefectCategories");
+
+                foreach (var defect in DefectCategoryYieldsPercentage)
+                {
+                    writer.WriteStartElement("DefectCategory");
+                    writer.WriteAttributeString("Name", defect.Key);
+                    writer.WriteAttributeString("Count", defect.Value.Count.ToString());
+                    writer.WriteAttributeString("YieldImpactPercentage", defect.Value.Impact.ToString());
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();
@@ -358,6 +389,23 @@ namespace LotReport.Models
             TimeSpan duration = EndTime.Subtract(StartTime);
             UPH = modifiedDies.Count / duration.TotalHours;
 
+            var defectCategoryGroups = modifiedDies.Where(die => die.BinCode.Quality != BinQuality.Pass)
+                .GroupBy(d => d.BinCode.Defect_Category ?? "Unknown category");
+            DefectCategoryYieldsPercentage.Clear();
+
+            foreach (var defect in defectCategoryGroups)
+            {
+                string categoryName = defect.Key;
+                int rejectCount = defect.Count();
+                double impactYieldPercent = (double)rejectCount / modifiedDies.Count * 100;
+
+                DefectCategoryYieldsPercentage[categoryName] = new DefectSummary
+                {
+                    Count = rejectCount,
+                    Impact = impactYieldPercent
+                };
+            }
+
             ModifiedBinCount.Clear();
 
             foreach (Die modifiedDie in modifiedDies)
@@ -383,6 +431,13 @@ namespace LotReport.Models
                     VisionBinCount.Add(visionDie.BinCode.Id, 1);
                 }
             }
+        }
+
+        public class DefectSummary
+        {
+            public int Count { get; set; }
+
+            public double Impact { get; set; }
         }
     }
 }

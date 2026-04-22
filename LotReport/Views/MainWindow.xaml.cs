@@ -33,6 +33,13 @@ namespace LotReport.Views
         {
             InitializeComponent();
             LoadColumnSettings();
+            var vm = new MainWindowViewModel();
+            this.DataContext = vm;
+
+            vm.OnLotDataRefreshed += () =>
+            {
+                Dispatcher.BeginInvoke(new Action(() => UpdateDynamicDefectColumns()));
+            };
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -92,7 +99,7 @@ namespace LotReport.Views
                 {
                     unhideMenu.Visibility = Visibility.Collapsed;
                     separator.Visibility = Visibility.Collapsed;
-            }
+                }
 
                 SaveColumnSettings();
             };
@@ -198,14 +205,76 @@ namespace LotReport.Views
                         }
                     }
                 }
-                }
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to load settings: {ex.Message}");
             }
         }
 
+        private void UpdateDynamicDefectColumns()
+        {
+            var viewmodel = this.DataContext as MainWindowViewModel;
+            if (viewmodel == null)
+            {
+                return;
+            }
 
+            var dynamicColumns = LotDataGrid.Columns.Where(c => c.GetValue(FrameworkElement.NameProperty)?.ToString() == "DynamicColumn").ToList();
+            foreach (var col in dynamicColumns)
+            {
+                LotDataGrid.Columns.Remove(col);
+            }
+
+            var dynamicSummaryControls = LotSummaryPanel.Children.Cast<FrameworkElement>().Where(c => c.GetValue(FrameworkElement.NameProperty)?.ToString() == "DynamicColumn").ToList();
+            foreach (var control in dynamicSummaryControls)
+            {
+                LotSummaryPanel.Children.Remove(control);
+            }
+
+            var anchor = LotDataGrid.Columns.FirstOrDefault(c => c.Header.ToString() == "Units Rejected");
+            if (anchor == null)
+            {
+                return;
+            }
+
+            int insertAt = LotDataGrid.Columns.IndexOf(anchor) + 1;
+
+            var categories = viewmodel.LotDataView.Cast<LotData>().Where(lot => lot.DefectCategoryYieldsPercentage != null).SelectMany(lot => lot.DefectCategoryYieldsPercentage.Keys).Distinct();
+
+            foreach (var catName in categories)
+            {
+                var col = new DataGridTextColumn
+                {
+                    Header = catName,
+                    Binding = new Binding($"DefectCategoryYieldsPercentage[{catName}].Count"),
+                    IsReadOnly = true,
+                    MinWidth = 40
+                };
+                col.SetValue(FrameworkElement.NameProperty, "DynamicColumn");
+                LotDataGrid.Columns.Insert(insertAt, col);
+                insertAt++;
+
+                var percentCol = new DataGridTextColumn
+                {
+                    Header = $"{catName} Yield Impact(%)",
+                    Binding = new Binding($"DefectCategoryYieldsPercentage[{catName}].Impact") { StringFormat = "F3" },
+                    IsReadOnly = true,
+                    MinWidth = 80
+                };
+                percentCol.SetValue(FrameworkElement.NameProperty, "DynamicColumn");
+                LotDataGrid.Columns.Insert(insertAt, percentCol);
+                insertAt++;
+            }
+        }
+
+        public class DefectColumn
+        {
+            public string Category { get; set; }
+
+            public int Count { get; set; }
+
+            public double YieldImpactPercentage { get; set; }
         }
     }
 }
