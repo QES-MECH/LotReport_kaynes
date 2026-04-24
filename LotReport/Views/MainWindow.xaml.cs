@@ -226,12 +226,6 @@ namespace LotReport.Views
                 LotDataGrid.Columns.Remove(col);
             }
 
-            var dynamicSummaryControls = LotSummaryPanel.Children.Cast<FrameworkElement>().Where(c => c.GetValue(FrameworkElement.NameProperty)?.ToString() == "DynamicColumn").ToList();
-            foreach (var control in dynamicSummaryControls)
-            {
-                LotSummaryPanel.Children.Remove(control);
-            }
-
             var anchor = LotDataGrid.Columns.FirstOrDefault(c => c.Header.ToString() == "Units Rejected");
             if (anchor == null)
             {
