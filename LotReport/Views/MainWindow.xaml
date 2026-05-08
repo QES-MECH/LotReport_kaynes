@@ -228,7 +228,7 @@
                                 ItemsSource="{Binding RejectCount}"
                                 Grid.Column="0"
                                 IsReadOnly="True"
-                                AutoGenerateColumns="False" 
+                                AutoGenerateColumns="False"
                                 HeadersVisibility="Column" 
                                 FontFamily="consolas" >
                                 <DataGrid.Resources>
@@ -261,7 +261,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Description" Binding="{Binding Key.Description}" Width="400">
+                                    <DataGridTextColumn Header="Description" Binding="{Binding Key.Description}" Width="200">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -269,7 +269,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Defect Category" Binding="{Binding Key.Defect_Category}" Width="100">
+                                    <DataGridTextColumn Header="Defect Category" Binding="{Binding Key.Defect_Category}" Width="150">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -277,7 +277,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Mark" Binding="{Binding Key.Mark}">
+                                    <DataGridTextColumn Header="Mark" Binding="{Binding Key.Mark}" Width="50">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -285,7 +285,15 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Header="Count" Binding="{Binding Value}">
+                                    <DataGridTextColumn Header="Count" Binding="{Binding Value.MainCount}">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Count on Defects" Binding="{Binding Value.TotalCount}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>

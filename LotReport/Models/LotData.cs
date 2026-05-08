@@ -76,7 +76,7 @@ namespace LotReport.Models
 
         public double MarkedUnitsYieldPercentage { get; set; }
 
-        public Dictionary<int, int> ModifiedBinCount { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, BinCount> ModifiedBinCount { get; set; } = new Dictionary<int, BinCount>();
 
         public Dictionary<int, int> VisionBinCount { get; set; } = new Dictionary<int, int>();
 
@@ -211,9 +211,14 @@ namespace LotReport.Models
             foreach (XElement reject in modifiedRejectsElement.Elements())
             {
                 int.TryParse(reject.Attribute("Id")?.Value, out int id);
-                int.TryParse(reject.Attribute("Count")?.Value, out int count);
+                int.TryParse(reject.Attribute("DefectCountOnMainDies")?.Value, out int count);
+                int.TryParse(reject.Attribute("DefectCountOnFailedImages")?.Value, out int total);
 
-                ModifiedBinCount.Add(id, count);
+                ModifiedBinCount[id] = new BinCount
+                {
+                    MainCount = count,
+                    TotalCount = total
+                };
             }
 
             XElement visionRejectsElement = summaryElement.Element("VisionRejects");
@@ -299,11 +304,12 @@ namespace LotReport.Models
 
                 writer.WriteStartElement("ModifiedRejects");
 
-                foreach (KeyValuePair<int, int> reject in ModifiedBinCount)
+                foreach (KeyValuePair<int, BinCount> reject in ModifiedBinCount)
                 {
                     writer.WriteStartElement("Reject");
                     writer.WriteAttributeString("Id", reject.Key.ToString());
-                    writer.WriteAttributeString("Count", reject.Value.ToString());
+                    writer.WriteAttributeString("DefectCountOnMainDies", reject.Value.MainCount.ToString());
+                    writer.WriteAttributeString("DefectCountOnFailedImages", reject.Value.TotalCount.ToString());
                     writer.WriteEndElement();
                 }
 
@@ -410,13 +416,22 @@ namespace LotReport.Models
 
             foreach (Die modifiedDie in modifiedDies)
             {
-                if (ModifiedBinCount.ContainsKey(modifiedDie.BinCode.Id))
+                UpdateBinEntry(modifiedDie.BinCode.Id, true);
+
+                if (modifiedDie.BinCode2D != null)
                 {
-                    ModifiedBinCount[modifiedDie.BinCode.Id]++;
+                    foreach (var bin in modifiedDie.BinCode2D)
+                    {
+                        UpdateBinEntry(bin.Id, false);
+                    }
                 }
-                else
+
+                if (modifiedDie.BinCode3D != null)
                 {
-                    ModifiedBinCount.Add(modifiedDie.BinCode.Id, 1);
+                    foreach (var bin in modifiedDie.BinCode3D)
+                    {
+                        UpdateBinEntry(bin.Id, false);
+                    }
                 }
             }
 
@@ -430,6 +445,27 @@ namespace LotReport.Models
                 {
                     VisionBinCount.Add(visionDie.BinCode.Id, 1);
                 }
+            }
+        }
+
+        private void UpdateBinEntry(int? id, bool isMain)
+        {
+            if (id == null || id <= 0) return;
+
+            if (!ModifiedBinCount.ContainsKey(id.Value))
+            {
+                ModifiedBinCount[id.Value] = new BinCount();
+            }
+
+            var entry = ModifiedBinCount[id.Value];
+
+            if (isMain)
+            {
+                entry.MainCount++;
+            }
+            else
+            {
+                entry.TotalCount++;
             }
         }
 

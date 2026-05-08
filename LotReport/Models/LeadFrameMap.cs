@@ -326,7 +326,16 @@ namespace LotReport.Models
 
                     for (int i = 1; i <= NumOfInspectionPoints; i++)
                     {
-                        string bincodeStr = element2D.Element($"BinCode2D_{i}")?.Value;
+                        string bincodeStr = null;
+                        if (type == Type.Modified)
+                        {
+                            bincodeStr = element2D.Element($"Modified2D_{i}")?.Value ?? element2D.Element($"BinCode2D_{i}")?.Value;
+                        }
+                        else
+                        {
+                            bincodeStr = element2D.Element($"BinCode2D_{i}")?.Value;
+                        }
+
                         if (int.TryParse(bincodeStr, out int bincodeId))
                         {
                             BinCode binCode = new BinCode { Id = bincodeId };
@@ -347,30 +356,42 @@ namespace LotReport.Models
                         }
                     }
 
-                    for (int i = 1; i <= NumOfInspectionPoints; i++)
+                    if (element3D != null && element3D.HasElements)
                     {
-                        string bincodeStr = element3D.Element($"BinCode3D_{i}")?.Value;
-                        if (int.TryParse(bincodeStr, out int bincodeId))
+                        for (int i = 1; i <= NumOfInspectionPoints; i++)
                         {
-                            BinCode binCode = new BinCode { Id = bincodeId };
-                            die.BinCode3D.Add(binCode);
-                        }
-                        else
-                        {
-                            die.BinCode3D.Add(new BinCode { Id = 999 });
-                        }
-                    }
-
-                    var sides = new[] { "Left", "Right", "Back", "Front" };
-                    foreach (var side in sides)
-                    {
-                        var count = element3D?.Elements().Count(c => c.Name.LocalName.StartsWith($"ImagePath_{side}_")) ?? 0;
-                        for (int i = 1; i <= count; i++)
-                        {
-                            var path = element3D?.Element($"ImagePath_{side}_{i}")?.Value;
-                            if (!string.IsNullOrEmpty(path))
+                            string bincodeStr = null;
+                            if (type == Type.Modified)
                             {
-                                die.DiePath3D[side].Add(path);
+                                bincodeStr = element3D.Element($"Modified3D_{i}")?.Value ?? element3D.Element($"BinCode3D_{i}")?.Value;
+                            }
+                            else
+                            {
+                                bincodeStr = element3D.Element($"BinCode3D_{i}")?.Value;
+                            }
+
+                            if (int.TryParse(bincodeStr, out int bincodeId))
+                            {
+                                BinCode binCode = new BinCode { Id = bincodeId };
+                                die.BinCode3D.Add(binCode);
+                            }
+                            else
+                            {
+                                die.BinCode3D.Add(new BinCode { Id = 999 });
+                            }
+                        }
+
+                        var sides = new[] { "Left", "Right", "Back", "Front" };
+                        foreach (var side in sides)
+                        {
+                            var count = element3D?.Elements().Count(c => c.Name.LocalName.StartsWith($"ImagePath_{side}_")) ?? 0;
+                            for (int i = 1; i <= count; i++)
+                            {
+                                var path = element3D?.Element($"ImagePath_{side}_{i}")?.Value;
+                                if (!string.IsNullOrEmpty(path))
+                                {
+                                    die.DiePath3D[side].Add(path);
+                                }
                             }
                         }
                     }

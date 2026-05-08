@@ -33,7 +33,7 @@ namespace LotReport.ViewModels
         private LotData _selectedLot;
         private List<Item> _selectedLotDirectory;
         private int _selectedTabIndex;
-        private Dictionary<BinCode, int> _rejectCount;
+        private Dictionary<BinCode, BinCount> _rejectCount;
         private bool _autoLaunchExcel;
 
         public event Action OnLotDataRefreshed;
@@ -89,7 +89,7 @@ namespace LotReport.ViewModels
 
         public int SelectedTabIndex { get => _selectedTabIndex; set => SetProperty(ref _selectedTabIndex, value); }
 
-        public Dictionary<BinCode, int> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
+        public Dictionary<BinCode, BinCount> RejectCount { get => _rejectCount; set => SetProperty(ref _rejectCount, value); }
 
         public bool AutoLaunchExcel { get => _autoLaunchExcel; set => SetProperty(ref _autoLaunchExcel, value); }
 
@@ -247,7 +247,7 @@ namespace LotReport.ViewModels
                         selectedLotDirectory.Remove(lotFile);
                         SelectedLotDirectory = selectedLotDirectory;
 
-                        Dictionary<BinCode, int> rejectCount = new Dictionary<BinCode, int>();
+                        Dictionary<BinCode, BinCount> rejectCount = new Dictionary<BinCode, BinCount>();
                         BinCodeRepository repository = new BinCodeRepository();
                         repository.LoadFromFile();
 
