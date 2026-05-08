@@ -92,7 +92,7 @@ namespace LotReport.ViewModels
 
         private void GenerateSummary(LotData lotData, ExcelPackage package)
         {
-            ExcelWorksheet summaryWorksheet = package.Workbook.Worksheets.Add("Lot Summary");
+            ExcelWorksheet summaryWorksheet = package.Workbook.Worksheets.Add("Overall Summary");
 
             summaryWorksheet.Cells["A1"].Value = "Machine ID";
             summaryWorksheet.Cells["A2"].Value = "Lot ID";
