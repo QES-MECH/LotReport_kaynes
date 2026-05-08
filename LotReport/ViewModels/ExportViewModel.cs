@@ -82,28 +82,17 @@ namespace LotReport.ViewModels
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage(excelFile))
             {
-                GenerateSummary(LeadFrameMap.Type.Modified, lotData, package);
+                GenerateSummary(lotData, package);
                 GenerateMapping(LeadFrameMap.Type.Modified, lotData, package);
-                GenerateSummary(LeadFrameMap.Type.Vision, lotData, package);
                 GenerateMapping(LeadFrameMap.Type.Vision, lotData, package);
                 GenerateMarkVerification(lotData, package);
                 package.Save();
             }
         }
 
-        private void GenerateSummary(LeadFrameMap.Type type, LotData lotData, ExcelPackage package)
+        private void GenerateSummary(LotData lotData, ExcelPackage package)
         {
-            ExcelWorksheet summaryWorksheet = null;
-
-            switch (type)
-            {
-                case LeadFrameMap.Type.Vision:
-                    summaryWorksheet = package.Workbook.Worksheets.Add("Machine Summary");
-                    break;
-                case LeadFrameMap.Type.Modified:
-                    summaryWorksheet = package.Workbook.Worksheets.Add("Operator Summary");
-                    break;
-            }
+            ExcelWorksheet summaryWorksheet = package.Workbook.Worksheets.Add("Lot Summary");
 
             summaryWorksheet.Cells["A1"].Value = "Machine ID";
             summaryWorksheet.Cells["A2"].Value = "Lot ID";
@@ -162,36 +151,54 @@ namespace LotReport.ViewModels
             BinCodeRepository repository = new BinCodeRepository();
             repository.LoadFromFile();
 
-            summaryWorksheet.Cells["A28"].Value = "Defect Type";
-            summaryWorksheet.Cells["B28"].Value = "Count";
-            summaryWorksheet.Cells["A28:B28"].Style.Font.Bold = true;
+            summaryWorksheet.Cells["A28"].Value = "Machine Summary";
+            summaryWorksheet.Cells["C28"].Value = "Operator Summary";
 
-            int row = 29;
+            summaryWorksheet.Cells["A30"].Value = "Defect Type";
+            summaryWorksheet.Cells["A30"].Value = "Count";
+            summaryWorksheet.Cells["C30"].Value = "Defect Type";
+            summaryWorksheet.Cells["D30"].Value = "Count on Dies";
+            summaryWorksheet.Cells["E30"].Value = "Count on Defects";
+            summaryWorksheet.Cells["A28:E30"].Style.Font.Bold = true;
 
-            Dictionary<int, int> binCount = null;
-            switch (type)
+            int machineRow = 31;
+            if (lotData.VisionBinCount != null)
             {
-                case LeadFrameMap.Type.Vision:
-                    binCount = lotData.VisionBinCount;
-                    break;
-                case LeadFrameMap.Type.Modified:
-                    binCount = lotData.ModifiedBinCount;
-                    break;
+                foreach (var bin in lotData.VisionBinCount)
+                {
+                    if (bin.Key != 0)
+                    {
+                        BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
+                        if (bc == null)
+                        {
+                            throw new InvalidOperationException($"Bin Code ID: {bin.Key} data is missing.");
+                        }
+
+                        summaryWorksheet.Cells[machineRow, 1].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
+                        summaryWorksheet.Cells[machineRow, 2].Value = bin.Value;
+                        machineRow++;
+                    }
+                }
             }
 
-            foreach (var bin in binCount)
+            int operatorRow = 31;
+            if (lotData.ModifiedBinCount != null)
             {
-                if (bin.Key != 0)
+                foreach (var bin in lotData.ModifiedBinCount)
                 {
-                    BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
-                    if (bc == null)
+                    if (bin.Key != 0)
                     {
-                        throw new InvalidOperationException($"Bin Code ID: {bin.Key} data is missing.");
-                    }
+                        BinCode bc = repository.BinCodes.FirstOrDefault(b => b.Id == bin.Key);
+                        if (bc == null)
+                        {
+                            throw new InvalidOperationException($"Bin Code ID: {bin.Key} data is missing.");
+                        }
 
-                    summaryWorksheet.Cells[row, 1].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
-                    summaryWorksheet.Cells[row, 2].Value = bin.Value;
-                    row++;
+                        summaryWorksheet.Cells[operatorRow, 3].Value = string.Format("{0}: {1}", bc.Value, bc.Description);
+                        summaryWorksheet.Cells[operatorRow, 4].Value = bin.Value.MainCount;
+                        summaryWorksheet.Cells[operatorRow, 5].Value = bin.Value.TotalCount;
+                        operatorRow++;
+                    }
                 }
             }
 
