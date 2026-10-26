@@ -305,6 +305,7 @@ namespace LotReport.Models
                     {
                         Coordinate = new Point(x, y),
                         DiePath = new List<string>(),
+                        DiePathLighting2 = new List<string>(),
                     };
 
                     if (type == Type.Modified && dieElement.Element("Modified") != null)
@@ -347,12 +348,24 @@ namespace LotReport.Models
                         }
                     }
 
-                    var imageCount2D = element2D?.Elements().Count(c => c.Name.LocalName.StartsWith("ImagePath_"));
-                    if (imageCount2D >= 1)
+                    var elementImage2DLighting1 = element2D?.Descendants("Lighting").FirstOrDefault(t => (string)t.Attribute("Type") == "1");
+                    var elementImage2DLighting2 = element2D?.Descendants("Lighting").FirstOrDefault(t => (string)t.Attribute("Type") == "2");
+
+                    var imageCount2DL1 = elementImage2DLighting1?.Elements().Count(c => c.Name.LocalName.StartsWith("ImagePath_"));
+                    if (imageCount2DL1 >= 1)
                     {
-                        for (int i = 1; i <= imageCount2D; i++)
+                        for (int i = 1; i <= imageCount2DL1; i++)
                         {
-                            die.DiePath.Add(element2D?.Element($"ImagePath_{i}")?.Value);
+                            die.DiePath.Add(elementImage2DLighting1?.Element($"ImagePath_{i}")?.Value);
+                        }
+                    }
+
+                    var imageCount2DL2 = elementImage2DLighting2?.Elements().Count(c => c.Name.LocalName.StartsWith("ImagePath_"));
+                    if (imageCount2DL2 >= 1)
+                    {
+                        for (int i = 1; i <= imageCount2DL2; i++)
+                        {
+                            die.DiePathLighting2.Add(elementImage2DLighting2?.Element($"ImagePath_{i}")?.Value);
                         }
                     }
 

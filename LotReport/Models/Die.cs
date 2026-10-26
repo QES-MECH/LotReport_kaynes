@@ -10,6 +10,7 @@ namespace LotReport.Models
         private Point _coordinate;
         private BinCode _binCode;
         private List<string> _diePath;
+        private List<string> _diePathLighting2;
         private string _markPath;
         private Mark _markStatus;
         private Color _color;
@@ -36,6 +37,8 @@ namespace LotReport.Models
         public BinCode BinCode { get => _binCode; set => SetProperty(ref _binCode, value); }
 
         public List<string> DiePath { get => _diePath; set => SetProperty(ref _diePath, value); }
+
+        public List<string> DiePathLighting2 { get => _diePathLighting2; set => SetProperty(ref _diePathLighting2, value); }
 
         public string MarkPath { get => _markPath; set => SetProperty(ref _markPath, value); }
 

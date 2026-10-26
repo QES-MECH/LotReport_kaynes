@@ -42,14 +42,24 @@ namespace LotReport.Views.ReusableControls
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var parentWindow = Window.GetWindow(this);
-
-            if (parentWindow != null)
+            if (DiePositionSelectedCommand != null && DiePositionSelectedCommand.CanExecute(DataContext))
             {
-                var vm = parentWindow.DataContext as DiePositionViewerViewModel;
-                if (vm != null)
+                DiePositionSelectedCommand.Execute(DataContext);
+            }
+            else
+            {
+                var parentWindow = Window.GetWindow(this);
+
+                if (parentWindow?.DataContext != null)
                 {
-                    vm.LoadSelectedDieInspect.Execute(DataContext);
+                    var vm = parentWindow.DataContext;
+                    var commandProperty = vm.GetType().GetProperty("LoadSelectedDieInspect");
+                    var command = commandProperty?.GetValue(vm) as System.Windows.Input.ICommand;
+
+                    if (command != null && command.CanExecute(DataContext))
+                    {
+                        command.Execute(DataContext);
+                    }
                 }
             }
         }

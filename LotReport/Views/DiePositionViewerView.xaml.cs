@@ -29,8 +29,12 @@ namespace LotReport.Views
         {
             if (DataContext is DiePositionViewerViewModel vm)
             {
-                vm.SelectedImagePath = vm.CombinedImagePaths[0];
-                vm.LoadSelectedDieInspect.Execute(DataContext);
+                var initialPath = vm.Current2DPaths?.FirstOrDefault();
+                if (!string.IsNullOrEmpty(initialPath))
+                {
+                    vm.SelectedImagePath = initialPath;
+                    vm.LoadSelectedDieInspect.Execute(initialPath);
+                }
             }
         }
 
@@ -39,12 +43,24 @@ namespace LotReport.Views
             if (DataContext is DiePositionViewerViewModel vm)
             {
                 vm.CognexDisplayViewModel?.Dispose();
+                vm.CognexVmLeft?.Dispose();
+                vm.CognexVmRight?.Dispose();
+                vm.CognexVmFront?.Dispose();
+                vm.CognexVmBack?.Dispose();
             }
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void On3DSideClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.Tag is string path && DataContext is DiePositionViewerViewModel vm)
+            {
+                vm.Selected3DSideCommand.Execute(path);
+            }
         }
     }
 }

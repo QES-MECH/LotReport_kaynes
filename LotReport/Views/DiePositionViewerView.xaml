@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:LotReport.Views"
         xmlns:r="clr-namespace:LotReport.Views.ReusableControls"
         xmlns:cog="clr-namespace:CognexDisplay.Views;assembly=CognexDisplay"
+        xmlns:converter="clr-namespace:LotReport.Converters"
         xmlns:viewModels="clr-namespace:LotReport.ViewModels"
         mc:Ignorable="d"
         x:Name="ParentWindow"
@@ -16,11 +17,13 @@
         Closing="Window_Closing">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="G" Command="{Binding GraphicCommand}"/>
+        <KeyBinding Key="Esc" Command="{Binding BackTo2DViewCommand}"/>
     </Window.InputBindings>
-        
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -29,66 +32,134 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1.2*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" x:Name="imageGrid">
-                <r:ImageControl Grid.Column="0" Image="{Binding Image}"/>
-                <cog:CognexDisplayView ViewModel="{Binding CognexDisplayViewModel}"
-                                       Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Grid Grid.Column="0" Visibility="{Binding Is3DMode, Converter={StaticResource InverseBooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="430"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Margin="5">
+                    <r:ImageControl Grid.Column="0" Image="{Binding Image}"/>
+                    <cog:CognexDisplayView ViewModel="{Binding CognexDisplayViewModel}" Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+
+                <Grid Grid.Column="1" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <ItemsControl ItemsSource="{Binding Current2DPaths}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <r:DiePositionPanel DataContext="{Binding}" Margin="5" DiePositionSelectedCommand="{Binding LoadSelectedDieInspect, ElementName=ParentWindow}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Button Grid.Row="1" Content="View 3D Images" Command="{Binding View3DImageCommand}" Height="50" Width="120" Margin="5">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <!-- Hide button when Lighting 2 is selected -->
+                                        <DataTrigger Binding="{Binding SelectedLighting}" Value="2">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
             </Grid>
-            
-            <ScrollViewer Grid.Column="1">
-                <StackPanel>
-                    <TextBlock Text="2D Images" FontWeight="Bold" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Die.DiePath}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <r:DiePositionPanel DataContext="{Binding}" Margin="5"
-                                                    DiePositionSelectedCommand="{Binding LoadSelectedDieInspect, ElementName=ParentWindow}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <Separator Margin="10"/>
-                    <TextBlock Text="3D Images" FontWeight="Bold" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Die.DiePath3D}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Key}" FontWeight="SemiBold" Margin="5,10,0,5"/>
-                                    <ItemsControl ItemsSource="{Binding Value}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <r:DiePositionPanel DataContext="{Binding}" Margin="5"
-                                                                    DiePositionSelectedCommand="{Binding LoadSelectedDieInspect, ElementName=ParentWindow}"/>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
-            
-            <Grid Grid.Column="2" x:Name="selectedLeadFrameTableGrid">
+
+            <Grid Grid.Column="0" Visibility="{Binding Is3DMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--LEFT-->
+                    <Grid Grid.Row="0" Grid.Column="0" Margin="3,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Left" FontWeight="SemiBold"/>
+                        <Grid Grid.Row="1" Background="Transparent" PreviewMouseLeftButtonDown="On3DSideClicked" Tag="{Binding PathLeft}">
+                            <r:ImageControl Image="{Binding ImageLeft}"/>
+                            <cog:CognexDisplayView ViewModel="{Binding CognexVmLeft}" Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                    </Grid>
+
+                    <!--RIGHT-->
+                    <Grid Grid.Row="0" Grid.Column="1" Margin="3,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Right" FontWeight="SemiBold"/>
+                        <Grid Grid.Row="1" Background="Transparent" PreviewMouseLeftButtonDown="On3DSideClicked" Tag="{Binding PathRight}">
+                            <r:ImageControl Image="{Binding ImageRight}"/>
+                            <cog:CognexDisplayView ViewModel="{Binding CognexVmRight}" Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                    </Grid>
+
+                    <!--FRONT-->
+                    <Grid Grid.Row="1" Grid.Column="0" Margin="3,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Front" FontWeight="SemiBold"/>
+                        <Grid Grid.Row="1" Background="Transparent" PreviewMouseLeftButtonDown="On3DSideClicked" Tag="{Binding PathFront}">
+                            <r:ImageControl Image="{Binding ImageFront}"/>
+                            <cog:CognexDisplayView ViewModel="{Binding CognexVmFront}" Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                    </Grid>
+
+                    <!--BACK-->
+                    <Grid Grid.Row="1" Grid.Column="1" Margin="3,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Back" FontWeight="SemiBold"/>
+                        <Grid Grid.Row="1" Background="Transparent" PreviewMouseLeftButtonDown="On3DSideClicked" Tag="{Binding PathBack}">
+                            <r:ImageControl Image="{Binding ImageBack}"/>
+                            <cog:CognexDisplayView ViewModel="{Binding CognexVmBack}" Visibility="{Binding CognexDisplay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                
+
+            </Grid>
+
+            <Grid Grid.Column="1" x:Name="selectedLeadFrameTableGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -107,6 +178,9 @@
                             <r:LabelTextBox Label="Description" LabelAlignment="Right" Value="{Binding CurrentRejectCode.Description}" ReadOnly="True" LabelWidth="0.3*" ValueWidth="0.8*" Margin="3"/>
 
                             <WrapPanel Grid.Row="2" HorizontalAlignment="Center">
+                                <TextBlock Text="Lighting : " FontWeight="Medium" Margin="5"/>
+                                <Button Content="1" Command="{Binding Lighting1Command}" IsEnabled="{Binding IsLighting1Enabled}" Height="23" Width="43" Margin="5"/>
+                                <Button Content="2" Command="{Binding Lighting2Command}" IsEnabled="{Binding IsLighting2Enabled}" Height="23" Width="43" Margin="5"/>
                                 <Button Content="Graphic" Command="{Binding GraphicCommand}" Height="23" Width="75" Margin="5"/>
                             </WrapPanel>
                         </StackPanel>
@@ -114,6 +188,7 @@
                 </GroupBox>
 
                 <WrapPanel Grid.Row="2" HorizontalAlignment="Right" Margin="10">
+                    <Button Content="Back to 2D" Width="75" Command="{Binding BackTo2DViewCommand}" Visibility="{Binding Is3DMode, Converter={StaticResource BooleanToVisibilityConverter}}" Height="20" Margin="5"/>
                     <Button Content="O_K" Click="OK_Click" IsDefault="True" Width="75" Height="20" Margin="5"/>
                     <Button Content="Cancel" IsCancel="True" Width="75" Height="20" Margin="5"/>
                 </WrapPanel>
